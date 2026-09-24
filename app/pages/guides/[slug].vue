@@ -36,7 +36,7 @@ useSeoMeta({
 
 <template>
   <div>
-    <AppHeader />
+    <LayoutAppHeader />
 
     <main
       class="mx-auto max-w-4xl px-5 py-10 lg:px-8"

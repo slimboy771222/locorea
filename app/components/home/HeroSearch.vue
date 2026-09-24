@@ -34,14 +34,14 @@ const searchKeyword = (keyword: string) => {
 
 <template>
   <section
-    class="relative overflow-hidden bg-gradient-to-br from-slate-100 via-blue-50 to-slate-200"
+    class="relative overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50/70 to-slate-100"
   >
     <div
-      class="mx-auto flex min-h-[390px] max-w-7xl flex-col justify-center px-5 py-16 lg:px-8"
+      class="mx-auto flex min-h-[310px] max-w-7xl flex-col justify-center px-5 py-12 md:min-h-[390px] md:py-16 lg:px-8"
     >
       <div class="max-w-3xl">
         <h1
-          class="text-4xl font-bold leading-tight tracking-tight text-slate-950 md:text-6xl"
+          class="text-4xl font-bold leading-[1.05] tracking-tight text-slate-950 md:text-6xl"
         >
           Explore Korea
           <br>
@@ -49,14 +49,14 @@ const searchKeyword = (keyword: string) => {
         </h1>
 
         <p
-          class="mt-5 max-w-xl text-base leading-7 text-slate-600 md:text-lg"
+          class="mt-4 max-w-xl text-base leading-7 text-slate-600 md:text-lg"
         >
           Find places, routes, food and practical travel help
           for your Korea trip.
         </p>
 
         <form
-          class="mt-8 flex max-w-3xl rounded-2xl bg-white p-2 shadow-lg ring-1 ring-slate-200"
+          class="mt-7 flex max-w-3xl rounded-2xl bg-white p-1.5 shadow-lg shadow-slate-300/30 ring-1 ring-slate-200"
           @submit.prevent="submitSearch"
         >
           <div class="flex flex-1 items-center px-3">
@@ -69,20 +69,20 @@ const searchKeyword = (keyword: string) => {
               v-model="query"
               type="search"
               placeholder="What do you want to know about Korea?"
-              class="w-full border-0 bg-transparent px-4 py-3 text-base outline-none"
+              class="w-full border-0 bg-transparent px-3 py-3 text-base outline-none placeholder:text-slate-400"
             >
           </div>
 
           <button
             type="submit"
-            class="rounded-xl bg-blue-600 px-7 py-3 font-semibold text-white transition hover:bg-blue-700"
+            class="rounded-xl bg-blue-600 px-4 py-3 font-semibold text-white transition hover:bg-blue-700 sm:px-7"
           >
             Search
           </button>
         </form>
 
         <div class="mt-4 flex flex-wrap gap-2">
-          <span class="mr-1 py-2 text-sm text-slate-500">
+          <span class="mr-1 py-2 text-xs text-slate-500 sm:text-sm">
             Try searching:
           </span>
 

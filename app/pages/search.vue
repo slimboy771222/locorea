@@ -8,7 +8,7 @@ const query = computed(() => {
 
 <template>
   <div>
-    <AppHeader />
+    <LayoutAppHeader />
 
     <main class="mx-auto max-w-7xl px-5 py-12 lg:px-8">
       <p class="text-sm text-slate-500">

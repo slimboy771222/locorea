@@ -44,7 +44,7 @@ useSeoMeta({
 
 <template>
   <div>
-    <AppHeader />
+    <LayoutAppHeader />
 
     <main
       v-if="place"

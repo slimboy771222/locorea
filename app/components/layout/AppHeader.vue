@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import {
   Search,
-  Heart,
-  UserRound,
   Menu,
+  X,
 } from 'lucide-vue-next'
+
+const mobileMenuOpen = ref(false)
 </script>
 
 <template>
@@ -27,7 +28,7 @@ import {
         </span>
       </NuxtLink>
 
-      <nav class="hidden items-center gap-8 text-sm font-medium md:flex">
+      <nav class="hidden items-center gap-7 text-sm font-medium text-slate-600 md:flex">
         <NuxtLink to="/places">
           Explore
         </NuxtLink>
@@ -40,33 +41,32 @@ import {
           Guides
         </NuxtLink>
 
-        <NuxtLink to="/plan">
+        <NuxtLink to="/guides">
           Plan Your Trip
         </NuxtLink>
 
-        <NuxtLink to="/guides/transport">
+        <NuxtLink to="/search?q=getting+around">
           Getting Around
         </NuxtLink>
       </nav>
 
-      <div class="flex items-center gap-4">
-        <Search :size="20" />
-
-        <Heart
-          :size="20"
-          class="hidden sm:block"
-        />
-
-        <UserRound
-          :size="20"
-          class="hidden sm:block"
-        />
-
-        <Menu
-          :size="22"
-          class="md:hidden"
-        />
+      <div class="flex items-center gap-2">
+        <NuxtLink to="/search" aria-label="Search" class="rounded-lg p-2 text-slate-700 hover:bg-slate-100">
+          <Search :size="20" />
+        </NuxtLink>
+        <button type="button" class="rounded-lg p-2 text-slate-700 hover:bg-slate-100 md:hidden" :aria-expanded="mobileMenuOpen" aria-label="Toggle navigation" @click="mobileMenuOpen = !mobileMenuOpen">
+          <X v-if="mobileMenuOpen" :size="22" />
+          <Menu v-else :size="22" />
+        </button>
       </div>
     </div>
+    <nav v-if="mobileMenuOpen" class="border-t border-slate-100 bg-white px-5 py-3 md:hidden">
+      <div class="grid gap-1 text-sm font-medium text-slate-700">
+        <NuxtLink to="/places" class="rounded-lg px-3 py-2 hover:bg-slate-50" @click="mobileMenuOpen = false">Explore</NuxtLink>
+        <NuxtLink to="/routes" class="rounded-lg px-3 py-2 hover:bg-slate-50" @click="mobileMenuOpen = false">Routes</NuxtLink>
+        <NuxtLink to="/guides" class="rounded-lg px-3 py-2 hover:bg-slate-50" @click="mobileMenuOpen = false">Guides</NuxtLink>
+        <NuxtLink to="/search?q=getting+around" class="rounded-lg px-3 py-2 hover:bg-slate-50" @click="mobileMenuOpen = false">Getting Around</NuxtLink>
+      </div>
+    </nav>
   </header>
 </template>

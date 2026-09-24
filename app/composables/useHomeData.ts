@@ -15,7 +15,7 @@ export const useHomeData = () => {
         )
       `)
       .eq('status', 'published')
-      .limit(4)
+      .limit(5)
 
     if (error) {
       throw error
@@ -49,8 +49,32 @@ export const useHomeData = () => {
     return data
   }
 
+  const getPopularGuides = async () => {
+    const { data, error } = await supabase
+      .from('guides')
+      .select(`
+        id,
+        slug,
+        guide_type,
+        guide_translations (
+          language_code,
+          title,
+          summary
+        )
+      `)
+      .eq('status', 'published')
+      .limit(5)
+
+    if (error) {
+      throw error
+    }
+
+    return data
+  }
+
   return {
     getPopularPlaces,
     getFeaturedGuides,
+    getPopularGuides,
   }
 }

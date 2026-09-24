@@ -31,7 +31,7 @@ const getPlaceContent = (place: any) =>
 
 <template>
   <div>
-    <AppHeader />
+    <LayoutAppHeader />
 
     <main class="mx-auto max-w-5xl px-5 py-10 lg:px-8">
       <span
