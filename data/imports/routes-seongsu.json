@@ -1,0 +1,134 @@
+[
+  {
+    "slug": "seongsu-cafe-shopping-walk",
+    "route_type": "half_day",
+    "name": "Seongsu Cafe & Shopping Walk",
+    "summary": "A half-day walk through Seongsu combining signature cafes, shopping streets, pop-up culture and industrial-style spaces.",
+    "description": "This route is designed for first-time visitors who want to experience the modern side of Seongsu in a compact half day. It moves through cafe, shopping and warehouse-style spaces around the neighborhood's main streets.",
+    "duration_minutes": 270,
+    "distance_km": 3.8,
+    "difficulty": "easy",
+    "status": "draft",
+    "area_slug": "seongsu",
+    "source_name": "Locorea Editorial",
+    "last_verified_at": "2026-09-25",
+    "stops": [
+      {
+        "place_slug": "cafe-onion-seongsu",
+        "stay_minutes": 50,
+        "travel_minutes_to_next": 10,
+        "note": "Start with coffee in one of Seongsu's best-known industrial-style cafe spaces."
+      },
+      {
+        "place_slug": "seongsu-yeonmujang-gil",
+        "stay_minutes": 45,
+        "travel_minutes_to_next": 10,
+        "note": "Walk Yeonmujang-gil and explore side streets, boutiques and current pop-ups."
+      },
+      {
+        "place_slug": "scene-seongsu",
+        "stay_minutes": 40,
+        "travel_minutes_to_next": 10,
+        "note": "Take a break at a multi-use cafe and retail space."
+      },
+      {
+        "place_slug": "daelim-warehouse-gallery",
+        "stay_minutes": 55,
+        "travel_minutes_to_next": 10,
+        "note": "Experience Seongsu's warehouse-regeneration style in a large cultural cafe space."
+      },
+      {
+        "place_slug": "musinsa-kicks-seongsu",
+        "stay_minutes": 35,
+        "travel_minutes_to_next": null,
+        "note": "Finish near Seongsu Station with a contemporary footwear and fashion stop."
+      }
+    ]
+  },
+  {
+    "slug": "slow-seongsu-local-walk",
+    "route_type": "half_day",
+    "name": "Slow Seongsu Local Walk",
+    "summary": "A relaxed Seongsu route mixing Seoul Forest, a quiet cafe, local food and the neighborhood's shoe-making heritage.",
+    "description": "This route avoids a purely trend-focused itinerary and combines greenery, quieter cafe time, local food and Seongsu's long connection to footwear production. It suits travelers who want a slower neighborhood experience.",
+    "duration_minutes": 300,
+    "distance_km": 4.2,
+    "difficulty": "easy",
+    "status": "draft",
+    "area_slug": "seongsu",
+    "source_name": "Locorea Editorial",
+    "last_verified_at": "2026-09-25",
+    "stops": [
+      {
+        "place_slug": "seoul-forest",
+        "stay_minutes": 70,
+        "travel_minutes_to_next": 10,
+        "note": "Begin with a relaxed walk through Seoul Forest."
+      },
+      {
+        "place_slug": "mokro-garden",
+        "stay_minutes": 50,
+        "travel_minutes_to_next": 15,
+        "note": "Take a quieter cafe break near Seoul Forest."
+      },
+      {
+        "place_slug": "seongsu-dong-galbi-alley",
+        "stay_minutes": 60,
+        "travel_minutes_to_next": 15,
+        "note": "Stop for a more traditional local meal in Seongsu."
+      },
+      {
+        "place_slug": "seongsu-handmade-shoe-street",
+        "stay_minutes": 45,
+        "travel_minutes_to_next": 10,
+        "note": "Explore the neighborhood's long-standing handmade shoe district."
+      },
+      {
+        "place_slug": "romantic-move-seongsu",
+        "stay_minutes": 35,
+        "travel_minutes_to_next": null,
+        "note": "Finish with a contemporary Korean footwear brand connected to Seongsu's shoe culture."
+      }
+    ]
+  },
+  {
+    "slug": "seongsu-beauty-fashion-route",
+    "route_type": "half_day",
+    "name": "Seongsu Beauty & Fashion Route",
+    "summary": "A half-day Seongsu route focused on K-beauty, footwear, fashion retail and the neighborhood's trend-driven shopping streets.",
+    "description": "This route is for travelers interested in contemporary Korean beauty and fashion. It connects an experiential beauty space with footwear-focused stores and Seongsu's main shopping streets.",
+    "duration_minutes": 240,
+    "distance_km": 3.2,
+    "difficulty": "easy",
+    "status": "draft",
+    "area_slug": "seongsu",
+    "source_name": "Locorea Editorial",
+    "last_verified_at": "2026-09-25",
+    "stops": [
+      {
+        "place_slug": "amore-seongsu",
+        "stay_minutes": 60,
+        "travel_minutes_to_next": 10,
+        "note": "Start with a K-beauty experience in a renovated Seongsu space."
+      },
+      {
+        "place_slug": "musinsa-kicks-seongsu",
+        "stay_minutes": 45,
+        "travel_minutes_to_next": 10,
+        "note": "Browse contemporary Korean footwear near Seongsu Station."
+      },
+      {
+        "place_slug": "romantic-move-seongsu",
+        "stay_minutes": 40,
+        "travel_minutes_to_next": 10,
+        "note": "Compare modern Korean footwear design with Seongsu's traditional shoe-making identity."
+      },
+      {
+        "place_slug": "seongsu-yeonmujang-gil",
+        "stay_minutes": 60,
+        "travel_minutes_to_next": null,
+        "note": "Finish by exploring boutiques, concept stores and current pop-ups around Yeonmujang-gil."
+      }
+    ]
+  }
+]

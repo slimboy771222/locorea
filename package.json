@@ -9,7 +9,13 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "data:import:places": "tsx scripts/import/import-places.ts",
-    "data:import:places:dry": "tsx scripts/import/import-places.ts --dry-run"
+    "data:import:places:dry": "tsx scripts/import/import-places.ts --dry-run",
+    "data:import:place-media": "tsx scripts/import/import-place-media.ts",
+    "data:import:place-media:dry": "tsx scripts/import/import-place-media.ts --dry-run",
+    "data:import:routes": "tsx scripts/import/import-routes.ts",
+    "data:import:routes:dry": "tsx scripts/import/import-routes.ts --dry-run",
+    "data:import:guides": "tsx scripts/import/import-guides.ts",
+    "data:import:guides:dry": "tsx scripts/import/import-guides.ts --dry-run"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.117.1",
