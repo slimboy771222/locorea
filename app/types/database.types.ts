@@ -177,6 +177,44 @@ export type Database = {
           },
         ]
       }
+      entity_media: {
+        Row: {
+          created_at: string
+          entity_id: string
+          entity_type: string
+          id: string
+          media_id: string
+          role: string
+          sort_order: number
+        }
+        Insert: {
+          created_at?: string
+          entity_id: string
+          entity_type: string
+          id?: string
+          media_id: string
+          role?: string
+          sort_order?: number
+        }
+        Update: {
+          created_at?: string
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          media_id?: string
+          role?: string
+          sort_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "entity_media_media_id_fkey"
+            columns: ["media_id"]
+            isOneToOne: false
+            referencedRelation: "media_assets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       guide_tags: {
         Row: {
           guide_id: string
@@ -288,6 +326,54 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      media_assets: {
+        Row: {
+          alt_text: string | null
+          bucket: string
+          created_at: string
+          credit_text: string | null
+          height: number | null
+          id: string
+          license_text: string | null
+          media_type: string
+          mime_type: string | null
+          source_url: string | null
+          storage_path: string
+          updated_at: string
+          width: number | null
+        }
+        Insert: {
+          alt_text?: string | null
+          bucket?: string
+          created_at?: string
+          credit_text?: string | null
+          height?: number | null
+          id?: string
+          license_text?: string | null
+          media_type?: string
+          mime_type?: string | null
+          source_url?: string | null
+          storage_path: string
+          updated_at?: string
+          width?: number | null
+        }
+        Update: {
+          alt_text?: string | null
+          bucket?: string
+          created_at?: string
+          credit_text?: string | null
+          height?: number | null
+          id?: string
+          license_text?: string | null
+          media_type?: string
+          mime_type?: string | null
+          source_url?: string | null
+          storage_path?: string
+          updated_at?: string
+          width?: number | null
+        }
+        Relationships: []
       }
       place_tags: {
         Row: {
