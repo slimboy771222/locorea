@@ -2,6 +2,7 @@ import { readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { createClient } from '@supabase/supabase-js'
 import type { Database } from '../../app/types/database.types'
+import { loadImportEnvironment } from '../lib/load-import-env'
 
 const inputPath = resolve('data/imports/places-seongsu.csv')
 const dryRun = process.argv.includes('--dry-run')
@@ -16,17 +17,6 @@ type ValidatedRow = {
   areaId: string | null
   sourceId: string | null
   foreignerFriendly: boolean | null
-}
-
-const loadEnvironment = () => {
-  try {
-    process.loadEnvFile(resolve('.env'))
-  }
-  catch (error: unknown) {
-    if (!(error instanceof Error) || !('code' in error) || error.code !== 'ENOENT') {
-      throw error
-    }
-  }
 }
 
 const parseCsv = (contents: string): string[][] => {
@@ -73,17 +63,7 @@ const report = (state: 'VALID' | 'INVALID' | 'SKIPPED', rowNumber: number, slug:
 }
 
 const main = async () => {
-  loadEnvironment()
-  const url = process.env.LOCOREA_IMPORT_SUPABASE_URL ?? process.env.NUXT_PUBLIC_SUPABASE_URL
-  const key = process.env.LOCOREA_IMPORT_SERVICE_ROLE_KEY
-
-  if (!key) {
-    throw new Error('Missing LOCOREA_IMPORT_SERVICE_ROLE_KEY. Bulk imports require the local server-side import credential.')
-  }
-
-  if (!url) {
-    throw new Error('Missing LOCOREA_IMPORT_SUPABASE_URL or NUXT_PUBLIC_SUPABASE_URL.')
-  }
+  const { url, serviceRoleKey } = loadImportEnvironment()
 
   const csv = await readFile(inputPath, 'utf8')
   const records = parseCsv(csv)
@@ -92,7 +72,7 @@ const main = async () => {
   if (missingHeaders.length) throw new Error(`CSV is missing required columns: ${missingHeaders.join(', ')}`)
 
   const rows = records.map((values, index) => Object.fromEntries(headers.map((header, column) => [header, values[column] ?? ''])) as CsvRow & { rowNumber: number })
-  const supabase = createClient<Database>(url, key, { auth: { persistSession: false, autoRefreshToken: false } })
+  const supabase = createClient<Database>(url, serviceRoleKey, { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } })
   const [areasResult, sourcesResult, existingResult] = await Promise.all([
     supabase.from('areas').select('id, slug'),
     supabase.from('sources').select('id, name'),

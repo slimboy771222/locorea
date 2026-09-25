@@ -2,6 +2,7 @@ import { readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { createClient } from '@supabase/supabase-js'
 import type { Database } from '../../app/types/database.types'
+import { loadImportEnvironment } from '../lib/load-import-env'
 
 type EntityType = 'PLACE' | 'ROUTE' | 'GUIDE'
 type Manifest = {
@@ -24,15 +25,6 @@ type Summary = {
 
 const manifestArgument = process.argv[2]
 const dryRun = process.argv.includes('--dry-run')
-
-const loadEnvironment = () => {
-  try {
-    process.loadEnvFile(resolve('.env'))
-  }
-  catch (error: unknown) {
-    if (!(error instanceof Error) || !('code' in error) || error.code !== 'ENOENT') throw error
-  }
-}
 
 const report = (state: 'VALID' | 'SKIPPED' | 'INVALID' | 'PUBLISHED', type: EntityType, slug: string, reason: string) => {
   console.log(`${state} ${type}: ${slug} · ${reason}`)
@@ -81,11 +73,7 @@ const readManifest = async (): Promise<Manifest> => {
 const hasDuplicates = (slugs: string[]) => new Set(slugs).size !== slugs.length
 
 const main = async () => {
-  loadEnvironment()
-  const url = process.env.LOCOREA_IMPORT_SUPABASE_URL ?? process.env.NUXT_PUBLIC_SUPABASE_URL
-  const key = process.env.LOCOREA_IMPORT_SERVICE_ROLE_KEY
-  if (!key) throw new Error('Missing LOCOREA_IMPORT_SERVICE_ROLE_KEY. Bulk releases require the local server-side release credential.')
-  if (!url) throw new Error('Missing LOCOREA_IMPORT_SUPABASE_URL or NUXT_PUBLIC_SUPABASE_URL.')
+  const { url, serviceRoleKey } = loadImportEnvironment()
 
   const manifest = await readManifest()
   const summaries: Record<EntityType, Summary> = { PLACE: createSummary(), ROUTE: createSummary(), GUIDE: createSummary() }
@@ -97,7 +85,7 @@ const main = async () => {
     }
   }
 
-  const supabase = createClient<Database>(url, key, { auth: { persistSession: false, autoRefreshToken: false } })
+  const supabase = createClient<Database>(url, serviceRoleKey, { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } })
   const [placesResult, routesResult, guidesResult] = await Promise.all([
     supabase.from('places').select('id, slug, status').in('slug', manifest.places),
     supabase.from('routes').select('id, slug, status').in('slug', manifest.routes),

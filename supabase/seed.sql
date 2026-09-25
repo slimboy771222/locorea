@@ -19,27 +19,48 @@ insert into public.sources (
     attribution,
     last_checked_at
 )
-values
-(
+select
     'Seoul Metropolitan Government',
     'official',
     'https://english.seoul.go.kr',
     'Source: Seoul Metropolitan Government',
     now()
-),
-(
+where not exists (
+    select 1 from public.sources where name = 'Seoul Metropolitan Government'
+);
+
+insert into public.sources (
+    name,
+    source_type,
+    url,
+    attribution,
+    last_checked_at
+)
+select
     'Korea Tourism Organization',
     'official',
     'https://english.visitkorea.or.kr',
     'Source: Korea Tourism Organization',
     now()
-),
-(
+where not exists (
+    select 1 from public.sources where name = 'Korea Tourism Organization'
+);
+
+insert into public.sources (
+    name,
+    source_type,
+    url,
+    attribution,
+    last_checked_at
+)
+select
     'Locorea Editorial',
     'editorial',
     null,
     'Curated by Locorea',
     now()
+where not exists (
+    select 1 from public.sources where name = 'Locorea Editorial'
 );
 
 
@@ -58,7 +79,8 @@ values (
     'seoul',
     1,
     true
-);
+)
+on conflict (slug) do nothing;
 
 
 insert into public.region_translations (
@@ -73,7 +95,8 @@ select
     'Seoul',
     'The capital of South Korea and one of the country''s main travel hubs.'
 from public.regions r
-where r.slug = 'seoul';
+where r.slug = 'seoul'
+on conflict (region_id, language_code) do nothing;
 
 
 insert into public.region_translations (
@@ -88,7 +111,8 @@ select
     '서울',
     '대한민국의 수도이자 대표적인 여행 중심 도시입니다.'
 from public.regions r
-where r.slug = 'seoul';
+where r.slug = 'seoul'
+on conflict (region_id, language_code) do nothing;
 
 
 -- =========================================================
@@ -109,7 +133,8 @@ select
     1,
     true
 from public.regions
-where slug = 'seoul';
+where slug = 'seoul'
+on conflict (slug) do nothing;
 
 
 insert into public.city_translations (
@@ -124,7 +149,8 @@ select
     'Seoul',
     'A city of historic neighborhoods, modern culture, food, shopping and nightlife.'
 from public.cities c
-where c.slug = 'seoul';
+where c.slug = 'seoul'
+on conflict (city_id, language_code) do nothing;
 
 
 insert into public.city_translations (
@@ -139,7 +165,8 @@ select
     '서울',
     '전통과 현대 문화, 음식, 쇼핑을 함께 경험할 수 있는 도시입니다.'
 from public.cities c
-where c.slug = 'seoul';
+where c.slug = 'seoul'
+on conflict (city_id, language_code) do nothing;
 
 
 -- =========================================================
@@ -158,7 +185,8 @@ select
     1,
     true
 from public.cities c
-where c.slug = 'seoul';
+where c.slug = 'seoul'
+on conflict (slug) do nothing;
 
 
 insert into public.area_translations (
@@ -173,7 +201,8 @@ select
     'Seongsu',
     'A trendy Seoul neighborhood known for cafes, shopping, pop-ups and Seoul Forest.'
 from public.areas a
-where a.slug = 'seongsu';
+where a.slug = 'seongsu'
+on conflict (area_id, language_code) do nothing;
 
 
 insert into public.area_translations (
@@ -188,7 +217,8 @@ select
     '성수',
     '서울숲과 카페, 쇼핑, 팝업스토어로 유명한 서울의 인기 지역입니다.'
 from public.areas a
-where a.slug = 'seongsu';
+where a.slug = 'seongsu'
+on conflict (area_id, language_code) do nothing;
 
 
 -- =========================================================

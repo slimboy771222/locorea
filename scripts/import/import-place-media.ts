@@ -2,6 +2,7 @@ import { readFile, readdir } from 'node:fs/promises'
 import { basename, extname, resolve } from 'node:path'
 import { createClient } from '@supabase/supabase-js'
 import type { Database } from '../../app/types/database.types'
+import { loadImportEnvironment } from '../lib/load-import-env'
 
 const mediaDirectory = resolve('data/media/places')
 const metadataPath = resolve('data/imports/place-media-seongsu.csv')
@@ -11,13 +12,6 @@ const formats: Record<string, string> = { '.webp': 'image/webp', '.jpg': 'image/
 
 type Metadata = { altText: string | null; creditText: string | null }
 type Cover = { relationId: string; mediaId: string; storagePath: string }
-
-const loadEnvironment = () => {
-  try { process.loadEnvFile(resolve('.env')) }
-  catch (error: unknown) {
-    if (!(error instanceof Error) || !('code' in error) || error.code !== 'ENOENT') throw error
-  }
-}
 
 const parseCsv = (contents: string) => {
   const rows: string[][] = []; let row: string[] = []; let field = ''; let quoted = false
@@ -59,15 +53,11 @@ const getImageFiles = async () => {
 }
 
 const main = async () => {
-  loadEnvironment()
-  const url = process.env.LOCOREA_IMPORT_SUPABASE_URL ?? process.env.NUXT_PUBLIC_SUPABASE_URL
-  const key = process.env.LOCOREA_IMPORT_SERVICE_ROLE_KEY
-  if (!key) throw new Error('Missing LOCOREA_IMPORT_SERVICE_ROLE_KEY. Bulk imports require the local server-side import credential.')
-  if (!url) throw new Error('Missing LOCOREA_IMPORT_SUPABASE_URL or NUXT_PUBLIC_SUPABASE_URL.')
+  const { url, serviceRoleKey } = loadImportEnvironment()
 
   const files = await getImageFiles()
   const metadata = await readMetadata()
-  const supabase = createClient<Database>(url, key, { auth: { persistSession: false, autoRefreshToken: false } })
+  const supabase = createClient<Database>(url, serviceRoleKey, { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } })
   const supportedFiles = files.filter(file => formats[extname(file).toLowerCase()])
   const slugs = supportedFiles.map(file => basename(file, extname(file)))
   const { data: places, error: placesError } = slugs.length

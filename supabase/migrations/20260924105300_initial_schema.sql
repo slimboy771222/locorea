@@ -271,7 +271,7 @@ create index places_status_idx
 
 create index place_translation_name_trgm_idx
     on public.place_translations
-    using gin(name gin_trgm_ops);
+    using gin(name extensions.gin_trgm_ops);
 
 
 -- =========================================================
@@ -388,7 +388,7 @@ create index routes_status_idx
 
 create index route_translation_name_trgm_idx
     on public.route_translations
-    using gin(name gin_trgm_ops);
+    using gin(name extensions.gin_trgm_ops);
 
 
 -- =========================================================
@@ -470,7 +470,7 @@ create index guides_status_idx
 
 create index guide_translation_title_trgm_idx
     on public.guide_translations
-    using gin(title gin_trgm_ops);
+    using gin(title extensions.gin_trgm_ops);
 
 
 -- =========================================================
