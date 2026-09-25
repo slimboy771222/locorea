@@ -15,7 +15,9 @@
     "data:import:routes": "tsx scripts/import/import-routes.ts",
     "data:import:routes:dry": "tsx scripts/import/import-routes.ts --dry-run",
     "data:import:guides": "tsx scripts/import/import-guides.ts",
-    "data:import:guides:dry": "tsx scripts/import/import-guides.ts --dry-run"
+    "data:import:guides:dry": "tsx scripts/import/import-guides.ts --dry-run",
+    "data:release:seongsu:dry": "tsx scripts/release/publish-content.ts data/releases/seongsu-mvp.json --dry-run",
+    "data:release:seongsu": "tsx scripts/release/publish-content.ts data/releases/seongsu-mvp.json"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.117.1",

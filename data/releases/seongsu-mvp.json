@@ -1,0 +1,24 @@
+{
+  "release": "seongsu-mvp",
+  "places": [
+    "seongsu-yeonmujang-gil",
+    "daelim-warehouse-gallery",
+    "seongsu-dong-galbi-alley",
+    "amore-seongsu",
+    "musinsa-kicks-seongsu",
+    "scene-seongsu",
+    "mokro-garden",
+    "romantic-move-seongsu"
+  ],
+  "routes": [
+    "seongsu-cafe-shopping-walk",
+    "slow-seongsu-local-walk",
+    "seongsu-beauty-fashion-route"
+  ],
+  "guides": [
+    "how-to-explore-seongsu",
+    "seongsu-cafe-guide",
+    "shopping-and-popups-in-seongsu",
+    "getting-to-seongsu-and-seoul-forest"
+  ]
+}
