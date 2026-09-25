@@ -6,6 +6,7 @@ const slug = computed(() =>
 )
 
 const { getPlaceBySlug } = usePlaces()
+const { getPublicMediaUrl } = useMedia()
 
 const { data: place, error } = await useAsyncData(
   `place-${slug.value}`,
@@ -29,6 +30,16 @@ const areaName = computed(() =>
   place.value?.areas?.area_translations?.find(
     item => item.language_code === 'en',
   )?.name,
+)
+
+const coverImageUrl = computed(() =>
+  getPublicMediaUrl(place.value?.cover?.storage_path),
+)
+
+const coverAlt = computed(() =>
+  place.value?.cover?.alt_text
+  ?? content.value?.name
+  ?? 'Place cover image',
 )
 
 useSeoMeta({
@@ -78,10 +89,23 @@ useSeoMeta({
         </p>
       </section>
 
-      <!-- Image placeholder -->
       <div
-        class="mt-8 aspect-[16/7] rounded-3xl bg-gradient-to-br from-slate-100 to-slate-200"
-      />
+        class="relative mt-8 aspect-[3/2] overflow-hidden rounded-3xl bg-gradient-to-br from-slate-100 to-slate-200 sm:aspect-[16/8] lg:aspect-[16/7]"
+      >
+        <img
+          v-if="coverImageUrl"
+          :src="coverImageUrl"
+          :alt="coverAlt"
+          class="h-full w-full object-cover"
+        >
+
+        <p
+          v-if="place.cover?.credit_text"
+          class="absolute right-3 bottom-3 rounded-md bg-slate-950/55 px-2 py-1 text-xs text-white/90"
+        >
+          {{ place.cover.credit_text }}
+        </p>
+      </div>
 
       <div
         class="mt-10 grid gap-10 lg:grid-cols-[1fr_320px]"

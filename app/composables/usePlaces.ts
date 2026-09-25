@@ -2,7 +2,7 @@ export const usePlaces = () => {
   const supabase = useSupabase()
 
   const getPlaceBySlug = async (slug: string) => {
-    const { data, error } = await supabase
+    const { data: place, error } = await supabase
       .from('places')
       .select(`
         id,
@@ -47,7 +47,42 @@ export const usePlaces = () => {
       throw error
     }
 
-    return data
+    if (!place) {
+      return null
+    }
+
+    const { data: entityMedia, error: entityMediaError } = await supabase
+      .from('entity_media')
+      .select(`
+        media_assets (
+          id,
+          bucket,
+          storage_path,
+          alt_text,
+          credit_text
+        )
+      `)
+      .eq('entity_type', 'place')
+      .eq('role', 'cover')
+      .eq('entity_id', place.id)
+      .maybeSingle()
+
+    if (entityMediaError) {
+      throw entityMediaError
+    }
+
+    const mediaAsset = entityMedia?.media_assets
+
+    return {
+      ...place,
+      cover: mediaAsset
+        ? {
+            storage_path: mediaAsset.storage_path,
+            alt_text: mediaAsset.alt_text,
+            credit_text: mediaAsset.credit_text,
+          }
+        : null,
+    }
   }
 
   return {
