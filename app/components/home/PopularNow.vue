@@ -62,7 +62,7 @@ const getCoverAlt = (item: Item) => {
       <NuxtLink v-for="item in items" :key="`${item.kind}-${item.id}`" :to="`/${item.kind === 'place' ? 'places' : 'guides'}/${item.slug}`" class="group min-w-[78vw] snap-start overflow-hidden rounded-2xl border border-slate-200/90 bg-white transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-lg sm:min-w-0">
         <div class="relative aspect-[8/5] overflow-hidden bg-gradient-to-br from-slate-100 via-slate-50 to-blue-50 p-3">
           <img
-            v-if="item.kind === 'place' && item.cover"
+            v-if="item.cover"
             :src="getPublicMediaUrl(item.cover.storage_path) ?? undefined"
             :alt="getCoverAlt(item)"
             class="absolute inset-0 h-full w-full object-cover"

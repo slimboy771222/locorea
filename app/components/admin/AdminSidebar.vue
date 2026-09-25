@@ -13,10 +13,10 @@ const navigation = [
   { label: 'Dashboard', to: '/admin', icon: LayoutDashboard },
   { label: 'Places', to: '/admin/places', icon: MapPinned },
   { label: 'Routes', to: '/admin/routes', icon: Route },
+  { label: 'Guides', to: '/admin/guides', icon: BookOpen },
 ]
 
 const futureNavigation = [
-  { label: 'Guides', icon: BookOpen },
   { label: 'Media', icon: Image },
 ]
 </script>
