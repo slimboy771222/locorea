@@ -29,6 +29,7 @@ const popularItems = computed(() => [
     kind: 'place' as const,
     type: place.place_type,
     translations: place.place_translations,
+    cover: place.cover,
   })),
 
   ...(homeData.value?.popularGuides ?? []).map(guide => ({

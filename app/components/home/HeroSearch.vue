@@ -34,10 +34,10 @@ const searchKeyword = (keyword: string) => {
 
 <template>
   <section
-    class="relative overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50/70 to-slate-100"
+    class="relative overflow-hidden border-b border-slate-100 bg-blue-50/55"
   >
     <div
-      class="mx-auto flex min-h-[310px] max-w-7xl flex-col justify-center px-5 py-12 md:min-h-[390px] md:py-16 lg:px-8"
+      class="mx-auto flex min-h-[288px] max-w-7xl flex-col justify-center px-5 py-8 md:min-h-[365px] md:py-14 lg:px-8"
     >
       <div class="max-w-3xl">
         <h1
@@ -56,7 +56,7 @@ const searchKeyword = (keyword: string) => {
         </p>
 
         <form
-          class="mt-7 flex max-w-3xl rounded-2xl bg-white p-1.5 shadow-lg shadow-slate-300/30 ring-1 ring-slate-200"
+          class="mt-7 flex max-w-3xl rounded-2xl bg-white p-1.5 shadow-md shadow-slate-300/25 ring-1 ring-slate-200"
           @submit.prevent="submitSearch"
         >
           <div class="flex flex-1 items-center px-3">
@@ -75,14 +75,14 @@ const searchKeyword = (keyword: string) => {
 
           <button
             type="submit"
-            class="rounded-xl bg-blue-600 px-4 py-3 font-semibold text-white transition hover:bg-blue-700 sm:px-7"
+            class="rounded-xl bg-blue-600 px-4 py-3 font-semibold text-white transition hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 sm:px-7"
           >
             Search
           </button>
         </form>
 
         <div class="mt-4 flex flex-wrap gap-2">
-          <span class="mr-1 py-2 text-xs text-slate-500 sm:text-sm">
+          <span class="mr-1 py-1.5 text-sm text-slate-500">
             Try searching:
           </span>
 
@@ -90,7 +90,7 @@ const searchKeyword = (keyword: string) => {
             v-for="item in popularQueries"
             :key="item"
             type="button"
-            class="rounded-full bg-white/90 px-4 py-2 text-sm text-slate-700 ring-1 ring-slate-200 transition hover:bg-white"
+            class="rounded-full bg-white px-3.5 py-2 text-sm font-medium text-slate-700 ring-1 ring-slate-200 transition hover:border-blue-200 hover:text-blue-700"
             @click="searchKeyword(item)"
           >
             {{ item }}
