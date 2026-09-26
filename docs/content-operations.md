@@ -11,3 +11,5 @@
 9. Import approved canonical content to Production only through the trusted release workflow.
 
 `research_note` is intake-only metadata. Do not copy it into public content.
+
+UTF-8 and UTF-8 BOM CSV files are supported. Always validate an intake batch before any database dry-run or import.
