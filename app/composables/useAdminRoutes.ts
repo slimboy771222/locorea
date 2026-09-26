@@ -10,6 +10,7 @@ export type AdminRouteFormValues = {
   routeType: 'walking' | 'half_day' | 'one_day' | 'multi_day' | 'food' | 'shopping' | 'culture' | 'custom'
   areaId: string
   sourceId: string
+  sourceUrl: string
   durationMinutes: string
   distanceKm: string
   difficulty: '' | 'easy' | 'normal' | 'hard'
@@ -101,7 +102,7 @@ export const useAdminRoutes = () => {
 
   const getAdminRouteById = async (id: string) => {
     const { data: route, error } = await supabase.from('routes').select(`
-      id, slug, route_type, area_id, source_id, duration_minutes, distance_km, difficulty, status, review_status, reviewed_at, reviewed_by, review_note, last_verified_at, updated_at,
+      id, slug, route_type, area_id, source_id, source_url, duration_minutes, distance_km, difficulty, status, review_status, reviewed_at, reviewed_by, review_note, last_verified_at, updated_at,
       route_translations(language_code, name, summary, description),
       route_places(place_id, stop_order, stay_minutes, travel_minutes_to_next, note)
     `).eq('id', id).maybeSingle()
@@ -115,7 +116,7 @@ export const useAdminRoutes = () => {
   }
 
   const routePayload = (values: AdminRouteFormValues) => ({
-    slug: values.slug.trim().toLowerCase(), route_type: values.routeType, area_id: toNullable(values.areaId), source_id: toNullable(values.sourceId),
+    slug: values.slug.trim().toLowerCase(), route_type: values.routeType, area_id: toNullable(values.areaId), source_id: toNullable(values.sourceId), source_url: toNullable(values.sourceUrl),
     duration_minutes: toNumber(values.durationMinutes), distance_km: toNumber(values.distanceKm), difficulty: toNullable(values.difficulty), status: values.status,
     last_verified_at: toNullable(values.lastVerifiedAt),
   })

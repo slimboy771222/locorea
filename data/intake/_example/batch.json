@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "batch_id": "example-seoul-research",
+  "title": "Example Seoul Research Batch",
+  "area_slug": "seongsu",
+  "default_source_name": "Locorea Editorial",
+  "notes": "Fictional sample only. Do not import as production content."
+}

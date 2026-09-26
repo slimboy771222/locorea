@@ -35,6 +35,7 @@ const formValues = computed<AdminPlaceFormValues | null>(() => {
     placeType: place.value.place_type,
     areaId: place.value.area_id ?? '',
     sourceId: place.value.source_id ?? '',
+    sourceUrl: place.value.source_url ?? '',
     status: place.value.status as AdminPlaceFormValues['status'],
     phone: place.value.phone ?? '',
     websiteUrl: place.value.website_url ?? '',

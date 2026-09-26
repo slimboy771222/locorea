@@ -5,6 +5,7 @@ export type AdminPlaceFormValues = {
   placeType: string
   areaId: string
   sourceId: string
+  sourceUrl: string
   status: 'draft' | 'published' | 'archived'
   phone: string
   websiteUrl: string
@@ -216,6 +217,7 @@ export const useAdminPlaces = () => {
         place_type,
         area_id,
         source_id,
+        source_url,
         status,
         review_status,
         reviewed_at,
@@ -301,6 +303,7 @@ export const useAdminPlaces = () => {
       place_type: values.placeType.trim(),
       area_id: toNullable(values.areaId),
       source_id: toNullable(values.sourceId),
+      source_url: toNullable(values.sourceUrl),
       status: values.status,
       phone: toNullable(values.phone),
       website_url: toNullable(values.websiteUrl),

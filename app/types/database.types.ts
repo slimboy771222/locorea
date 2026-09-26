@@ -309,6 +309,7 @@ export type Database = {
           reviewed_by: string | null
           slug: string
           source_id: string | null
+          source_url: string | null
           status: string
           updated_at: string
         }
@@ -325,6 +326,7 @@ export type Database = {
           reviewed_by?: string | null
           slug: string
           source_id?: string | null
+          source_url?: string | null
           status?: string
           updated_at?: string
         }
@@ -341,6 +343,7 @@ export type Database = {
           reviewed_by?: string | null
           slug?: string
           source_id?: string | null
+          source_url?: string | null
           status?: string
           updated_at?: string
         }
@@ -494,6 +497,7 @@ export type Database = {
           reviewed_by: string | null
           slug: string
           source_id: string | null
+          source_url: string | null
           status: string
           updated_at: string
           website_url: string | null
@@ -518,6 +522,7 @@ export type Database = {
           reviewed_by?: string | null
           slug: string
           source_id?: string | null
+          source_url?: string | null
           status?: string
           updated_at?: string
           website_url?: string | null
@@ -542,6 +547,7 @@ export type Database = {
           reviewed_by?: string | null
           slug?: string
           source_id?: string | null
+          source_url?: string | null
           status?: string
           updated_at?: string
           website_url?: string | null
@@ -752,6 +758,7 @@ export type Database = {
           route_type: string
           slug: string
           source_id: string | null
+          source_url: string | null
           status: string
           updated_at: string
         }
@@ -771,6 +778,7 @@ export type Database = {
           route_type?: string
           slug: string
           source_id?: string | null
+          source_url?: string | null
           status?: string
           updated_at?: string
         }
@@ -790,6 +798,7 @@ export type Database = {
           route_type?: string
           slug?: string
           source_id?: string | null
+          source_url?: string | null
           status?: string
           updated_at?: string
         }

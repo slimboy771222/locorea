@@ -6,7 +6,7 @@ const saving = ref(false)
 const saveError = ref('')
 const { getOptions, createAdminRoute } = useAdminRoutes()
 const { data: options, error } = await useAsyncData('admin-route-options', getOptions)
-const initialValues: AdminRouteFormValues = { slug: '', routeType: 'half_day', areaId: '', sourceId: '', durationMinutes: '', distanceKm: '', difficulty: '', status: 'draft', lastVerifiedAt: '', name: '', summary: '', description: '', coverAltText: '', coverCreditText: '', stops: [] }
+const initialValues: AdminRouteFormValues = { slug: '', routeType: 'half_day', areaId: '', sourceId: '', sourceUrl: '', durationMinutes: '', distanceKm: '', difficulty: '', status: 'draft', lastVerifiedAt: '', name: '', summary: '', description: '', coverAltText: '', coverCreditText: '', stops: [] }
 const save = async ({ values, coverFile, viewAfterSave }: { values: AdminRouteFormValues; coverFile: File | null; viewAfterSave: boolean }) => {
   saving.value = true; saveError.value = ''
   try {

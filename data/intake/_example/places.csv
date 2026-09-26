@@ -1,0 +1,2 @@
+slug,place_type,name,summary,description,address_text,local_tip,status,area_slug,source_name,source_url,last_verified_at,foreigner_friendly,phone,website_url,naver_map_url,kakao_map_url,research_note
+example-river-studio,cafe,Example River Studio,Fictional example cafe.,This fictional record demonstrates the intake format.,Example-dong Seoul,Replace with verified research.,draft,seongsu,Locorea Editorial,https://example.com/river-studio,2026-09-26,true,,,,,Example research note only.

@@ -15,6 +15,7 @@ const initialValues: AdminPlaceFormValues = {
   placeType: '',
   areaId: '',
   sourceId: '',
+  sourceUrl: '',
   status: 'draft',
   phone: '',
   websiteUrl: '',

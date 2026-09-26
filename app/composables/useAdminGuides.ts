@@ -2,6 +2,7 @@ export type AdminGuideFormValues = {
   slug: string
   guideType: 'arrival' | 'transport' | 'payment' | 'sim' | 'maps' | 'language' | 'etiquette' | 'emergency' | 'troubleshooting' | 'general'
   sourceId: string
+  sourceUrl: string
   status: 'draft' | 'published' | 'archived'
   featured: boolean
   lastVerifiedAt: string
@@ -39,14 +40,14 @@ export const useAdminGuides = () => {
     return data ?? []
   }
   const getAdminGuideById = async (id: string) => {
-    const { data: guide, error } = await supabase.from('guides').select('id, slug, guide_type, source_id, status, review_status, reviewed_at, reviewed_by, review_note, featured, last_verified_at, updated_at, guide_translations(language_code, title, summary, body_markdown)').eq('id', id).maybeSingle()
+    const { data: guide, error } = await supabase.from('guides').select('id, slug, guide_type, source_id, source_url, status, review_status, reviewed_at, reviewed_by, review_note, featured, last_verified_at, updated_at, guide_translations(language_code, title, summary, body_markdown)').eq('id', id).maybeSingle()
     if (error) throw error
     if (!guide) return null
     const { data: relation, error: mediaError } = await supabase.from('entity_media').select('id, media_id, media_assets(id, storage_path, alt_text, credit_text)').eq('entity_type', 'guide').eq('entity_id', id).eq('role', 'cover').maybeSingle()
     if (mediaError) throw mediaError
     return { ...guide, cover: relation?.media_assets ? { entityMediaId: relation.id, mediaId: relation.media_id, ...relation.media_assets } : null }
   }
-  const payload = (values: AdminGuideFormValues) => ({ slug: values.slug.trim().toLowerCase(), guide_type: values.guideType, source_id: nullable(values.sourceId), status: values.status, featured: values.featured, last_verified_at: nullable(values.lastVerifiedAt) })
+  const payload = (values: AdminGuideFormValues) => ({ slug: values.slug.trim().toLowerCase(), guide_type: values.guideType, source_id: nullable(values.sourceId), source_url: nullable(values.sourceUrl), status: values.status, featured: values.featured, last_verified_at: nullable(values.lastVerifiedAt) })
   const saveTranslation = async (id: string, values: AdminGuideFormValues) => {
     const { error } = await supabase.from('guide_translations').upsert({ guide_id: id, language_code: 'en', title: values.title.trim(), summary: nullable(values.summary), body_markdown: nullable(values.bodyMarkdown) }, { onConflict: 'guide_id,language_code' })
     if (error) throw new Error('Guide translation could not be saved.')

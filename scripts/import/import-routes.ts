@@ -1,10 +1,10 @@
 import { readFile } from 'node:fs/promises'
-import { resolve } from 'node:path'
 import { createClient } from '@supabase/supabase-js'
 import type { Database } from '../../app/types/database.types'
 import { loadImportEnvironment } from '../lib/load-import-env'
+import { inputFile } from '../lib/input-file'
 
-const inputPath = resolve('data/imports/routes-seongsu.json')
+const inputPath = inputFile('data/imports/routes-seongsu.json')
 const dryRun = process.argv.includes('--dry-run')
 const validRouteTypes = new Set(['walking', 'half_day', 'one_day', 'multi_day', 'food', 'shopping', 'culture', 'custom'])
 const validDifficulties = new Set(['easy', 'normal', 'hard'])
@@ -29,6 +29,7 @@ type ImportRoute = {
   status?: unknown
   area_slug?: unknown
   source_name?: unknown
+  source_url?: unknown
   last_verified_at?: unknown
   stops?: unknown
 }
@@ -46,6 +47,7 @@ type ValidatedRoute = {
   status: string
   areaId: string | null
   sourceId: string | null
+  sourceUrl: string | null
   lastVerifiedAt: string | null
   stops: Array<{
     placeId: string
@@ -72,6 +74,10 @@ const nullableInteger = (value: unknown) => {
 }
 
 const isDate = (value: string) => !value || !Number.isNaN(Date.parse(value))
+const isHttpUrl = (value: string) => {
+  try { const url = new URL(value); return url.protocol === 'http:' || url.protocol === 'https:' }
+  catch { return false }
+}
 
 const report = (state: 'VALID' | 'INVALID' | 'SKIPPED' | 'IMPORTED', index: number, slug: string, reason: string) => {
   console.log(`${state}: route ${index + 1} · ${slug || '(missing slug)'} · ${reason}`)
@@ -138,6 +144,7 @@ const main = async () => {
     const difficulty = nullableText(route.difficulty)?.toLowerCase() ?? null
     const areaSlug = text(route.area_slug)
     const sourceName = text(route.source_name)
+    const sourceUrl = nullableText(route.source_url)
     const lastVerifiedAt = nullableText(route.last_verified_at)
     const duration = nullableInteger(route.duration_minutes)
     const distance = nullableNumber(route.distance_km)
@@ -151,6 +158,7 @@ const main = async () => {
     if (!duration.valid) { invalid += 1; report('INVALID', index, slug, 'invalid duration_minutes'); continue }
     if (!distance.valid) { invalid += 1; report('INVALID', index, slug, 'invalid distance_km'); continue }
     if (!isDate(lastVerifiedAt ?? '')) { invalid += 1; report('INVALID', index, slug, 'invalid last_verified_at'); continue }
+    if (sourceUrl && !isHttpUrl(sourceUrl)) { invalid += 1; report('INVALID', index, slug, 'invalid source_url'); continue }
     if (!stops || stops.length < 2) { invalid += 1; report('INVALID', index, slug, 'at least 2 stops are required'); continue }
     if (areaSlug && !areaIds.has(areaSlug)) { invalid += 1; report('INVALID', index, slug, 'Area not found'); continue }
     if (sourceName && !sourceIds.has(sourceName)) { invalid += 1; report('INVALID', index, slug, 'Source not found'); continue }
@@ -172,13 +180,13 @@ const main = async () => {
     }
     if (stopError) { invalid += 1; report('INVALID', index, slug, stopError); continue }
 
-    valid.push({ index, slug, routeType, name, summary: nullableText(route.summary), description: nullableText(route.description), durationMinutes: duration.value, distanceKm: distance.value, difficulty, status, areaId: areaSlug ? areaIds.get(areaSlug) ?? null : null, sourceId: sourceName ? sourceIds.get(sourceName) ?? null : null, lastVerifiedAt, stops: resolvedStops })
+    valid.push({ index, slug, routeType, name, summary: nullableText(route.summary), description: nullableText(route.description), durationMinutes: duration.value, distanceKm: distance.value, difficulty, status, areaId: areaSlug ? areaIds.get(areaSlug) ?? null : null, sourceId: sourceName ? sourceIds.get(sourceName) ?? null : null, sourceUrl, lastVerifiedAt, stops: resolvedStops })
     report('VALID', index, slug, dryRun ? 'would import' : 'ready to import')
   }
 
   if (!dryRun) {
     for (const route of valid) {
-      const { data: createdRoute, error: routeError } = await supabase.from('routes').insert({ slug: route.slug, route_type: route.routeType, status: route.status, difficulty: route.difficulty, duration_minutes: route.durationMinutes, distance_km: route.distanceKm, area_id: route.areaId, source_id: route.sourceId, last_verified_at: route.lastVerifiedAt }).select('id').single()
+      const { data: createdRoute, error: routeError } = await supabase.from('routes').insert({ slug: route.slug, route_type: route.routeType, status: route.status, difficulty: route.difficulty, duration_minutes: route.durationMinutes, distance_km: route.distanceKm, area_id: route.areaId, source_id: route.sourceId, source_url: route.sourceUrl, last_verified_at: route.lastVerifiedAt }).select('id').single()
       if (routeError || !createdRoute) {
         invalid += 1
         console.error(`Route insert error for ${route.slug}:`, routeError)

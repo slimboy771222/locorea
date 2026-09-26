@@ -19,10 +19,10 @@ type JsonObject = Record<string, unknown>
 type Manifest = { schemaVersion: 1; places: string[]; routes: string[]; guides: string[] }
 type Translation = { name: string; summary: string | null; description: string | null; addressText?: string | null; localTip?: string | null; title?: string; bodyMarkdown?: string | null }
 type Review = { reviewStatus: string; reviewedAt: string | null; reviewNote: string | null }
-type Place = Review & { slug: string; placeType: string; status: string; areaSlug: string; sourceName: string; lastVerifiedAt: string | null; foreignerFriendly: boolean | null; phone: string | null; websiteUrl: string | null; naverMapUrl: string | null; kakaoMapUrl: string | null; tagSlugs: string[]; translation: Translation }
+type Place = Review & { slug: string; placeType: string; status: string; areaSlug: string; sourceName: string; sourceUrl: string | null; lastVerifiedAt: string | null; foreignerFriendly: boolean | null; phone: string | null; websiteUrl: string | null; naverMapUrl: string | null; kakaoMapUrl: string | null; tagSlugs: string[]; translation: Translation }
 type Stop = { placeSlug: string; stayMinutes: number | null; travelMinutesToNext: number | null; note: string | null }
-type Route = Review & { slug: string; routeType: string; status: string; areaSlug: string | null; sourceName: string; durationMinutes: number | null; distanceKm: number | null; difficulty: string | null; lastVerifiedAt: string | null; tagSlugs: string[]; translation: Translation; stops: Stop[] }
-type Guide = Review & { slug: string; guideType: string; status: string; sourceName: string; lastVerifiedAt: string | null; featured: boolean; tagSlugs: string[]; translation: Translation }
+type Route = Review & { slug: string; routeType: string; status: string; areaSlug: string | null; sourceName: string; sourceUrl: string | null; durationMinutes: number | null; distanceKm: number | null; difficulty: string | null; lastVerifiedAt: string | null; tagSlugs: string[]; translation: Translation; stops: Stop[] }
+type Guide = Review & { slug: string; guideType: string; status: string; sourceName: string; sourceUrl: string | null; lastVerifiedAt: string | null; featured: boolean; tagSlugs: string[]; translation: Translation }
 type Canonical = { manifest: Manifest; places: Place[]; routes: Route[]; guides: Guide[] }
 type Existing = { places: Map<string, string>; routes: Map<string, string>; guides: Map<string, string> }
 type Lookups = { areas: Map<string, string>; sources: Map<string, string>; tags: Map<string, string>; targetPlaces: Map<string, string> }
@@ -32,6 +32,7 @@ const text = (value: unknown) => typeof value === 'string' ? value.trim() : ''
 const nullableText = (value: unknown): string | null | undefined => value === null || value === undefined ? null : typeof value === 'string' ? value : undefined
 const nullableNumber = (value: unknown): number | null | undefined => value === null || value === undefined ? null : typeof value === 'number' && Number.isFinite(value) ? value : undefined
 const dateIsValid = (value: string | null) => value === null || !Number.isNaN(Date.parse(value))
+const isHttpUrl = (value: string | null) => value === null || (() => { try { const url = new URL(value); return url.protocol === 'http:' || url.protocol === 'https:' } catch { return false } })()
 const safeSlug = (value: string) => Boolean(value) && !value.includes('/') && !value.includes('\\') && value !== '.' && value !== '..'
 const display = (slug: string) => slug || '(missing slug)'
 const entityPath = (kind: 'places' | 'routes' | 'guides', slug: string) => resolve(contentDirectory, kind, `${slug}.json`)
@@ -104,6 +105,7 @@ const parsePlace = (value: unknown, expectedSlug: string): { item?: Place; error
   const placeType = text(raw.place_type)
   const areaSlug = text(raw.area_slug)
   const sourceName = text(raw.source_name)
+  const sourceUrl = raw.source_url === undefined ? null : nullableText(raw.source_url)
   const foreignerFriendly = raw.foreigner_friendly === null || raw.foreigner_friendly === undefined ? null : typeof raw.foreigner_friendly === 'boolean' ? raw.foreigner_friendly : undefined
   const phone = nullableText(raw.phone)
   const websiteUrl = nullableText(raw.website_url)
@@ -113,6 +115,7 @@ const parsePlace = (value: unknown, expectedSlug: string): { item?: Place; error
   if (!placeTypes.has(placeType)) errors.push('unsupported place_type')
   if (!areaSlug) errors.push('missing area_slug')
   if (!sourceName) errors.push('missing source_name')
+  if (sourceUrl === undefined || !isHttpUrl(sourceUrl)) errors.push('invalid source_url')
   if (foreignerFriendly === undefined) errors.push('foreigner_friendly must be boolean or null')
   if ([phone, websiteUrl, naverMapUrl, kakaoMapUrl].some(item => item === undefined)) errors.push('optional Place text fields must be strings or null')
   if (!translation || text(translation.language_code) !== 'en' || !text(translation.name)) errors.push('English translation name is required')
@@ -123,7 +126,7 @@ const parsePlace = (value: unknown, expectedSlug: string): { item?: Place; error
   const tagSlugs = parseTagSlugs(raw.tag_slugs, errors)
   if ([summary, description, addressText, localTip].some(item => item === undefined)) errors.push('Place translation fields must be strings or null')
   if (errors.length || !parsedReview || !translation) return { errors }
-  return { item: { ...parsedReview, ...base, placeType, areaSlug, sourceName, foreignerFriendly: foreignerFriendly!, phone: phone!, websiteUrl: websiteUrl!, naverMapUrl: naverMapUrl!, kakaoMapUrl: kakaoMapUrl!, tagSlugs, translation: { name: text(translation.name), summary: summary!, description: description!, addressText: addressText!, localTip: localTip! } }, errors }
+  return { item: { ...parsedReview, ...base, placeType, areaSlug, sourceName, sourceUrl: sourceUrl!, foreignerFriendly: foreignerFriendly!, phone: phone!, websiteUrl: websiteUrl!, naverMapUrl: naverMapUrl!, kakaoMapUrl: kakaoMapUrl!, tagSlugs, translation: { name: text(translation.name), summary: summary!, description: description!, addressText: addressText!, localTip: localTip! } }, errors }
 }
 
 const parseRoute = (value: unknown, expectedSlug: string): { item?: Route; errors: string[] } => {
@@ -135,6 +138,7 @@ const parseRoute = (value: unknown, expectedSlug: string): { item?: Route; error
   const routeType = text(raw.route_type)
   const areaSlug = nullableText(raw.area_slug)
   const sourceName = text(raw.source_name)
+  const sourceUrl = raw.source_url === undefined ? null : nullableText(raw.source_url)
   const durationMinutes = nullableNumber(raw.duration_minutes)
   const distanceKm = nullableNumber(raw.distance_km)
   const difficulty = raw.difficulty === null || raw.difficulty === undefined ? null : text(raw.difficulty)
@@ -142,6 +146,7 @@ const parseRoute = (value: unknown, expectedSlug: string): { item?: Route; error
   if (!routeTypes.has(routeType)) errors.push('unsupported route_type')
   if (areaSlug === undefined) errors.push('area_slug must be a string or null')
   if (!sourceName) errors.push('missing source_name')
+  if (sourceUrl === undefined || !isHttpUrl(sourceUrl)) errors.push('invalid source_url')
   if (durationMinutes === undefined || (durationMinutes !== null && !Number.isInteger(durationMinutes))) errors.push('invalid duration_minutes')
   if (distanceKm === undefined) errors.push('invalid distance_km')
   if (difficulty !== null && !difficulties.has(difficulty)) errors.push('unsupported difficulty')
@@ -165,7 +170,7 @@ const parseRoute = (value: unknown, expectedSlug: string): { item?: Route; error
     if (item && safeSlug(placeSlug) && stayMinutes !== undefined && travelMinutesToNext !== undefined && note !== undefined) stops.push({ placeSlug, stayMinutes, travelMinutesToNext, note })
   })
   if (errors.length || !parsedReview || !translation) return { errors }
-  return { item: { ...parsedReview, ...base, routeType, areaSlug: areaSlug!, sourceName, durationMinutes: durationMinutes!, distanceKm: distanceKm!, difficulty, tagSlugs, translation: { name: text(translation.name), summary: summary!, description: description! }, stops }, errors }
+  return { item: { ...parsedReview, ...base, routeType, areaSlug: areaSlug!, sourceName, sourceUrl: sourceUrl!, durationMinutes: durationMinutes!, distanceKm: distanceKm!, difficulty, tagSlugs, translation: { name: text(translation.name), summary: summary!, description: description! }, stops }, errors }
 }
 
 const parseGuide = (value: unknown, expectedSlug: string): { item?: Guide; errors: string[] } => {
@@ -176,16 +181,18 @@ const parseGuide = (value: unknown, expectedSlug: string): { item?: Guide; error
   const parsedReview = review(raw, errors)
   const guideType = text(raw.guide_type)
   const sourceName = text(raw.source_name)
+  const sourceUrl = raw.source_url === undefined ? null : nullableText(raw.source_url)
   const translation = asObject(raw.translation)
   if (!guideTypes.has(guideType)) errors.push('unsupported guide_type')
   if (!sourceName) errors.push('missing source_name')
+  if (sourceUrl === undefined || !isHttpUrl(sourceUrl)) errors.push('invalid source_url')
   if (typeof raw.featured !== 'boolean') errors.push('featured must be boolean')
   if (!translation || text(translation.language_code) !== 'en' || !text(translation.title) || !text(translation.body_markdown)) errors.push('English translation title and body_markdown are required')
   const summary = translation ? nullableText(translation.summary) : undefined
   const tagSlugs = parseTagSlugs(raw.tag_slugs, errors)
   if (summary === undefined) errors.push('Guide translation summary must be a string or null')
   if (errors.length || !parsedReview || !translation) return { errors }
-  return { item: { ...parsedReview, ...base, guideType, sourceName, featured: raw.featured as boolean, tagSlugs, translation: { name: '', title: text(translation.title), summary: summary!, bodyMarkdown: text(translation.body_markdown) } }, errors }
+  return { item: { ...parsedReview, ...base, guideType, sourceName, sourceUrl: sourceUrl!, featured: raw.featured as boolean, tagSlugs, translation: { name: '', title: text(translation.title), summary: summary!, bodyMarkdown: text(translation.body_markdown) } }, errors }
 }
 
 const loadCanonical = async (): Promise<{ canonical?: Canonical; errors: string[] }> => {
@@ -251,9 +258,9 @@ const preflight = async (supabase: ReturnType<typeof createClient<Database>>, ca
   return { lookups, existing, errors }
 }
 
-const placePayload = (item: Place, lookups: Lookups) => ({ slug: item.slug, place_type: item.placeType, status: item.status, review_status: item.reviewStatus, reviewed_at: item.reviewedAt, reviewed_by: null, review_note: item.reviewNote, area_id: lookups.areas.get(item.areaSlug)!, source_id: lookups.sources.get(item.sourceName)!, last_verified_at: item.lastVerifiedAt, foreigner_friendly: item.foreignerFriendly, phone: item.phone, website_url: item.websiteUrl, naver_map_url: item.naverMapUrl, kakao_map_url: item.kakaoMapUrl })
-const routePayload = (item: Route, lookups: Lookups) => ({ slug: item.slug, route_type: item.routeType, status: item.status, review_status: item.reviewStatus, reviewed_at: item.reviewedAt, reviewed_by: null, review_note: item.reviewNote, area_id: item.areaSlug ? lookups.areas.get(item.areaSlug)! : null, source_id: lookups.sources.get(item.sourceName)!, duration_minutes: item.durationMinutes, distance_km: item.distanceKm, difficulty: item.difficulty, last_verified_at: item.lastVerifiedAt })
-const guidePayload = (item: Guide, lookups: Lookups) => ({ slug: item.slug, guide_type: item.guideType, status: item.status, review_status: item.reviewStatus, reviewed_at: item.reviewedAt, reviewed_by: null, review_note: item.reviewNote, source_id: lookups.sources.get(item.sourceName)!, last_verified_at: item.lastVerifiedAt, featured: item.featured })
+const placePayload = (item: Place, lookups: Lookups) => ({ slug: item.slug, place_type: item.placeType, status: item.status, review_status: item.reviewStatus, reviewed_at: item.reviewedAt, reviewed_by: null, review_note: item.reviewNote, area_id: lookups.areas.get(item.areaSlug)!, source_id: lookups.sources.get(item.sourceName)!, source_url: item.sourceUrl, last_verified_at: item.lastVerifiedAt, foreigner_friendly: item.foreignerFriendly, phone: item.phone, website_url: item.websiteUrl, naver_map_url: item.naverMapUrl, kakao_map_url: item.kakaoMapUrl })
+const routePayload = (item: Route, lookups: Lookups) => ({ slug: item.slug, route_type: item.routeType, status: item.status, review_status: item.reviewStatus, reviewed_at: item.reviewedAt, reviewed_by: null, review_note: item.reviewNote, area_id: item.areaSlug ? lookups.areas.get(item.areaSlug)! : null, source_id: lookups.sources.get(item.sourceName)!, source_url: item.sourceUrl, duration_minutes: item.durationMinutes, distance_km: item.distanceKm, difficulty: item.difficulty, last_verified_at: item.lastVerifiedAt })
+const guidePayload = (item: Guide, lookups: Lookups) => ({ slug: item.slug, guide_type: item.guideType, status: item.status, review_status: item.reviewStatus, reviewed_at: item.reviewedAt, reviewed_by: null, review_note: item.reviewNote, source_id: lookups.sources.get(item.sourceName)!, source_url: item.sourceUrl, last_verified_at: item.lastVerifiedAt, featured: item.featured })
 
 type Totals = { created: number; updated: number; skipped: number }
 const totals = (): Totals => ({ created: 0, updated: 0, skipped: 0 })

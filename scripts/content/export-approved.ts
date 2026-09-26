@@ -20,9 +20,9 @@ const outputFile = (relativePath: string, value: unknown): ExportFile => ({ rela
 
 const validateAndBuild = async (supabase: ReturnType<typeof createClient<Database>>): Promise<ExportData> => {
   const [placesResult, routesResult, guidesResult] = await Promise.all([
-    supabase.from('places').select('slug, place_type, status, review_status, reviewed_at, review_note, area_id, source_id, last_verified_at, foreigner_friendly, phone, website_url, naver_map_url, kakao_map_url, areas(slug), sources(name), place_translations(language_code, name, summary, description, address_text, local_tip), place_tags(tags(slug))').eq('review_status', 'approved'),
-    supabase.from('routes').select('slug, route_type, status, review_status, reviewed_at, review_note, area_id, source_id, duration_minutes, distance_km, difficulty, last_verified_at, areas(slug), sources(name), route_translations(language_code, name, summary, description), route_places(stop_order, stay_minutes, travel_minutes_to_next, note, places(slug)), route_tags(tags(slug))').eq('review_status', 'approved'),
-    supabase.from('guides').select('slug, guide_type, status, review_status, reviewed_at, review_note, source_id, last_verified_at, featured, sources(name), guide_translations(language_code, title, summary, body_markdown), guide_tags(tags(slug))').eq('review_status', 'approved'),
+    supabase.from('places').select('slug, place_type, status, review_status, reviewed_at, review_note, area_id, source_id, source_url, last_verified_at, foreigner_friendly, phone, website_url, naver_map_url, kakao_map_url, areas(slug), sources(name), place_translations(language_code, name, summary, description, address_text, local_tip), place_tags(tags(slug))').eq('review_status', 'approved'),
+    supabase.from('routes').select('slug, route_type, status, review_status, reviewed_at, review_note, area_id, source_id, source_url, duration_minutes, distance_km, difficulty, last_verified_at, areas(slug), sources(name), route_translations(language_code, name, summary, description), route_places(stop_order, stay_minutes, travel_minutes_to_next, note, places(slug)), route_tags(tags(slug))').eq('review_status', 'approved'),
+    supabase.from('guides').select('slug, guide_type, status, review_status, reviewed_at, review_note, source_id, source_url, last_verified_at, featured, sources(name), guide_translations(language_code, title, summary, body_markdown), guide_tags(tags(slug))').eq('review_status', 'approved'),
   ])
   const error = placesResult.error ?? routesResult.error ?? guidesResult.error
   if (error) {
@@ -60,6 +60,7 @@ const validateAndBuild = async (supabase: ReturnType<typeof createClient<Databas
       review_note: place.review_note,
       area_slug: place.areas?.slug ?? null,
       source_name: place.sources!.name,
+      source_url: place.source_url,
       last_verified_at: place.last_verified_at,
       foreigner_friendly: place.foreigner_friendly,
       phone: place.phone,
@@ -105,6 +106,7 @@ const validateAndBuild = async (supabase: ReturnType<typeof createClient<Databas
       review_note: route.review_note,
       area_slug: route.areas?.slug ?? null,
       source_name: route.sources!.name,
+      source_url: route.source_url,
       duration_minutes: route.duration_minutes,
       distance_km: route.distance_km,
       difficulty: route.difficulty,
@@ -148,6 +150,7 @@ const validateAndBuild = async (supabase: ReturnType<typeof createClient<Databas
       reviewed_at: guide.reviewed_at,
       review_note: guide.review_note,
       source_name: guide.sources!.name,
+      source_url: guide.source_url,
       last_verified_at: guide.last_verified_at,
       featured: guide.featured,
       tag_slugs: tagSlugs(guide.guide_tags),

@@ -1,10 +1,10 @@
 import { readFile } from 'node:fs/promises'
-import { resolve } from 'node:path'
 import { createClient } from '@supabase/supabase-js'
 import type { Database } from '../../app/types/database.types'
 import { loadImportEnvironment } from '../lib/load-import-env'
+import { inputFile } from '../lib/input-file'
 
-const inputPath = resolve('data/imports/guides-seongsu.json')
+const inputPath = inputFile('data/imports/guides-seongsu.json')
 const dryRun = process.argv.includes('--dry-run')
 const validGuideTypes = new Set(['arrival', 'transport', 'payment', 'sim', 'maps', 'language', 'etiquette', 'emergency', 'troubleshooting', 'general'])
 const validStatuses = new Set(['draft', 'published', 'archived'])
@@ -18,6 +18,7 @@ type ImportGuide = {
   status?: unknown
   featured?: unknown
   source_name?: unknown
+  source_url?: unknown
   last_verified_at?: unknown
 }
 
@@ -31,12 +32,17 @@ type ValidatedGuide = {
   status: string
   featured: boolean
   sourceId: string | null
+  sourceUrl: string | null
   lastVerifiedAt: string | null
 }
 
 const text = (value: unknown) => typeof value === 'string' ? value.trim() : ''
 const nullableText = (value: unknown) => text(value) || null
 const isDate = (value: string) => !value || !Number.isNaN(Date.parse(value))
+const isHttpUrl = (value: string) => {
+  try { const url = new URL(value); return url.protocol === 'http:' || url.protocol === 'https:' }
+  catch { return false }
+}
 
 const report = (state: 'VALID' | 'INVALID' | 'SKIPPED' | 'IMPORTED', index: number, slug: string, reason: string) => {
   console.log(`${state}: guide ${index + 1} · ${slug || '(missing slug)'} · ${reason}`)
@@ -93,6 +99,7 @@ const main = async () => {
     const title = text(guide.title)
     const status = text(guide.status).toLowerCase()
     const sourceName = text(guide.source_name)
+    const sourceUrl = nullableText(guide.source_url)
     const lastVerifiedAt = nullableText(guide.last_verified_at)
 
     if (!slug) { invalid += 1; report('INVALID', index, slug, 'missing slug'); continue }
@@ -104,16 +111,17 @@ const main = async () => {
     if (guide.summary !== undefined && guide.summary !== null && typeof guide.summary !== 'string') { invalid += 1; report('INVALID', index, slug, 'summary must be a string'); continue }
     if (guide.last_verified_at !== undefined && guide.last_verified_at !== null && typeof guide.last_verified_at !== 'string') { invalid += 1; report('INVALID', index, slug, 'last_verified_at must be a string'); continue }
     if (!isDate(lastVerifiedAt ?? '')) { invalid += 1; report('INVALID', index, slug, 'invalid last_verified_at'); continue }
+    if (sourceUrl && !isHttpUrl(sourceUrl)) { invalid += 1; report('INVALID', index, slug, 'invalid source_url'); continue }
     if (sourceName && !sourceIds.has(sourceName)) { invalid += 1; report('INVALID', index, slug, 'Source not found'); continue }
     if (existingSlugs.has(slug)) { skipped += 1; report('SKIPPED', index, slug, 'slug already exists'); continue }
 
-    valid.push({ index, slug, guideType, title, summary: nullableText(guide.summary), bodyMarkdown: typeof guide.body_markdown === 'string' ? guide.body_markdown : null, status, featured: guide.featured, sourceId: sourceName ? sourceIds.get(sourceName) ?? null : null, lastVerifiedAt })
+    valid.push({ index, slug, guideType, title, summary: nullableText(guide.summary), bodyMarkdown: typeof guide.body_markdown === 'string' ? guide.body_markdown : null, status, featured: guide.featured, sourceId: sourceName ? sourceIds.get(sourceName) ?? null : null, sourceUrl, lastVerifiedAt })
     report('VALID', index, slug, dryRun ? 'would import' : 'ready to import')
   }
 
   if (!dryRun) {
     for (const guide of valid) {
-      const { data: createdGuide, error: guideError } = await supabase.from('guides').insert({ slug: guide.slug, guide_type: guide.guideType, status: guide.status, featured: guide.featured, source_id: guide.sourceId, last_verified_at: guide.lastVerifiedAt }).select('id').single()
+      const { data: createdGuide, error: guideError } = await supabase.from('guides').insert({ slug: guide.slug, guide_type: guide.guideType, status: guide.status, featured: guide.featured, source_id: guide.sourceId, source_url: guide.sourceUrl, last_verified_at: guide.lastVerifiedAt }).select('id').single()
       if (guideError || !createdGuide) {
         invalid += 1
         console.error(`Guide insert error for ${guide.slug}:`, guideError)

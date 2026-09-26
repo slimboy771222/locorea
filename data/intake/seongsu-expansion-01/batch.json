@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "batch_id": "seongsu-expansion-01",
+  "title": "Seongsu Expansion 01",
+  "area_slug": "seongsu",
+  "default_source_name": "Locorea Editorial",
+  "notes": "First live intake batch. New Seongsu places researched from current official Visit Seoul pages and normalized for Locorea review."
+}

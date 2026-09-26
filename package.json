@@ -22,6 +22,7 @@
     "data:export:approved:dry": "tsx scripts/content/export-approved.ts --dry-run",
     "data:import:approved": "tsx scripts/content/import-approved.ts",
     "data:import:approved:dry": "tsx scripts/content/import-approved.ts --dry-run"
+    ,"data:intake:validate": "tsx scripts/content/validate-intake.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.117.1",

@@ -1,10 +1,10 @@
 import { readFile } from 'node:fs/promises'
-import { resolve } from 'node:path'
 import { createClient } from '@supabase/supabase-js'
 import type { Database } from '../../app/types/database.types'
 import { loadImportEnvironment } from '../lib/load-import-env'
+import { inputFile } from '../lib/input-file'
 
-const inputPath = resolve('data/imports/places-seongsu.csv')
+const inputPath = inputFile('data/imports/places-seongsu.csv')
 const dryRun = process.argv.includes('--dry-run')
 const requiredColumns = ['slug', 'place_type', 'name', 'status']
 const validPlaceTypes = new Set(['attraction', 'restaurant', 'cafe', 'shopping', 'accommodation', 'transport', 'culture', 'nature', 'experience', 'other'])
@@ -57,6 +57,11 @@ const parseBoolean = (value: string) => {
 }
 
 const nullable = (value: string) => value.trim() || null
+const isHttpUrl = (value: string) => {
+  if (!value.trim()) return true
+  try { const url = new URL(value); return url.protocol === 'http:' || url.protocol === 'https:' }
+  catch { return false }
+}
 
 const report = (state: 'VALID' | 'INVALID' | 'SKIPPED', rowNumber: number, slug: string, reason: string) => {
   console.log(`${state}: row ${rowNumber} · ${slug || '(missing slug)'} · ${reason}`)
@@ -104,6 +109,7 @@ const main = async () => {
     if (!validStatuses.has(status)) { invalid += 1; report('INVALID', rowNumber, slug, 'unsupported status'); continue }
     if (!boolean.valid) { invalid += 1; report('INVALID', rowNumber, slug, 'invalid foreigner_friendly'); continue }
     if (!validDate) { invalid += 1; report('INVALID', rowNumber, slug, 'invalid last_verified_at'); continue }
+    if (!isHttpUrl(values.source_url ?? '')) { invalid += 1; report('INVALID', rowNumber, slug, 'invalid source_url'); continue }
     if (values.area_slug.trim() && !areas.has(values.area_slug.trim())) { invalid += 1; report('INVALID', rowNumber, slug, 'Area not found'); continue }
     if (values.source_name.trim() && !sources.has(values.source_name.trim())) { invalid += 1; report('INVALID', rowNumber, slug, 'Source not found'); continue }
     if (existingSlugs.has(slug)) { skipped += 1; report('SKIPPED', rowNumber, slug, 'slug already exists'); continue }
@@ -115,7 +121,7 @@ const main = async () => {
   if (!dryRun) {
     for (const row of valid) {
       const { values } = row
-      const { data: place, error: placeError } = await supabase.from('places').insert({ slug: values.slug, place_type: values.place_type, status: values.status, area_id: row.areaId, source_id: row.sourceId, last_verified_at: nullable(values.last_verified_at), foreigner_friendly: row.foreignerFriendly, phone: nullable(values.phone), website_url: nullable(values.website_url), naver_map_url: nullable(values.naver_map_url), kakao_map_url: nullable(values.kakao_map_url) }).select('id').single()
+      const { data: place, error: placeError } = await supabase.from('places').insert({ slug: values.slug, place_type: values.place_type, status: values.status, area_id: row.areaId, source_id: row.sourceId, source_url: nullable(values.source_url ?? ''), last_verified_at: nullable(values.last_verified_at), foreigner_friendly: row.foreignerFriendly, phone: nullable(values.phone), website_url: nullable(values.website_url), naver_map_url: nullable(values.naver_map_url), kakao_map_url: nullable(values.kakao_map_url) }).select('id').single()
       if (placeError || !place) { invalid += 1; console.error(`Database error for row ${row.rowNumber}`, placeError); report('INVALID', row.rowNumber, values.slug, 'Place insert failed'); continue }
       const { error: translationError } = await supabase.from('place_translations').insert({ place_id: place.id, language_code: 'en', name: values.name.trim(), summary: nullable(values.summary), description: nullable(values.description), address_text: nullable(values.address_text), local_tip: nullable(values.local_tip) })
       if (translationError) { invalid += 1; console.error(`Translation error for row ${row.rowNumber}`, translationError); report('INVALID', row.rowNumber, values.slug, 'partial failure: Place inserted, translation failed'); continue }
