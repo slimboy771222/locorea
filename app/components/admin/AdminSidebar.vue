@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ArrowLeft, Building2, LayoutDashboard, MapPinned, Route, BookOpen, Image, X } from 'lucide-vue-next'
+import { ArrowLeft, Building2, LayoutDashboard, MapPinned, Route, BookOpen, ClipboardCheck, Image, X } from 'lucide-vue-next'
 
 defineProps<{
   open: boolean
@@ -14,6 +14,7 @@ const navigation = [
   { label: 'Places', to: '/admin/places', icon: MapPinned },
   { label: 'Routes', to: '/admin/routes', icon: Route },
   { label: 'Guides', to: '/admin/guides', icon: BookOpen },
+  { label: 'Review', to: '/admin/review', icon: ClipboardCheck },
 ]
 
 const futureNavigation = [

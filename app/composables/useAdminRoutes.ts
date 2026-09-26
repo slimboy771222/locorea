@@ -101,7 +101,7 @@ export const useAdminRoutes = () => {
 
   const getAdminRouteById = async (id: string) => {
     const { data: route, error } = await supabase.from('routes').select(`
-      id, slug, route_type, area_id, source_id, duration_minutes, distance_km, difficulty, status, last_verified_at, updated_at,
+      id, slug, route_type, area_id, source_id, duration_minutes, distance_km, difficulty, status, review_status, reviewed_at, reviewed_by, review_note, last_verified_at, updated_at,
       route_translations(language_code, name, summary, description),
       route_places(place_id, stop_order, stay_minutes, travel_minutes_to_next, note)
     `).eq('id', id).maybeSingle()

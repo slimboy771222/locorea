@@ -39,7 +39,7 @@ export const useAdminGuides = () => {
     return data ?? []
   }
   const getAdminGuideById = async (id: string) => {
-    const { data: guide, error } = await supabase.from('guides').select('id, slug, guide_type, source_id, status, featured, last_verified_at, updated_at, guide_translations(language_code, title, summary, body_markdown)').eq('id', id).maybeSingle()
+    const { data: guide, error } = await supabase.from('guides').select('id, slug, guide_type, source_id, status, review_status, reviewed_at, reviewed_by, review_note, featured, last_verified_at, updated_at, guide_translations(language_code, title, summary, body_markdown)').eq('id', id).maybeSingle()
     if (error) throw error
     if (!guide) return null
     const { data: relation, error: mediaError } = await supabase.from('entity_media').select('id, media_id, media_assets(id, storage_path, alt_text, credit_text)').eq('entity_type', 'guide').eq('entity_id', id).eq('role', 'cover').maybeSingle()

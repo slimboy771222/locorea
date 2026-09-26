@@ -303,6 +303,10 @@ export type Database = {
           id: string
           last_verified_at: string | null
           published_at: string | null
+          review_note: string | null
+          review_status: string
+          reviewed_at: string | null
+          reviewed_by: string | null
           slug: string
           source_id: string | null
           status: string
@@ -315,6 +319,10 @@ export type Database = {
           id?: string
           last_verified_at?: string | null
           published_at?: string | null
+          review_note?: string | null
+          review_status?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           slug: string
           source_id?: string | null
           status?: string
@@ -327,6 +335,10 @@ export type Database = {
           id?: string
           last_verified_at?: string | null
           published_at?: string | null
+          review_note?: string | null
+          review_status?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           slug?: string
           source_id?: string | null
           status?: string
@@ -476,6 +488,10 @@ export type Database = {
           place_type: string
           price_level: number | null
           published_at: string | null
+          review_note: string | null
+          review_status: string
+          reviewed_at: string | null
+          reviewed_by: string | null
           slug: string
           source_id: string | null
           status: string
@@ -496,6 +512,10 @@ export type Database = {
           place_type: string
           price_level?: number | null
           published_at?: string | null
+          review_note?: string | null
+          review_status?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           slug: string
           source_id?: string | null
           status?: string
@@ -516,6 +536,10 @@ export type Database = {
           place_type?: string
           price_level?: number | null
           published_at?: string | null
+          review_note?: string | null
+          review_status?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           slug?: string
           source_id?: string | null
           status?: string
@@ -721,6 +745,10 @@ export type Database = {
           id: string
           last_verified_at: string | null
           published_at: string | null
+          review_note: string | null
+          review_status: string
+          reviewed_at: string | null
+          reviewed_by: string | null
           route_type: string
           slug: string
           source_id: string | null
@@ -736,6 +764,10 @@ export type Database = {
           id?: string
           last_verified_at?: string | null
           published_at?: string | null
+          review_note?: string | null
+          review_status?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           route_type?: string
           slug: string
           source_id?: string | null
@@ -751,6 +783,10 @@ export type Database = {
           id?: string
           last_verified_at?: string | null
           published_at?: string | null
+          review_note?: string | null
+          review_status?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           route_type?: string
           slug?: string
           source_id?: string | null
@@ -1001,4 +1037,3 @@ export const Constants = {
     Enums: {},
   },
 } as const
-

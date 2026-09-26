@@ -87,9 +87,9 @@ const main = async () => {
 
   const supabase = createClient<Database>(url, serviceRoleKey, { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } })
   const [placesResult, routesResult, guidesResult] = await Promise.all([
-    supabase.from('places').select('id, slug, status').in('slug', manifest.places),
-    supabase.from('routes').select('id, slug, status').in('slug', manifest.routes),
-    supabase.from('guides').select('id, slug, status').in('slug', manifest.guides),
+    supabase.from('places').select('id, slug, status, review_status').in('slug', manifest.places),
+    supabase.from('routes').select('id, slug, status, review_status').in('slug', manifest.routes),
+    supabase.from('guides').select('id, slug, status, review_status').in('slug', manifest.guides),
   ])
   const entityError = placesResult.error ?? routesResult.error ?? guidesResult.error
   if (entityError) {
@@ -137,8 +137,9 @@ const main = async () => {
   const stopPlaceById = new Map((stopPlacesResult.data ?? []).map(place => [place.id, place]))
   const manifestPlaceSlugs = new Set(manifest.places)
 
-  const validateStatus = (type: EntityType, summary: Summary, item: { id: string, slug: string, status: string }, reason: string | null) => {
+  const validateStatus = (type: EntityType, summary: Summary, item: { id: string, slug: string, status: string, review_status: string }, reason: string | null) => {
     if (reason) { summary.invalid += 1; report('INVALID', type, item.slug, reason); return }
+    if (item.review_status !== 'approved') { summary.invalid += 1; report('INVALID', type, item.slug, 'content is not approved for release'); return }
     if (item.status === 'published') { summary.skipped += 1; report('SKIPPED', type, item.slug, 'already published'); return }
     if (item.status === 'archived') { summary.invalid += 1; report('INVALID', type, item.slug, 'entity is archived'); return }
     if (item.status !== 'draft') { summary.invalid += 1; report('INVALID', type, item.slug, `unsupported status: ${item.status}`); return }

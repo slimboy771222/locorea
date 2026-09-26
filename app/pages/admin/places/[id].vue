@@ -93,6 +93,7 @@ const save = async ({ values, coverFile, viewAfterSave }: { values: AdminPlaceFo
       <p v-if="placeError || optionsError" role="alert" class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">This place is unavailable right now. Refresh the page and try again.</p>
       <template v-else-if="formValues && options && place">
         <p v-if="saveError" role="alert" class="mb-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">{{ saveError }}</p>
+        <AdminContentReviewPanel :key="`review-${place.id}-${place.updated_at}`" class="mb-6" entity-type="place" :entity-id="place.id" :review-status="place.review_status" :reviewed-at="place.reviewed_at" :review-note="place.review_note" @saved="refresh" />
         <AdminPlaceForm :key="place.id + place.updated_at" :initial-values="formValues" :areas="options.areas" :sources="options.sources" :cover="place.cover" :saving="saving" :success-message="saveSuccess" @save="save" />
       </template>
     </main>
