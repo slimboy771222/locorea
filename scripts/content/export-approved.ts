@@ -14,14 +14,15 @@ const english = <T extends { language_code: string }>(translations: T[]) => tran
 const json = (value: unknown) => `${JSON.stringify(value, null, 2)}\n`
 const displaySlug = (slug: string) => slug || '(missing slug)'
 const safeFilename = (slug: string) => Boolean(slug) && !slug.includes('/') && !slug.includes('\\') && slug !== '.' && slug !== '..'
+const tagSlugs = (relations: Array<{ tags: { slug: string } | null }>) => relations.flatMap(relation => relation.tags ? [relation.tags.slug] : []).sort((left, right) => left.localeCompare(right, 'en'))
 
 const outputFile = (relativePath: string, value: unknown): ExportFile => ({ relativePath, contents: json(value) })
 
 const validateAndBuild = async (supabase: ReturnType<typeof createClient<Database>>): Promise<ExportData> => {
   const [placesResult, routesResult, guidesResult] = await Promise.all([
-    supabase.from('places').select('slug, place_type, status, review_status, reviewed_at, review_note, area_id, source_id, last_verified_at, foreigner_friendly, phone, website_url, naver_map_url, kakao_map_url, areas(slug), sources(name), place_translations(language_code, name, summary, description, address_text, local_tip)').eq('review_status', 'approved'),
-    supabase.from('routes').select('slug, route_type, status, review_status, reviewed_at, review_note, area_id, source_id, duration_minutes, distance_km, difficulty, last_verified_at, areas(slug), sources(name), route_translations(language_code, name, summary, description), route_places(stop_order, stay_minutes, travel_minutes_to_next, note, places(slug))').eq('review_status', 'approved'),
-    supabase.from('guides').select('slug, guide_type, status, review_status, reviewed_at, review_note, source_id, last_verified_at, featured, sources(name), guide_translations(language_code, title, summary, body_markdown)').eq('review_status', 'approved'),
+    supabase.from('places').select('slug, place_type, status, review_status, reviewed_at, review_note, area_id, source_id, last_verified_at, foreigner_friendly, phone, website_url, naver_map_url, kakao_map_url, areas(slug), sources(name), place_translations(language_code, name, summary, description, address_text, local_tip), place_tags(tags(slug))').eq('review_status', 'approved'),
+    supabase.from('routes').select('slug, route_type, status, review_status, reviewed_at, review_note, area_id, source_id, duration_minutes, distance_km, difficulty, last_verified_at, areas(slug), sources(name), route_translations(language_code, name, summary, description), route_places(stop_order, stay_minutes, travel_minutes_to_next, note, places(slug)), route_tags(tags(slug))').eq('review_status', 'approved'),
+    supabase.from('guides').select('slug, guide_type, status, review_status, reviewed_at, review_note, source_id, last_verified_at, featured, sources(name), guide_translations(language_code, title, summary, body_markdown), guide_tags(tags(slug))').eq('review_status', 'approved'),
   ])
   const error = placesResult.error ?? routesResult.error ?? guidesResult.error
   if (error) {
@@ -65,6 +66,7 @@ const validateAndBuild = async (supabase: ReturnType<typeof createClient<Databas
       website_url: place.website_url,
       naver_map_url: place.naver_map_url,
       kakao_map_url: place.kakao_map_url,
+      tag_slugs: tagSlugs(place.place_tags),
       translation: {
         language_code: 'en',
         name: translation!.name,
@@ -107,6 +109,7 @@ const validateAndBuild = async (supabase: ReturnType<typeof createClient<Databas
       distance_km: route.distance_km,
       difficulty: route.difficulty,
       last_verified_at: route.last_verified_at,
+      tag_slugs: tagSlugs(route.route_tags),
       translation: {
         language_code: 'en',
         name: translation!.name,
@@ -147,6 +150,7 @@ const validateAndBuild = async (supabase: ReturnType<typeof createClient<Databas
       source_name: guide.sources!.name,
       last_verified_at: guide.last_verified_at,
       featured: guide.featured,
+      tag_slugs: tagSlugs(guide.guide_tags),
       translation: {
         language_code: 'en',
         title: translation!.title,

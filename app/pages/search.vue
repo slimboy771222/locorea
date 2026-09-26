@@ -22,6 +22,7 @@ const filters = computed<SearchFilters>(() => ({
   routeType: queryValue('route_type') || undefined,
   difficulty: queryValue('difficulty') || undefined,
   guideType: queryValue('guide_type') || undefined,
+  tag: queryValue('tag') || undefined,
 }))
 const searchInput = ref(query.value)
 watch(query, value => { searchInput.value = value })
@@ -62,6 +63,7 @@ const setSearchUrl = (next: { query?: string; tab?: SearchTab; filters?: SearchF
   if (nextFilters.routeType) urlQuery.route_type = nextFilters.routeType
   if (nextFilters.difficulty) urlQuery.difficulty = nextFilters.difficulty
   if (nextFilters.guideType) urlQuery.guide_type = nextFilters.guideType
+  if (nextFilters.tag) urlQuery.tag = nextFilters.tag
   return router.push({ path: '/search', query: urlQuery })
 }
 

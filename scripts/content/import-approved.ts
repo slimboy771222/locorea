@@ -19,13 +19,13 @@ type JsonObject = Record<string, unknown>
 type Manifest = { schemaVersion: 1; places: string[]; routes: string[]; guides: string[] }
 type Translation = { name: string; summary: string | null; description: string | null; addressText?: string | null; localTip?: string | null; title?: string; bodyMarkdown?: string | null }
 type Review = { reviewStatus: string; reviewedAt: string | null; reviewNote: string | null }
-type Place = Review & { slug: string; placeType: string; status: string; areaSlug: string; sourceName: string; lastVerifiedAt: string | null; foreignerFriendly: boolean | null; phone: string | null; websiteUrl: string | null; naverMapUrl: string | null; kakaoMapUrl: string | null; translation: Translation }
+type Place = Review & { slug: string; placeType: string; status: string; areaSlug: string; sourceName: string; lastVerifiedAt: string | null; foreignerFriendly: boolean | null; phone: string | null; websiteUrl: string | null; naverMapUrl: string | null; kakaoMapUrl: string | null; tagSlugs: string[]; translation: Translation }
 type Stop = { placeSlug: string; stayMinutes: number | null; travelMinutesToNext: number | null; note: string | null }
-type Route = Review & { slug: string; routeType: string; status: string; areaSlug: string | null; sourceName: string; durationMinutes: number | null; distanceKm: number | null; difficulty: string | null; lastVerifiedAt: string | null; translation: Translation; stops: Stop[] }
-type Guide = Review & { slug: string; guideType: string; status: string; sourceName: string; lastVerifiedAt: string | null; featured: boolean; translation: Translation }
+type Route = Review & { slug: string; routeType: string; status: string; areaSlug: string | null; sourceName: string; durationMinutes: number | null; distanceKm: number | null; difficulty: string | null; lastVerifiedAt: string | null; tagSlugs: string[]; translation: Translation; stops: Stop[] }
+type Guide = Review & { slug: string; guideType: string; status: string; sourceName: string; lastVerifiedAt: string | null; featured: boolean; tagSlugs: string[]; translation: Translation }
 type Canonical = { manifest: Manifest; places: Place[]; routes: Route[]; guides: Guide[] }
 type Existing = { places: Map<string, string>; routes: Map<string, string>; guides: Map<string, string> }
-type Lookups = { areas: Map<string, string>; sources: Map<string, string>; targetPlaces: Map<string, string> }
+type Lookups = { areas: Map<string, string>; sources: Map<string, string>; tags: Map<string, string>; targetPlaces: Map<string, string> }
 
 const asObject = (value: unknown): JsonObject | null => value !== null && typeof value === 'object' && !Array.isArray(value) ? value as JsonObject : null
 const text = (value: unknown) => typeof value === 'string' ? value.trim() : ''
@@ -35,6 +35,13 @@ const dateIsValid = (value: string | null) => value === null || !Number.isNaN(Da
 const safeSlug = (value: string) => Boolean(value) && !value.includes('/') && !value.includes('\\') && value !== '.' && value !== '..'
 const display = (slug: string) => slug || '(missing slug)'
 const entityPath = (kind: 'places' | 'routes' | 'guides', slug: string) => resolve(contentDirectory, kind, `${slug}.json`)
+const parseTagSlugs = (value: unknown, errors: string[]) => {
+  if (value === undefined) return []
+  if (!Array.isArray(value) || value.some(slug => typeof slug !== 'string' || !safeSlug(slug))) { errors.push('tag_slugs must be an array of safe slugs'); return [] }
+  const slugs = value as string[]
+  if (new Set(slugs).size !== slugs.length) errors.push('tag_slugs contains duplicate slugs')
+  return slugs
+}
 
 const readJson = async (path: string): Promise<unknown> => {
   try {
@@ -113,9 +120,10 @@ const parsePlace = (value: unknown, expectedSlug: string): { item?: Place; error
   const description = translation ? nullableText(translation.description) : undefined
   const addressText = translation ? nullableText(translation.address_text) : undefined
   const localTip = translation ? nullableText(translation.local_tip) : undefined
+  const tagSlugs = parseTagSlugs(raw.tag_slugs, errors)
   if ([summary, description, addressText, localTip].some(item => item === undefined)) errors.push('Place translation fields must be strings or null')
   if (errors.length || !parsedReview || !translation) return { errors }
-  return { item: { ...parsedReview, ...base, placeType, areaSlug, sourceName, foreignerFriendly: foreignerFriendly!, phone: phone!, websiteUrl: websiteUrl!, naverMapUrl: naverMapUrl!, kakaoMapUrl: kakaoMapUrl!, translation: { name: text(translation.name), summary: summary!, description: description!, addressText: addressText!, localTip: localTip! } }, errors }
+  return { item: { ...parsedReview, ...base, placeType, areaSlug, sourceName, foreignerFriendly: foreignerFriendly!, phone: phone!, websiteUrl: websiteUrl!, naverMapUrl: naverMapUrl!, kakaoMapUrl: kakaoMapUrl!, tagSlugs, translation: { name: text(translation.name), summary: summary!, description: description!, addressText: addressText!, localTip: localTip! } }, errors }
 }
 
 const parseRoute = (value: unknown, expectedSlug: string): { item?: Route; errors: string[] } => {
@@ -140,6 +148,7 @@ const parseRoute = (value: unknown, expectedSlug: string): { item?: Route; error
   if (!translation || text(translation.language_code) !== 'en' || !text(translation.name)) errors.push('English translation name is required')
   const summary = translation ? nullableText(translation.summary) : undefined
   const description = translation ? nullableText(translation.description) : undefined
+  const tagSlugs = parseTagSlugs(raw.tag_slugs, errors)
   if ([summary, description].some(item => item === undefined)) errors.push('Route translation fields must be strings or null')
   const stops: Stop[] = []
   if (!Array.isArray(raw.stops) || raw.stops.length < 2) errors.push('at least 2 stops are required')
@@ -156,7 +165,7 @@ const parseRoute = (value: unknown, expectedSlug: string): { item?: Route; error
     if (item && safeSlug(placeSlug) && stayMinutes !== undefined && travelMinutesToNext !== undefined && note !== undefined) stops.push({ placeSlug, stayMinutes, travelMinutesToNext, note })
   })
   if (errors.length || !parsedReview || !translation) return { errors }
-  return { item: { ...parsedReview, ...base, routeType, areaSlug: areaSlug!, sourceName, durationMinutes: durationMinutes!, distanceKm: distanceKm!, difficulty, translation: { name: text(translation.name), summary: summary!, description: description! }, stops }, errors }
+  return { item: { ...parsedReview, ...base, routeType, areaSlug: areaSlug!, sourceName, durationMinutes: durationMinutes!, distanceKm: distanceKm!, difficulty, tagSlugs, translation: { name: text(translation.name), summary: summary!, description: description! }, stops }, errors }
 }
 
 const parseGuide = (value: unknown, expectedSlug: string): { item?: Guide; errors: string[] } => {
@@ -173,9 +182,10 @@ const parseGuide = (value: unknown, expectedSlug: string): { item?: Guide; error
   if (typeof raw.featured !== 'boolean') errors.push('featured must be boolean')
   if (!translation || text(translation.language_code) !== 'en' || !text(translation.title) || !text(translation.body_markdown)) errors.push('English translation title and body_markdown are required')
   const summary = translation ? nullableText(translation.summary) : undefined
+  const tagSlugs = parseTagSlugs(raw.tag_slugs, errors)
   if (summary === undefined) errors.push('Guide translation summary must be a string or null')
   if (errors.length || !parsedReview || !translation) return { errors }
-  return { item: { ...parsedReview, ...base, guideType, sourceName, featured: raw.featured as boolean, translation: { name: '', title: text(translation.title), summary: summary!, bodyMarkdown: text(translation.body_markdown) } }, errors }
+  return { item: { ...parsedReview, ...base, guideType, sourceName, featured: raw.featured as boolean, tagSlugs, translation: { name: '', title: text(translation.title), summary: summary!, bodyMarkdown: text(translation.body_markdown) } }, errors }
 }
 
 const loadCanonical = async (): Promise<{ canonical?: Canonical; errors: string[] }> => {
@@ -197,21 +207,24 @@ const failLookup = (label: string, error: unknown): never => { console.error(`${
 const preflight = async (supabase: ReturnType<typeof createClient<Database>>, canonical: Canonical): Promise<{ lookups: Lookups; existing: Existing; errors: string[] }> => {
   const areaSlugs = [...new Set([...canonical.places.map(item => item.areaSlug), ...canonical.routes.map(item => item.areaSlug).filter((slug): slug is string => Boolean(slug))])]
   const sourceNames = [...new Set([...canonical.places, ...canonical.routes, ...canonical.guides].map(item => item.sourceName))]
+  const tagSlugs = [...new Set([...canonical.places, ...canonical.routes, ...canonical.guides].flatMap(item => item.tagSlugs))]
   const entityPlaceSlugs = canonical.places.map(item => item.slug)
   const routeStopSlugs = canonical.routes.flatMap(item => item.stops.map(stop => stop.placeSlug))
-  const [areasResult, sourcesResult, targetPlacesResult, existingPlacesResult, existingRoutesResult, existingGuidesResult] = await Promise.all([
+  const [areasResult, sourcesResult, tagsResult, targetPlacesResult, existingPlacesResult, existingRoutesResult, existingGuidesResult] = await Promise.all([
     areaSlugs.length ? supabase.from('areas').select('id, slug').in('slug', areaSlugs) : Promise.resolve({ data: [], error: null }),
     sourceNames.length ? supabase.from('sources').select('id, name').in('name', sourceNames) : Promise.resolve({ data: [], error: null }),
+    tagSlugs.length ? supabase.from('tags').select('id, slug').in('slug', tagSlugs) : Promise.resolve({ data: [], error: null }),
     [...new Set([...entityPlaceSlugs, ...routeStopSlugs])].length ? supabase.from('places').select('id, slug').in('slug', [...new Set([...entityPlaceSlugs, ...routeStopSlugs])]) : Promise.resolve({ data: [], error: null }),
     entityPlaceSlugs.length ? supabase.from('places').select('id, slug').in('slug', entityPlaceSlugs) : Promise.resolve({ data: [], error: null }),
     canonical.routes.length ? supabase.from('routes').select('id, slug').in('slug', canonical.routes.map(item => item.slug)) : Promise.resolve({ data: [], error: null }),
     canonical.guides.length ? supabase.from('guides').select('id, slug').in('slug', canonical.guides.map(item => item.slug)) : Promise.resolve({ data: [], error: null }),
   ])
-  const lookupError = areasResult.error ?? sourcesResult.error ?? targetPlacesResult.error ?? existingPlacesResult.error ?? existingRoutesResult.error ?? existingGuidesResult.error
+  const lookupError = areasResult.error ?? sourcesResult.error ?? tagsResult.error ?? targetPlacesResult.error ?? existingPlacesResult.error ?? existingRoutesResult.error ?? existingGuidesResult.error
   if (lookupError) failLookup('Canonical import lookup error', lookupError)
   const lookups: Lookups = {
     areas: new Map((areasResult.data ?? []).map(row => [row.slug, row.id])),
     sources: new Map((sourcesResult.data ?? []).map(row => [row.name, row.id])),
+    tags: new Map((tagsResult.data ?? []).map(row => [row.slug, row.id])),
     targetPlaces: new Map((targetPlacesResult.data ?? []).map(row => [row.slug, row.id])),
   }
   const existing: Existing = {
@@ -223,13 +236,18 @@ const preflight = async (supabase: ReturnType<typeof createClient<Database>>, ca
   for (const place of canonical.places) {
     if (!lookups.areas.has(place.areaSlug)) errors.push(`INVALID PLACE: ${place.slug} · Area not found: ${place.areaSlug}`)
     if (!lookups.sources.has(place.sourceName)) errors.push(`INVALID PLACE: ${place.slug} · Source not found: ${place.sourceName}`)
+    for (const tagSlug of place.tagSlugs) if (!lookups.tags.has(tagSlug)) errors.push(`INVALID PLACE: ${place.slug} · Tag not found: ${tagSlug}`)
   }
   for (const route of canonical.routes) {
     if (route.areaSlug && !lookups.areas.has(route.areaSlug)) errors.push(`INVALID ROUTE: ${route.slug} · Area not found: ${route.areaSlug}`)
     if (!lookups.sources.has(route.sourceName)) errors.push(`INVALID ROUTE: ${route.slug} · Source not found: ${route.sourceName}`)
+    for (const tagSlug of route.tagSlugs) if (!lookups.tags.has(tagSlug)) errors.push(`INVALID ROUTE: ${route.slug} · Tag not found: ${tagSlug}`)
     for (const stop of route.stops) if (!lookups.targetPlaces.has(stop.placeSlug) && !canonical.manifest.places.includes(stop.placeSlug)) errors.push(`INVALID ROUTE: ${route.slug} · Place not found: ${stop.placeSlug}`)
   }
-  for (const guide of canonical.guides) if (!lookups.sources.has(guide.sourceName)) errors.push(`INVALID GUIDE: ${guide.slug} · Source not found: ${guide.sourceName}`)
+  for (const guide of canonical.guides) {
+    if (!lookups.sources.has(guide.sourceName)) errors.push(`INVALID GUIDE: ${guide.slug} · Source not found: ${guide.sourceName}`)
+    for (const tagSlug of guide.tagSlugs) if (!lookups.tags.has(tagSlug)) errors.push(`INVALID GUIDE: ${guide.slug} · Tag not found: ${tagSlug}`)
+  }
   return { lookups, existing, errors }
 }
 
@@ -240,6 +258,26 @@ const guidePayload = (item: Guide, lookups: Lookups) => ({ slug: item.slug, guid
 type Totals = { created: number; updated: number; skipped: number }
 const totals = (): Totals => ({ created: 0, updated: 0, skipped: 0 })
 const action = (state: 'CREATED' | 'UPDATED' | 'SKIPPED', kind: string, slug: string) => console.log(`${state}: ${kind} · ${slug}${state === 'SKIPPED' ? ' · slug already exists' : ''}`)
+
+const writeTags = async (
+  supabase: ReturnType<typeof createClient<Database>>,
+  table: 'place_tags' | 'route_tags' | 'guide_tags',
+  entityColumn: 'place_id' | 'route_id' | 'guide_id',
+  entityId: string,
+  tagSlugs: string[],
+  lookups: Lookups,
+  replace: boolean,
+  slug: string,
+) => {
+  if (replace) {
+    const { error } = await supabase.from(table).delete().eq(entityColumn, entityId)
+    if (error) throwWrite('Tag replacement', slug, error)
+  }
+  if (!tagSlugs.length) return
+  const rows = tagSlugs.map(tagSlug => ({ [entityColumn]: entityId, tag_id: lookups.tags.get(tagSlug)! }))
+  const { error } = await supabase.from(table).insert(rows)
+  if (error) throwWrite('Tag write', slug, error)
+}
 
 const importPlaces = async (supabase: ReturnType<typeof createClient<Database>>, items: Place[], lookups: Lookups, existing: Map<string, string>, result: Totals) => {
   for (const item of items) {
@@ -258,6 +296,7 @@ const importPlaces = async (supabase: ReturnType<typeof createClient<Database>>,
     }
     const { error: translationError } = await supabase.from('place_translations').upsert({ place_id: id!, language_code: 'en', name: item.translation.name, summary: item.translation.summary, description: item.translation.description, address_text: item.translation.addressText!, local_tip: item.translation.localTip! }, { onConflict: 'place_id,language_code' })
     if (translationError) throwWrite('Place translation write', item.slug, translationError)
+    await writeTags(supabase, 'place_tags', 'place_id', id!, item.tagSlugs, lookups, existed, item.slug)
     action(existed ? 'UPDATED' : 'CREATED', 'PLACE', item.slug)
   }
 }
@@ -286,6 +325,7 @@ const importRoutes = async (supabase: ReturnType<typeof createClient<Database>>,
     const stops = item.stops.map((stop, index) => ({ route_id: id!, place_id: lookups.targetPlaces.get(stop.placeSlug)!, stop_order: index + 1, stay_minutes: stop.stayMinutes, travel_minutes_to_next: stop.travelMinutesToNext, note: stop.note }))
     const { error: stopsError } = await supabase.from('route_places').insert(stops)
     if (stopsError) throwWrite('Route stops write', item.slug, stopsError)
+    await writeTags(supabase, 'route_tags', 'route_id', id!, item.tagSlugs, lookups, existed, item.slug)
     action(existed ? 'UPDATED' : 'CREATED', 'ROUTE', item.slug)
   }
 }
@@ -307,6 +347,7 @@ const importGuides = async (supabase: ReturnType<typeof createClient<Database>>,
     }
     const { error: translationError } = await supabase.from('guide_translations').upsert({ guide_id: id!, language_code: 'en', title: item.translation.title!, summary: item.translation.summary, body_markdown: item.translation.bodyMarkdown! }, { onConflict: 'guide_id,language_code' })
     if (translationError) throwWrite('Guide translation write', item.slug, translationError)
+    await writeTags(supabase, 'guide_tags', 'guide_id', id!, item.tagSlugs, lookups, existed, item.slug)
     action(existed ? 'UPDATED' : 'CREATED', 'GUIDE', item.slug)
   }
 }

@@ -12,6 +12,7 @@
   "distance_km": 3.8,
   "difficulty": "easy",
   "last_verified_at": "2026-09-25T00:00:00+00:00",
+  "tag_slugs": ["cafe", "shopping"],
   "translation": {
     "language_code": "en",
     "name": "Seongsu Cafe & Shopping Walk",

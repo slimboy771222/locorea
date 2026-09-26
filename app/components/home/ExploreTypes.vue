@@ -1,23 +1,5 @@
 <script setup lang="ts">
-import {
-  BookOpen,
-  CalendarDays,
-  MapPin,
-  Navigation,
-  Route,
-  Sparkles,
-  Utensils,
-} from 'lucide-vue-next'
-
-const items = [
-  { label: 'Places', to: '/places', icon: MapPin },
-  { label: 'Routes', to: '/routes', icon: Route },
-  { label: 'Food', to: '/search?q=food', icon: Utensils },
-  { label: 'Themes', to: '/search?q=theme', icon: Sparkles },
-  { label: 'Guides', to: '/guides', icon: BookOpen },
-  { label: 'Events', to: '/search?q=events', icon: CalendarDays },
-  { label: 'Nearby', to: '/search?q=nearby', icon: Navigation },
-]
+import { discovery } from '~/config/discovery'
 </script>
 
 <template>
@@ -37,7 +19,7 @@ const items = [
 
     <div class="grid grid-cols-2 gap-2.5 sm:grid-cols-4 lg:grid-cols-7">
       <NuxtLink
-        v-for="item in items"
+        v-for="item in discovery.exploreTypes"
         :key="item.label"
         :to="item.to"
         class="group flex min-h-24 flex-col justify-between rounded-xl border border-slate-200/80 bg-white p-3.5 transition hover:border-blue-200 hover:shadow-sm"

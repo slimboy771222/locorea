@@ -2,22 +2,19 @@
 const {
   getPopularPlaces,
   getPopularGuides,
-  getFeaturedGuides,
 } = useHomeData()
 
 const { data: homeData, pending, error } = await useAsyncData(
   'home-data',
   async () => {
-    const [places, popularGuides, guides] = await Promise.all([
+    const [places, popularGuides] = await Promise.all([
       getPopularPlaces(),
       getPopularGuides(),
-      getFeaturedGuides(),
     ])
 
     return {
       places,
       popularGuides,
-      guides,
     }
   },
 )
@@ -38,6 +35,7 @@ const popularItems = computed(() => [
     kind: 'guide' as const,
     type: guide.guide_type,
     translations: guide.guide_translations,
+    cover: guide.cover,
   })),
 ].slice(0, 5))
 
@@ -65,11 +63,7 @@ useSeoMeta({
         :failed="hasError"
       />
 
-      <HomeTravelEssentials
-        :guides="homeData?.guides ?? []"
-        :pending="pending"
-        :failed="hasError"
-      />
+      <HomeTravelEssentials />
 
       <div id="first-time">
         <HomeFirstTimeKorea />

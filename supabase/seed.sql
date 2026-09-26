@@ -234,13 +234,15 @@ values
 ('shopping', 'theme'),
 ('local', 'theme'),
 ('nature', 'theme'),
+('culture', 'theme'),
 
 ('transportation', 'guide'),
 ('first-trip', 'guide'),
 ('practical', 'guide'),
 ('payment', 'guide'),
 ('mobile', 'guide'),
-('maps', 'guide');
+('maps', 'guide')
+on conflict (slug) do nothing;
 
 
 insert into public.tag_translations (
@@ -256,6 +258,7 @@ select id, 'en',
         when 'shopping' then 'Shopping'
         when 'local' then 'Local'
         when 'nature' then 'Nature'
+        when 'culture' then 'Culture'
         when 'transportation' then 'Transportation'
         when 'first-trip' then 'First Trip'
         when 'practical' then 'Practical'
@@ -263,7 +266,8 @@ select id, 'en',
         when 'mobile' then 'Mobile'
         when 'maps' then 'Maps'
     end
-from public.tags;
+from public.tags
+on conflict (tag_id, language_code) do nothing;
 
 
 -- =========================================================

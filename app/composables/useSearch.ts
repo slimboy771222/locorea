@@ -45,6 +45,7 @@ export type SearchFilters = {
   routeType?: string
   difficulty?: string
   guideType?: string
+  tag?: string
 }
 
 export type SearchResults = {
@@ -73,7 +74,8 @@ export const useSearch = () => {
         .select(`
           id, slug, place_type,
           place_translations (language_code, name, summary, description),
-          areas (slug, area_translations (language_code, name))
+          areas (slug, area_translations (language_code, name)),
+          place_tags (tags (slug))
         `)
         .eq('status', 'published'),
       supabase
@@ -81,14 +83,16 @@ export const useSearch = () => {
         .select(`
           id, slug, route_type, duration_minutes, difficulty,
           route_translations (language_code, name, summary, description),
-          route_places (id)
+          route_places (id),
+          route_tags (tags (slug))
         `)
         .eq('status', 'published'),
       supabase
         .from('guides')
         .select(`
           id, slug, guide_type, last_verified_at,
-          guide_translations (language_code, title, summary, body_markdown)
+          guide_translations (language_code, title, summary, body_markdown),
+          guide_tags (tags (slug))
         `)
         .eq('status', 'published'),
     ])
@@ -141,13 +145,15 @@ export const useSearch = () => {
             areaSlug: area?.slug ?? null,
             cover: covers.get(place.id) ?? null,
             description: translation?.description ?? '',
+            tagSlugs: place.place_tags.flatMap(item => item.tags ? [item.tags.slug] : []),
           }
         })
         .filter((place): place is NonNullable<typeof place> => place !== null)
         .filter(place => includesQuery(query, place.title, place.summary, place.description))
         .filter(place => !filters.placeType || place.placeType === filters.placeType)
         .filter(place => !filters.area || place.areaSlug === filters.area)
-        .map(({ description: _description, ...place }) => place),
+        .filter(place => !filters.tag || place.tagSlugs.includes(filters.tag))
+        .map(({ description: _description, tagSlugs: _tagSlugs, ...place }) => place),
       routes: routes
         .map(route => {
           const translation = english(route.route_translations)
@@ -163,13 +169,15 @@ export const useSearch = () => {
             stopsCount: route.route_places.length,
             cover: covers.get(route.id) ?? null,
             description: translation?.description ?? '',
+            tagSlugs: route.route_tags.flatMap(item => item.tags ? [item.tags.slug] : []),
           }
         })
         .filter((route): route is NonNullable<typeof route> => route !== null)
         .filter(route => includesQuery(query, route.title, route.summary, route.description))
         .filter(route => !filters.routeType || route.routeType === filters.routeType)
         .filter(route => !filters.difficulty || route.difficulty === filters.difficulty)
-        .map(({ description: _description, ...route }) => route),
+        .filter(route => !filters.tag || route.tagSlugs.includes(filters.tag))
+        .map(({ description: _description, tagSlugs: _tagSlugs, ...route }) => route),
       guides: guides
         .map(guide => {
           const translation = english(guide.guide_translations)
@@ -183,12 +191,14 @@ export const useSearch = () => {
             lastVerifiedAt: guide.last_verified_at,
             cover: covers.get(guide.id) ?? null,
             bodyMarkdown: translation?.body_markdown ?? '',
+            tagSlugs: guide.guide_tags.flatMap(item => item.tags ? [item.tags.slug] : []),
           }
         })
         .filter((guide): guide is NonNullable<typeof guide> => guide !== null)
         .filter(guide => includesQuery(query, guide.title, guide.summary, guide.bodyMarkdown))
         .filter(guide => !filters.guideType || guide.guideType === filters.guideType)
-        .map(({ bodyMarkdown: _bodyMarkdown, ...guide }) => guide),
+        .filter(guide => !filters.tag || guide.tagSlugs.includes(filters.tag))
+        .map(({ bodyMarkdown: _bodyMarkdown, tagSlugs: _tagSlugs, ...guide }) => guide),
     }
   }
 
