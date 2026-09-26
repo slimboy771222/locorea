@@ -5,6 +5,7 @@ const query = ref('')
 
 const popularQueries = [
   'Seongsu cafe',
+  'Korean food',
   'T-money card',
   '3 days in Busan',
   'SIM card',

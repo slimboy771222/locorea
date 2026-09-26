@@ -1,158 +1,196 @@
-export type SearchResultType = 'place' | 'route' | 'guide'
+export type SearchTab = 'all' | 'places' | 'routes' | 'guides'
 
-export interface SearchResult {
+export type SearchCover = {
+  storage_path: string
+  alt_text: string | null
+  credit_text: string | null
+}
+
+export type PlaceSearchResult = {
   id: string
-  type: SearchResultType
   slug: string
   title: string
   summary: string
-  meta?: string
+  placeType: string
+  area: string | null
+  areaSlug: string | null
+  cover: SearchCover | null
+}
+
+export type RouteSearchResult = {
+  id: string
+  slug: string
+  title: string
+  summary: string
+  routeType: string
+  durationMinutes: number | null
+  difficulty: string | null
+  stopsCount: number
+  cover: SearchCover | null
+}
+
+export type GuideSearchResult = {
+  id: string
+  slug: string
+  title: string
+  summary: string
+  guideType: string
+  lastVerifiedAt: string | null
+  cover: SearchCover | null
+}
+
+export type SearchFilters = {
+  placeType?: string
+  area?: string
+  routeType?: string
+  difficulty?: string
+  guideType?: string
+}
+
+export type SearchResults = {
+  places: PlaceSearchResult[]
+  routes: RouteSearchResult[]
+  guides: GuideSearchResult[]
+}
+
+const english = <T extends { language_code: string }>(translations: T[]) => {
+  return translations.find(translation => translation.language_code === 'en')
+}
+
+const includesQuery = (query: string, ...values: Array<string | null | undefined>) => {
+  if (!query) return true
+  return values.join(' ').toLowerCase().includes(query)
 }
 
 export const useSearch = () => {
   const supabase = useSupabase()
 
-  const search = async (keyword: string): Promise<SearchResult[]> => {
+  const search = async (keyword: string, filters: SearchFilters = {}): Promise<SearchResults> => {
     const query = keyword.trim().toLowerCase()
-
-    if (!query) {
-      return []
-    }
-
-    const [
-      placesResult,
-      routesResult,
-      guidesResult,
-    ] = await Promise.all([
+    const [placesResult, routesResult, guidesResult] = await Promise.all([
       supabase
         .from('places')
         .select(`
-          id,
-          slug,
-          place_type,
-          place_translations (
-            language_code,
-            name,
-            summary
-          )
+          id, slug, place_type,
+          place_translations (language_code, name, summary, description),
+          areas (slug, area_translations (language_code, name))
         `)
         .eq('status', 'published'),
-
       supabase
         .from('routes')
         .select(`
-          id,
-          slug,
-          route_type,
-          duration_minutes,
-          route_translations (
-            language_code,
-            name,
-            summary
-          )
+          id, slug, route_type, duration_minutes, difficulty,
+          route_translations (language_code, name, summary, description),
+          route_places (id)
         `)
         .eq('status', 'published'),
-
       supabase
         .from('guides')
         .select(`
-          id,
-          slug,
-          guide_type,
-          guide_translations (
-            language_code,
-            title,
-            summary
-          )
+          id, slug, guide_type, last_verified_at,
+          guide_translations (language_code, title, summary, body_markdown)
         `)
         .eq('status', 'published'),
     ])
 
-    if (placesResult.error) {
-      throw placesResult.error
+    const error = placesResult.error ?? routesResult.error ?? guidesResult.error
+    if (error) throw error
+
+    const places = placesResult.data ?? []
+    const routes = routesResult.data ?? []
+    const guides = guidesResult.data ?? []
+    const entityIds = [...places, ...routes, ...guides].map(item => item.id)
+    const coversResult = entityIds.length
+      ? await supabase
+          .from('entity_media')
+          .select('entity_id, media_assets (storage_path, alt_text, credit_text)')
+          .eq('role', 'cover')
+          .in('entity_type', ['place', 'route', 'guide'])
+          .in('entity_id', entityIds)
+      : { data: [], error: null }
+
+    if (coversResult.error) throw coversResult.error
+
+    const covers = new Map(
+      (coversResult.data ?? [])
+        .filter(item => item.media_assets)
+        .map(item => [
+          item.entity_id,
+          {
+            storage_path: item.media_assets!.storage_path,
+            alt_text: item.media_assets!.alt_text,
+            credit_text: item.media_assets!.credit_text,
+          } satisfies SearchCover,
+        ]),
+    )
+
+    return {
+      places: places
+        .map(place => {
+          const translation = english(place.place_translations)
+          if (!translation) return null
+          const area = place.areas
+          const areaTranslation = area ? english(area.area_translations) : null
+          return {
+            id: place.id,
+            slug: place.slug,
+            title: translation?.name ?? '',
+            summary: translation?.summary ?? '',
+            placeType: place.place_type,
+            area: areaTranslation?.name ?? null,
+            areaSlug: area?.slug ?? null,
+            cover: covers.get(place.id) ?? null,
+            description: translation?.description ?? '',
+          }
+        })
+        .filter((place): place is NonNullable<typeof place> => place !== null)
+        .filter(place => includesQuery(query, place.title, place.summary, place.description))
+        .filter(place => !filters.placeType || place.placeType === filters.placeType)
+        .filter(place => !filters.area || place.areaSlug === filters.area)
+        .map(({ description: _description, ...place }) => place),
+      routes: routes
+        .map(route => {
+          const translation = english(route.route_translations)
+          if (!translation) return null
+          return {
+            id: route.id,
+            slug: route.slug,
+            title: translation?.name ?? '',
+            summary: translation?.summary ?? '',
+            routeType: route.route_type,
+            durationMinutes: route.duration_minutes,
+            difficulty: route.difficulty,
+            stopsCount: route.route_places.length,
+            cover: covers.get(route.id) ?? null,
+            description: translation?.description ?? '',
+          }
+        })
+        .filter((route): route is NonNullable<typeof route> => route !== null)
+        .filter(route => includesQuery(query, route.title, route.summary, route.description))
+        .filter(route => !filters.routeType || route.routeType === filters.routeType)
+        .filter(route => !filters.difficulty || route.difficulty === filters.difficulty)
+        .map(({ description: _description, ...route }) => route),
+      guides: guides
+        .map(guide => {
+          const translation = english(guide.guide_translations)
+          if (!translation) return null
+          return {
+            id: guide.id,
+            slug: guide.slug,
+            title: translation?.title ?? '',
+            summary: translation?.summary ?? '',
+            guideType: guide.guide_type,
+            lastVerifiedAt: guide.last_verified_at,
+            cover: covers.get(guide.id) ?? null,
+            bodyMarkdown: translation?.body_markdown ?? '',
+          }
+        })
+        .filter((guide): guide is NonNullable<typeof guide> => guide !== null)
+        .filter(guide => includesQuery(query, guide.title, guide.summary, guide.bodyMarkdown))
+        .filter(guide => !filters.guideType || guide.guideType === filters.guideType)
+        .map(({ bodyMarkdown: _bodyMarkdown, ...guide }) => guide),
     }
-
-    if (routesResult.error) {
-      throw routesResult.error
-    }
-
-    if (guidesResult.error) {
-      throw guidesResult.error
-    }
-
-    const places: SearchResult[] = (placesResult.data ?? [])
-      .map((place) => {
-        const translation = place.place_translations?.find(
-          item => item.language_code === 'en',
-        )
-
-        return {
-          id: place.id,
-          type: 'place' as const,
-          slug: place.slug,
-          title: translation?.name ?? '',
-          summary: translation?.summary ?? '',
-          meta: place.place_type,
-        }
-      })
-      .filter(item =>
-        `${item.title} ${item.summary} ${item.meta}`
-          .toLowerCase()
-          .includes(query),
-      )
-
-    const routes: SearchResult[] = (routesResult.data ?? [])
-      .map((route) => {
-        const translation = route.route_translations?.find(
-          item => item.language_code === 'en',
-        )
-
-        return {
-          id: route.id,
-          type: 'route' as const,
-          slug: route.slug,
-          title: translation?.name ?? '',
-          summary: translation?.summary ?? '',
-          meta: route.duration_minutes
-            ? `${route.duration_minutes} min`
-            : route.route_type,
-        }
-      })
-      .filter(item =>
-        `${item.title} ${item.summary} ${item.meta}`
-          .toLowerCase()
-          .includes(query),
-      )
-
-    const guides: SearchResult[] = (guidesResult.data ?? [])
-      .map((guide) => {
-        const translation = guide.guide_translations?.find(
-          item => item.language_code === 'en',
-        )
-
-        return {
-          id: guide.id,
-          type: 'guide' as const,
-          slug: guide.slug,
-          title: translation?.title ?? '',
-          summary: translation?.summary ?? '',
-          meta: guide.guide_type,
-        }
-      })
-      .filter(item =>
-        `${item.title} ${item.summary} ${item.meta}`
-          .toLowerCase()
-          .includes(query),
-      )
-
-    return [
-      ...places,
-      ...routes,
-      ...guides,
-    ]
   }
 
-  return {
-    search,
-  }
+  return { search }
 }
