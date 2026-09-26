@@ -2,14 +2,15 @@
 import { Search } from 'lucide-vue-next'
 
 const query = ref('')
+const heroImagePath = '/images/hero/locorea-seoul-hero.png'
 
-const popularQueries = [
-  'Seongsu cafe',
-  'Korean food',
-  'T-money card',
-  '3 days in Busan',
-  'SIM card',
-  'Seoul subway',
+const suggestions = [
+  { label: 'Seongsu', to: '/search?q=Seongsu' },
+  { label: 'Korean food', to: '/search?type=places&place_type=restaurant' },
+  { label: 'Cafes', to: '/search?type=places&place_type=cafe' },
+  { label: 'Shopping', to: '/search?type=places&place_type=shopping' },
+  { label: 'First time in Korea', to: '/search?type=guides&tag=first-trip' },
+  { label: 'Seoul Forest', to: '/search?q=Seoul+Forest' },
 ]
 
 const submitSearch = () => {
@@ -27,37 +28,49 @@ const submitSearch = () => {
   })
 }
 
-const searchKeyword = (keyword: string) => {
-  query.value = keyword
-  submitSearch()
-}
 </script>
 
 <template>
   <section
-    class="relative overflow-hidden border-b border-slate-100 bg-blue-50/55"
+    class="relative isolate min-h-[520px] overflow-hidden border-b border-slate-900 bg-[#081224] lg:min-h-[560px]"
   >
     <div
-      class="mx-auto flex min-h-[288px] max-w-7xl flex-col justify-center px-5 py-8 md:min-h-[365px] md:py-14 lg:px-8"
+      class="absolute inset-y-0 left-1/2 -z-10 w-full max-w-[1800px] -translate-x-1/2 overflow-hidden"
     >
-      <div class="max-w-3xl">
+      <img
+        :src="heroImagePath"
+        alt=""
+        class="h-full w-full object-cover object-[64%_center] lg:object-[65%_center]"
+        fetchpriority="high"
+        decoding="async"
+      >
+      <div
+        class="absolute inset-0 bg-[linear-gradient(to_right,rgba(8,18,36,0.84)_0%,rgba(8,18,36,0.60)_45%,rgba(8,18,36,0.58)_70%,rgba(8,18,36,0.84)_100%)] lg:bg-[linear-gradient(to_right,rgba(8,18,36,1)_0%,rgba(8,18,36,0.80)_14%,rgba(8,18,36,0.52)_45%,rgba(8,18,36,0.12)_72%,rgba(8,18,36,0.68)_90%,rgba(8,18,36,1)_100%)]"
+      />
+    </div>
+
+    <div
+      class="mx-auto flex min-h-[520px] max-w-7xl items-center px-5 py-9 sm:py-12 lg:min-h-[560px] lg:px-8 lg:py-14"
+    >
+      <div class="w-full max-w-3xl lg:max-w-[60%]">
+        <p class="text-sm font-semibold tracking-[0.01em] text-blue-100">
+          Explore Korea your way
+        </p>
         <h1
-          class="text-4xl font-bold leading-[1.05] tracking-tight text-slate-950 md:text-6xl"
+          class="mt-3 max-w-3xl text-[38px] font-bold leading-[1.04] tracking-[-0.04em] text-white sm:text-5xl md:text-6xl"
         >
-          Explore Korea
-          <br>
-          with confidence.
+          Discover Korea beyond
+          <span class="block">the obvious</span>
         </h1>
 
         <p
-          class="mt-4 max-w-xl text-base leading-7 text-slate-600 md:text-lg"
+          class="mt-4 max-w-2xl text-[15px] leading-6 text-slate-100 sm:text-base sm:leading-7 md:text-lg"
         >
-          Find places, routes, food and practical travel help
-          for your Korea trip.
+          Find places, routes, local food, and practical guides for exploring Korea with confidence.
         </p>
 
         <form
-          class="mt-7 flex max-w-3xl rounded-2xl bg-white p-1.5 shadow-md shadow-slate-300/25 ring-1 ring-slate-200"
+          class="mt-7 flex max-w-3xl rounded-2xl bg-white p-1.5 shadow-lg shadow-slate-950/25 ring-1 ring-white/70 focus-within:ring-2 focus-within:ring-blue-200"
           @submit.prevent="submitSearch"
         >
           <div class="flex flex-1 items-center px-3">
@@ -69,34 +82,33 @@ const searchKeyword = (keyword: string) => {
             <input
               v-model="query"
               type="search"
-              placeholder="What do you want to know about Korea?"
-              class="w-full border-0 bg-transparent px-3 py-3 text-base outline-none placeholder:text-slate-400"
+              placeholder="Search places, routes, food, or travel questions"
+              class="w-full border-0 bg-transparent px-3 py-3.5 text-[15px] outline-none placeholder:text-slate-400 sm:text-base"
             >
           </div>
 
           <button
             type="submit"
-            class="rounded-xl bg-blue-600 px-4 py-3 font-semibold text-white transition hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 sm:px-7"
+            class="rounded-xl bg-blue-600 px-4 py-3.5 text-sm font-semibold text-white shadow-sm shadow-blue-600/20 transition hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 sm:px-7 sm:text-base"
           >
             Search
           </button>
         </form>
 
         <div class="mt-4 flex flex-wrap gap-2">
-          <span class="mr-1 py-1.5 text-sm text-slate-500">
-            Try searching:
-          </span>
-
-          <button
-            v-for="item in popularQueries"
-            :key="item"
-            type="button"
-            class="rounded-full bg-white px-3.5 py-2 text-sm font-medium text-slate-700 ring-1 ring-slate-200 transition hover:border-blue-200 hover:text-blue-700"
-            @click="searchKeyword(item)"
+          <NuxtLink
+            v-for="item in suggestions"
+            :key="item.label"
+            :to="item.to"
+            class="rounded-full bg-white/95 px-3 py-1.5 text-[13px] font-medium text-slate-700 ring-1 ring-white/70 transition hover:bg-white hover:text-blue-700 sm:px-3.5 sm:text-sm"
           >
-            {{ item }}
-          </button>
+            {{ item.label }}
+          </NuxtLink>
         </div>
+
+        <p class="mt-4 max-w-2xl text-[13px] leading-5 text-slate-100 sm:text-sm">
+          Curated places, practical travel knowledge, and local routes for exploring Korea with confidence.
+        </p>
       </div>
     </div>
   </section>

@@ -28,19 +28,13 @@ export const discovery = {
     { label: 'Routes', description: 'Ready-made ways to explore', to: search({ type: 'routes' }), icon: Route },
     { label: 'Guides', description: 'Practical trip know-how', to: search({ type: 'guides' }), icon: BookOpen },
   ],
-  travelEssentials: [
-    { label: 'Getting around', description: 'Subways, buses and practical transport', guideType: 'transport', to: search({ type: 'guides', guide_type: 'transport' }), icon: TrainFront },
-    { label: 'Payments', description: 'Cards, cash and everyday payment', guideType: 'payment', to: search({ type: 'guides', guide_type: 'payment' }), icon: CreditCard },
-    { label: 'SIM & eSIM', description: 'Stay connected from arrival', guideType: 'sim', to: search({ type: 'guides', guide_type: 'sim' }), icon: Wifi },
-    { label: 'Maps', description: 'Navigate Korea with confidence', guideType: 'maps', to: search({ type: 'guides', guide_type: 'maps' }), icon: Map },
-  ],
-  firstTime: [
-    { label: 'Arrive in Korea', guideType: 'arrival', to: search({ type: 'guides', guide_type: 'arrival' }), icon: PlaneLanding },
-    { label: 'Get Internet', guideType: 'sim', to: search({ type: 'guides', guide_type: 'sim' }), icon: Wifi },
-    { label: 'Pay with confidence', guideType: 'payment', to: search({ type: 'guides', guide_type: 'payment' }), icon: CreditCard },
-    { label: 'Get to the city', guideType: 'transport', to: search({ type: 'guides', guide_type: 'transport' }), icon: TrainFront },
-    { label: 'Use local maps', guideType: 'maps', to: search({ type: 'guides', guide_type: 'maps' }), icon: Map },
-    { label: 'Know the basics', guideType: 'etiquette', to: search({ type: 'guides', guide_type: 'etiquette' }), icon: HandHeart },
+  travelBasics: [
+    { title: 'Which map app should I use?', description: 'Naver Map, Kakao Map, Google Maps — what works in Korea?', guideType: 'maps', to: search({ type: 'guides', guide_type: 'maps' }), icon: Map },
+    { title: 'T-money or Climate Card?', description: 'Choose the right transit card for your trip.', guideType: 'transport', to: search({ type: 'guides', guide_type: 'transport' }), icon: TrainFront },
+    { title: 'Will my credit card work?', description: 'Cards, cash, ATMs and everyday payments in Korea.', guideType: 'payment', to: search({ type: 'guides', guide_type: 'payment' }), icon: CreditCard },
+    { title: 'SIM, eSIM or Wi-Fi?', description: 'Stay connected from the moment you arrive.', guideType: 'sim', to: search({ type: 'guides', guide_type: 'sim' }), icon: Wifi },
+    { title: 'How do I get from the airport?', description: 'Train, airport bus, taxi and late-night options.', guideType: 'arrival', to: search({ type: 'guides', guide_type: 'arrival' }), icon: PlaneLanding },
+    { title: 'What should I know before I arrive?', description: 'Language, etiquette and practical first-day basics.', guideType: 'etiquette', to: search({ type: 'guides', guide_type: 'etiquette' }), icon: HandHeart },
   ],
   themes: [
     { label: 'Cafes', tag: 'cafe', to: search({ tag: 'cafe' }), color: 'from-stone-300 to-slate-600' },

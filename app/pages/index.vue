@@ -55,6 +55,8 @@ useSeoMeta({
     <main>
       <HomeHeroSearch />
 
+      <HomeTravelBasics />
+
       <HomeExploreTypes />
 
       <HomePopularNow
@@ -62,12 +64,6 @@ useSeoMeta({
         :pending="pending"
         :failed="hasError"
       />
-
-      <HomeTravelEssentials />
-
-      <div id="first-time">
-        <HomeFirstTimeKorea />
-      </div>
 
       <HomeDiscoverThemes />
 
