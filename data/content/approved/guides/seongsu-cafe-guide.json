@@ -7,9 +7,12 @@
   "reviewed_at": null,
   "review_note": null,
   "source_name": "Locorea Editorial",
+  "source_url": null,
   "last_verified_at": "2026-09-25T00:00:00+00:00",
   "featured": false,
-  "tag_slugs": ["cafe"],
+  "tag_slugs": [
+    "cafe"
+  ],
   "translation": {
     "language_code": "en",
     "title": "Seongsu Cafe Guide",

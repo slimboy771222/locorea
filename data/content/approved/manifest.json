@@ -4,6 +4,7 @@
     "amore-seongsu",
     "cafe-onion-seongsu",
     "daelim-warehouse-gallery",
+    "jade-and-water-seongsu-lcdc",
     "mokro-garden",
     "musinsa-kicks-seongsu",
     "romantic-move-seongsu",
@@ -16,12 +17,19 @@
   "routes": [
     "seongsu-beauty-fashion-route",
     "seongsu-cafe-shopping-walk",
+    "seongsu-first-timer-highlights",
+    "seongsu-local-food-and-dessert-walk",
+    "seoul-forest-to-seongsu-design-walk",
     "slow-seongsu-local-walk"
   ],
   "guides": [
+    "first-time-in-seongsu",
     "getting-to-seongsu-and-seoul-forest",
     "how-to-explore-seongsu",
     "seongsu-cafe-guide",
+    "seongsu-half-day-planning-guide",
+    "seongsu-k-beauty-and-flagship-guide",
+    "seoul-forest-and-seongsu-slow-day",
     "shopping-and-popups-in-seongsu"
   ]
 }

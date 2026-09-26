@@ -8,11 +8,15 @@
   "review_note": null,
   "area_slug": "seongsu",
   "source_name": "Locorea Editorial",
+  "source_url": null,
   "duration_minutes": 270,
   "distance_km": 3.8,
   "difficulty": "easy",
   "last_verified_at": "2026-09-25T00:00:00+00:00",
-  "tag_slugs": ["cafe", "shopping"],
+  "tag_slugs": [
+    "cafe",
+    "shopping"
+  ],
   "translation": {
     "language_code": "en",
     "name": "Seongsu Cafe & Shopping Walk",

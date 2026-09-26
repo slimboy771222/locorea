@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "slug": "seoul-forest-to-seongsu-design-walk",
+  "route_type": "walking",
+  "status": "published",
+  "review_status": "approved",
+  "reviewed_at": "2026-09-26T12:04:06.435+00:00",
+  "review_note": null,
+  "area_slug": "seongsu",
+  "source_name": "Locorea Editorial",
+  "source_url": "https://english.visitseoul.net/editorspicks/2026-Seongsu/ENNky3epf",
+  "duration_minutes": 270,
+  "distance_km": 4,
+  "difficulty": "easy",
+  "last_verified_at": "2026-09-26T00:00:00+00:00",
+  "tag_slugs": [],
+  "translation": {
+    "language_code": "en",
+    "name": "Seoul Forest to Seongsu Design Walk",
+    "summary": "A relaxed walk from Seoul Forest into Seongsu's tea, immersive retail, warehouse architecture and creative streets.",
+    "description": "This route connects the calmer Seoul Forest side of the neighborhood with Seongsu's design-heavy retail and industrial reuse. It works well for travelers who prefer walking and browsing over a tightly scheduled checklist. The route moves from green space to Korean tea, immersive flagship retail, a converted warehouse landmark and finally Yeonmujang-gil."
+  },
+  "stops": [
+    {
+      "place_slug": "seoul-forest",
+      "stay_minutes": 60,
+      "travel_minutes_to_next": 10,
+      "note": "Begin with an easy park walk before moving into the busier commercial streets."
+    },
+    {
+      "place_slug": "omot-seongsu",
+      "stay_minutes": 50,
+      "travel_minutes_to_next": 15,
+      "note": "A slower Korean tea stop; confirm reservation rules if you want a course experience."
+    },
+    {
+      "place_slug": "haus-nowhere-seoul",
+      "stay_minutes": 45,
+      "travel_minutes_to_next": 14,
+      "note": "Explore the flagship as both retail and spatial design."
+    },
+    {
+      "place_slug": "daelim-warehouse-gallery",
+      "stay_minutes": 45,
+      "travel_minutes_to_next": 8,
+      "note": "Notice how Seongsu reuses former industrial buildings as creative spaces."
+    },
+    {
+      "place_slug": "seongsu-yeonmujang-gil",
+      "stay_minutes": 45,
+      "travel_minutes_to_next": 0,
+      "note": "Finish by browsing side streets and any current pop-ups around Yeonmujang-gil."
+    }
+  ]
+}

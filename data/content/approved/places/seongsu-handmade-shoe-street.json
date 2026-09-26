@@ -8,13 +8,17 @@
   "review_note": null,
   "area_slug": "seongsu",
   "source_name": "Locorea Editorial",
+  "source_url": null,
   "last_verified_at": null,
-  "tag_slugs": ["local", "shopping"],
   "foreigner_friendly": true,
   "phone": null,
   "website_url": null,
   "naver_map_url": null,
   "kakao_map_url": null,
+  "tag_slugs": [
+    "local",
+    "shopping"
+  ],
   "translation": {
     "language_code": "en",
     "name": "Seongsu Handmade Shoe Street",

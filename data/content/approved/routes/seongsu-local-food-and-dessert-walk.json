@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "slug": "seongsu-local-food-and-dessert-walk",
+  "route_type": "food",
+  "status": "published",
+  "review_status": "approved",
+  "reviewed_at": "2026-09-26T12:04:39.071+00:00",
+  "review_note": null,
+  "area_slug": "seongsu",
+  "source_name": "Locorea Editorial",
+  "source_url": "https://english.visitseoul.net/editorspicks/2026-Seongsu/ENNky3epf",
+  "duration_minutes": 300,
+  "distance_km": 3.5,
+  "difficulty": "easy",
+  "last_verified_at": "2026-09-26T00:00:00+00:00",
+  "tag_slugs": [],
+  "translation": {
+    "language_code": "en",
+    "name": "Seongsu Local Food & Dessert Walk",
+    "summary": "A food-focused Seongsu route mixing specialty coffee, a hearty Korean meal, local-style dessert and a final cafe stop.",
+    "description": "Seongsu is famous for trend-led cafes, but it also has long-running local food and newer Korean comfort-food spots. This route mixes both sides. It is intentionally paced with walking and browsing time between stops, so travelers do not need to order a full meal at every location."
+  },
+  "stops": [
+    {
+      "place_slug": "lowkey-seongsu",
+      "stay_minutes": 40,
+      "travel_minutes_to_next": 15,
+      "note": "Start with specialty coffee rather than a heavy meal."
+    },
+    {
+      "place_slug": "somunnan-seongsu-gamjatang",
+      "stay_minutes": 60,
+      "travel_minutes_to_next": 15,
+      "note": "Make this the main meal stop. Busy meal periods may mean a wait."
+    },
+    {
+      "place_slug": "hanjungsun-seongsu",
+      "stay_minutes": 20,
+      "travel_minutes_to_next": 12,
+      "note": "Pick up a takeout dessert; there is no need to plan a long stop."
+    },
+    {
+      "place_slug": "scene-seongsu",
+      "stay_minutes": 55,
+      "travel_minutes_to_next": 10,
+      "note": "Use the cafe and select-shop format as a longer rest stop."
+    },
+    {
+      "place_slug": "seongsu-yeonmujang-gil",
+      "stay_minutes": 45,
+      "travel_minutes_to_next": 0,
+      "note": "End with an unstructured walk so you can add a spontaneous snack or pop-up."
+    }
+  ]
+}

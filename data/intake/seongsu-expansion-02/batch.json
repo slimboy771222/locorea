@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "batch_id": "seongsu-expansion-02",
+  "title": "Seongsu Expansion 02",
+  "area_slug": "seongsu",
+  "default_source_name": "Locorea Editorial",
+  "notes": "Second live intake batch. Adds route and guide content built around existing approved/imported Seongsu places. No new places."
+}

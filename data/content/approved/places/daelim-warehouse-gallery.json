@@ -8,13 +8,16 @@
   "review_note": null,
   "area_slug": "seongsu",
   "source_name": "Locorea Editorial",
+  "source_url": null,
   "last_verified_at": "2026-09-25T00:00:00+00:00",
-  "tag_slugs": ["culture"],
   "foreigner_friendly": true,
   "phone": "+82-507-1390-9669",
   "website_url": null,
   "naver_map_url": null,
   "kakao_map_url": null,
+  "tag_slugs": [
+    "culture"
+  ],
   "translation": {
     "language_code": "en",
     "name": "Daelim Warehouse Gallery",

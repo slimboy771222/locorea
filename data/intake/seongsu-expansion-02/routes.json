@@ -1,0 +1,143 @@
+[
+  {
+    "slug": "seongsu-first-timer-highlights",
+    "route_type": "half_day",
+    "name": "Seongsu First-Timer Highlights",
+    "summary": "A compact first visit to Seongsu combining its creative streets, K-beauty, photo culture, Seoul Forest and a local meal.",
+    "description": "This half-day route is designed for a first visit to Seongsu. It starts with the neighborhood's signature creative street atmosphere, adds an interactive K-beauty stop and a quick self-photo experience, then slows down in Seoul Forest before ending with a classic local food option. Pop-up schedules and store hours change often, so treat the route as a flexible framework rather than a fixed timetable.",
+    "duration_minutes": 300,
+    "distance_km": 4.5,
+    "difficulty": "easy",
+    "status": "draft",
+    "area_slug": "seongsu",
+    "source_name": "Locorea Editorial",
+    "source_url": "https://english.visitseoul.net/mvp/SeongsuHotspot-1day/ENN8khsan",
+    "last_verified_at": "2026-09-26",
+    "stops": [
+      {
+        "place_slug": "seongsu-yeonmujang-gil",
+        "stay_minutes": 45,
+        "travel_minutes_to_next": 8,
+        "note": "Start by walking the main creative street and checking current pop-ups."
+      },
+      {
+        "place_slug": "amore-seongsu",
+        "stay_minutes": 60,
+        "travel_minutes_to_next": 10,
+        "note": "Explore K-beauty experiences; some personalized services may require reservations."
+      },
+      {
+        "place_slug": "seongsu-self-photo-booth",
+        "stay_minutes": 20,
+        "travel_minutes_to_next": 18,
+        "note": "Choose a booth concept that matches your style rather than picking the first one you see."
+      },
+      {
+        "place_slug": "seoul-forest",
+        "stay_minutes": 75,
+        "travel_minutes_to_next": 18,
+        "note": "Use the park as the slower middle section of the route."
+      },
+      {
+        "place_slug": "seongsu-dong-galbi-alley",
+        "stay_minutes": 60,
+        "travel_minutes_to_next": 0,
+        "note": "Finish with a local meal; individual restaurant hours and queues vary."
+      }
+    ]
+  },
+  {
+    "slug": "seoul-forest-to-seongsu-design-walk",
+    "route_type": "walking",
+    "name": "Seoul Forest to Seongsu Design Walk",
+    "summary": "A relaxed walk from Seoul Forest into Seongsu's tea, immersive retail, warehouse architecture and creative streets.",
+    "description": "This route connects the calmer Seoul Forest side of the neighborhood with Seongsu's design-heavy retail and industrial reuse. It works well for travelers who prefer walking and browsing over a tightly scheduled checklist. The route moves from green space to Korean tea, immersive flagship retail, a converted warehouse landmark and finally Yeonmujang-gil.",
+    "duration_minutes": 270,
+    "distance_km": 4.0,
+    "difficulty": "easy",
+    "status": "draft",
+    "area_slug": "seongsu",
+    "source_name": "Locorea Editorial",
+    "source_url": "https://english.visitseoul.net/editorspicks/2026-Seongsu/ENNky3epf",
+    "last_verified_at": "2026-09-26",
+    "stops": [
+      {
+        "place_slug": "seoul-forest",
+        "stay_minutes": 60,
+        "travel_minutes_to_next": 10,
+        "note": "Begin with an easy park walk before moving into the busier commercial streets."
+      },
+      {
+        "place_slug": "omot-seongsu",
+        "stay_minutes": 50,
+        "travel_minutes_to_next": 15,
+        "note": "A slower Korean tea stop; confirm reservation rules if you want a course experience."
+      },
+      {
+        "place_slug": "haus-nowhere-seoul",
+        "stay_minutes": 45,
+        "travel_minutes_to_next": 14,
+        "note": "Explore the flagship as both retail and spatial design."
+      },
+      {
+        "place_slug": "daelim-warehouse-gallery",
+        "stay_minutes": 45,
+        "travel_minutes_to_next": 8,
+        "note": "Notice how Seongsu reuses former industrial buildings as creative spaces."
+      },
+      {
+        "place_slug": "seongsu-yeonmujang-gil",
+        "stay_minutes": 45,
+        "travel_minutes_to_next": 0,
+        "note": "Finish by browsing side streets and any current pop-ups around Yeonmujang-gil."
+      }
+    ]
+  },
+  {
+    "slug": "seongsu-local-food-and-dessert-walk",
+    "route_type": "food",
+    "name": "Seongsu Local Food & Dessert Walk",
+    "summary": "A food-focused Seongsu route mixing specialty coffee, a hearty Korean meal, local-style dessert and a final cafe stop.",
+    "description": "Seongsu is famous for trend-led cafes, but it also has long-running local food and newer Korean comfort-food spots. This route mixes both sides. It is intentionally paced with walking and browsing time between stops, so travelers do not need to order a full meal at every location.",
+    "duration_minutes": 300,
+    "distance_km": 3.5,
+    "difficulty": "easy",
+    "status": "draft",
+    "area_slug": "seongsu",
+    "source_name": "Locorea Editorial",
+    "source_url": "https://english.visitseoul.net/editorspicks/2026-Seongsu/ENNky3epf",
+    "last_verified_at": "2026-09-26",
+    "stops": [
+      {
+        "place_slug": "lowkey-seongsu",
+        "stay_minutes": 40,
+        "travel_minutes_to_next": 15,
+        "note": "Start with specialty coffee rather than a heavy meal."
+      },
+      {
+        "place_slug": "somunnan-seongsu-gamjatang",
+        "stay_minutes": 60,
+        "travel_minutes_to_next": 15,
+        "note": "Make this the main meal stop. Busy meal periods may mean a wait."
+      },
+      {
+        "place_slug": "hanjungsun-seongsu",
+        "stay_minutes": 20,
+        "travel_minutes_to_next": 12,
+        "note": "Pick up a takeout dessert; there is no need to plan a long stop."
+      },
+      {
+        "place_slug": "scene-seongsu",
+        "stay_minutes": 55,
+        "travel_minutes_to_next": 10,
+        "note": "Use the cafe and select-shop format as a longer rest stop."
+      },
+      {
+        "place_slug": "seongsu-yeonmujang-gil",
+        "stay_minutes": 45,
+        "travel_minutes_to_next": 0,
+        "note": "End with an unstructured walk so you can add a spontaneous snack or pop-up."
+      }
+    ]
+  }
+]

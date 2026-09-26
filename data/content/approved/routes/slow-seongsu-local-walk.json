@@ -8,11 +8,14 @@
   "review_note": null,
   "area_slug": "seongsu",
   "source_name": "Locorea Editorial",
+  "source_url": null,
   "duration_minutes": 300,
   "distance_km": 4.2,
   "difficulty": "easy",
   "last_verified_at": "2026-09-25T00:00:00+00:00",
-  "tag_slugs": ["local"],
+  "tag_slugs": [
+    "local"
+  ],
   "translation": {
     "language_code": "en",
     "name": "Slow Seongsu Local Walk",
