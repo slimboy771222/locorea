@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "slug": "seongsu-cafe-shopping-walk",
+  "route_type": "half_day",
+  "status": "published",
+  "review_status": "approved",
+  "reviewed_at": null,
+  "review_note": null,
+  "area_slug": "seongsu",
+  "source_name": "Locorea Editorial",
+  "duration_minutes": 270,
+  "distance_km": 3.8,
+  "difficulty": "easy",
+  "last_verified_at": "2026-09-25T00:00:00+00:00",
+  "translation": {
+    "language_code": "en",
+    "name": "Seongsu Cafe & Shopping Walk",
+    "summary": "A half-day walk through Seongsu combining signature cafes, shopping streets, pop-up culture and industrial-style spaces.",
+    "description": "This route is designed for first-time visitors who want to experience the modern side of Seongsu in a compact half day. It moves through cafe, shopping and warehouse-style spaces around the neighborhood's main streets."
+  },
+  "stops": [
+    {
+      "place_slug": "cafe-onion-seongsu",
+      "stay_minutes": 50,
+      "travel_minutes_to_next": 10,
+      "note": "Start with coffee in one of Seongsu's best-known industrial-style cafe spaces."
+    },
+    {
+      "place_slug": "seongsu-yeonmujang-gil",
+      "stay_minutes": 45,
+      "travel_minutes_to_next": 10,
+      "note": "Walk Yeonmujang-gil and explore side streets, boutiques and current pop-ups."
+    },
+    {
+      "place_slug": "scene-seongsu",
+      "stay_minutes": 40,
+      "travel_minutes_to_next": 10,
+      "note": "Take a break at a multi-use cafe and retail space."
+    },
+    {
+      "place_slug": "daelim-warehouse-gallery",
+      "stay_minutes": 55,
+      "travel_minutes_to_next": 10,
+      "note": "Experience Seongsu's warehouse-regeneration style in a large cultural cafe space."
+    },
+    {
+      "place_slug": "musinsa-kicks-seongsu",
+      "stay_minutes": 35,
+      "travel_minutes_to_next": null,
+      "note": "Finish near Seongsu Station with a contemporary footwear and fashion stop."
+    }
+  ]
+}

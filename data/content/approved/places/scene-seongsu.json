@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "slug": "scene-seongsu",
+  "place_type": "cafe",
+  "status": "published",
+  "review_status": "approved",
+  "reviewed_at": null,
+  "review_note": null,
+  "area_slug": "seongsu",
+  "source_name": "Locorea Editorial",
+  "last_verified_at": "2026-09-25T00:00:00+00:00",
+  "foreigner_friendly": true,
+  "phone": "+82-507-1493-2127",
+  "website_url": null,
+  "naver_map_url": null,
+  "kakao_map_url": null,
+  "translation": {
+    "language_code": "en",
+    "name": "Scene Seongsu",
+    "summary": "A large cafe and select-shop space in Seongsu that also hosts pop-up events.",
+    "description": "Scene is a multi-use cafe space in the Seongsu cafe district. The first floor operates as a cafe and the upper level functions as a select shop, while the venue is also used for temporary pop-ups and brand events.",
+    "address_text": "1F, 20 Yeonmujang 5-gil, Seongdong-gu, Seoul",
+    "local_tip": "Because the space can host pop-ups, the atmosphere may change between visits. Check what is running when you plan your trip."
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "places": [
+    "amore-seongsu",
+    "cafe-onion-seongsu",
+    "daelim-warehouse-gallery",
+    "mokro-garden",
+    "musinsa-kicks-seongsu",
+    "romantic-move-seongsu",
+    "scene-seongsu",
+    "seongsu-dong-galbi-alley",
+    "seongsu-handmade-shoe-street",
+    "seongsu-yeonmujang-gil",
+    "seoul-forest"
+  ],
+  "routes": [
+    "seongsu-beauty-fashion-route",
+    "seongsu-cafe-shopping-walk",
+    "slow-seongsu-local-walk"
+  ],
+  "guides": [
+    "getting-to-seongsu-and-seoul-forest",
+    "how-to-explore-seongsu",
+    "seongsu-cafe-guide",
+    "shopping-and-popups-in-seongsu"
+  ]
+}

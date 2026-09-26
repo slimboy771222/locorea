@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "slug": "slow-seongsu-local-walk",
+  "route_type": "half_day",
+  "status": "published",
+  "review_status": "approved",
+  "reviewed_at": null,
+  "review_note": null,
+  "area_slug": "seongsu",
+  "source_name": "Locorea Editorial",
+  "duration_minutes": 300,
+  "distance_km": 4.2,
+  "difficulty": "easy",
+  "last_verified_at": "2026-09-25T00:00:00+00:00",
+  "translation": {
+    "language_code": "en",
+    "name": "Slow Seongsu Local Walk",
+    "summary": "A relaxed Seongsu route mixing Seoul Forest, a quiet cafe, local food and the neighborhood's shoe-making heritage.",
+    "description": "This route avoids a purely trend-focused itinerary and combines greenery, quieter cafe time, local food and Seongsu's long connection to footwear production. It suits travelers who want a slower neighborhood experience."
+  },
+  "stops": [
+    {
+      "place_slug": "seoul-forest",
+      "stay_minutes": 70,
+      "travel_minutes_to_next": 10,
+      "note": "Begin with a relaxed walk through Seoul Forest."
+    },
+    {
+      "place_slug": "mokro-garden",
+      "stay_minutes": 50,
+      "travel_minutes_to_next": 15,
+      "note": "Take a quieter cafe break near Seoul Forest."
+    },
+    {
+      "place_slug": "seongsu-dong-galbi-alley",
+      "stay_minutes": 60,
+      "travel_minutes_to_next": 15,
+      "note": "Stop for a more traditional local meal in Seongsu."
+    },
+    {
+      "place_slug": "seongsu-handmade-shoe-street",
+      "stay_minutes": 45,
+      "travel_minutes_to_next": 10,
+      "note": "Explore the neighborhood's long-standing handmade shoe district."
+    },
+    {
+      "place_slug": "romantic-move-seongsu",
+      "stay_minutes": 35,
+      "travel_minutes_to_next": null,
+      "note": "Finish with a contemporary Korean footwear brand connected to Seongsu's shoe culture."
+    }
+  ]
+}

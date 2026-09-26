@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "slug": "amore-seongsu",
+  "place_type": "experience",
+  "status": "published",
+  "review_status": "approved",
+  "reviewed_at": null,
+  "review_note": null,
+  "area_slug": "seongsu",
+  "source_name": "Locorea Editorial",
+  "last_verified_at": "2026-09-25T00:00:00+00:00",
+  "foreigner_friendly": true,
+  "phone": "+82-2-469-8600",
+  "website_url": "https://www.amore-seongsu.com",
+  "naver_map_url": null,
+  "kakao_map_url": null,
+  "translation": {
+    "language_code": "en",
+    "name": "AMORE Seongsu",
+    "summary": "A K-beauty experience space in Seongsu where visitors can explore products and personalized beauty services in a renovated industrial setting.",
+    "description": "AMORE Seongsu is designed as an experiential beauty space rather than a conventional shop. Visitors can explore a wide range of beauty products and services in a renovated building with a garden-focused interior.",
+    "address_text": "7 Achasan-ro 11-gil, Seongdong-gu, Seoul",
+    "local_tip": "Some personalized beauty experiences may require reservations. Check the current program before visiting."
+  }
+}

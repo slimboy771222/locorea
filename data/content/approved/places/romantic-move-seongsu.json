@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "slug": "romantic-move-seongsu",
+  "place_type": "shopping",
+  "status": "published",
+  "review_status": "approved",
+  "reviewed_at": null,
+  "review_note": null,
+  "area_slug": "seongsu",
+  "source_name": "Locorea Editorial",
+  "last_verified_at": "2026-09-25T00:00:00+00:00",
+  "foreigner_friendly": true,
+  "phone": "+82-2-498-7749",
+  "website_url": null,
+  "naver_map_url": null,
+  "kakao_map_url": null,
+  "translation": {
+    "language_code": "en",
+    "name": "Romantic Move Seongsu Flagship Store",
+    "summary": "A Seongsu flagship store for a Korean shoe brand focused on craftsmanship and timeless footwear design.",
+    "description": "Romantic Move's Seongsu flagship reflects the neighborhood's continuing connection to handmade footwear. It is a useful stop for travelers who want to see a contemporary Korean shoe brand within Seongsu's traditional shoe-making district.",
+    "address_text": "1F, 36 Seongsui-ro 18-gil, Seongdong-gu, Seoul",
+    "local_tip": "Combine this stop with Seongsu Handmade Shoe Street to compare the area's traditional and contemporary footwear culture."
+  }
+}

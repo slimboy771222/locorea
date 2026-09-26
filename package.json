@@ -17,7 +17,11 @@
     "data:import:guides": "tsx scripts/import/import-guides.ts",
     "data:import:guides:dry": "tsx scripts/import/import-guides.ts --dry-run",
     "data:release:seongsu:dry": "tsx scripts/release/publish-content.ts data/releases/seongsu-mvp.json --dry-run",
-    "data:release:seongsu": "tsx scripts/release/publish-content.ts data/releases/seongsu-mvp.json"
+    "data:release:seongsu": "tsx scripts/release/publish-content.ts data/releases/seongsu-mvp.json",
+    "data:export:approved": "tsx scripts/content/export-approved.ts",
+    "data:export:approved:dry": "tsx scripts/content/export-approved.ts --dry-run",
+    "data:import:approved": "tsx scripts/content/import-approved.ts",
+    "data:import:approved:dry": "tsx scripts/content/import-approved.ts --dry-run"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.117.1",

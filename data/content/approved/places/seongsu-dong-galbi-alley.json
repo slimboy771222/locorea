@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "slug": "seongsu-dong-galbi-alley",
+  "place_type": "restaurant",
+  "status": "published",
+  "review_status": "approved",
+  "reviewed_at": null,
+  "review_note": null,
+  "area_slug": "seongsu",
+  "source_name": "Locorea Editorial",
+  "last_verified_at": "2026-09-25T00:00:00+00:00",
+  "foreigner_friendly": true,
+  "phone": null,
+  "website_url": null,
+  "naver_map_url": null,
+  "kakao_map_url": null,
+  "translation": {
+    "language_code": "en",
+    "name": "Seongsu-dong Galbi Alley",
+    "summary": "A long-running food alley near Seoul Forest known for Korean-style grilled ribs and an older local atmosphere.",
+    "description": "Seongsu-dong Galbi Alley developed around a cluster of galbi restaurants and offers a very different mood from Seongsu's newer cafes and concept stores. It is useful for travelers who want a traditional local meal within walking distance of Seoul Forest.",
+    "address_text": "27 Seoulsup 4-gil, Seongdong-gu, Seoul",
+    "local_tip": "Meal times can be busy. Visit before the main lunch or dinner rush if you prefer a quieter experience."
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "slug": "cafe-onion-seongsu",
+  "place_type": "cafe",
+  "status": "published",
+  "review_status": "approved",
+  "reviewed_at": null,
+  "review_note": null,
+  "area_slug": "seongsu",
+  "source_name": "Locorea Editorial",
+  "last_verified_at": null,
+  "foreigner_friendly": true,
+  "phone": null,
+  "website_url": null,
+  "naver_map_url": null,
+  "kakao_map_url": null,
+  "translation": {
+    "language_code": "en",
+    "name": "Cafe Onion Seongsu",
+    "summary": "An industrial-style cafe stop in Seongsu.",
+    "description": "A popular-style cafe experience that fits naturally into a Seongsu walking route.",
+    "address_text": "Seongsu-dong, Seongdong-gu, Seoul",
+    "local_tip": "Weekends in Seongsu can be busy, so allow extra time when planning cafe stops."
+  }
+}

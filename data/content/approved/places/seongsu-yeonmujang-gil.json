@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "slug": "seongsu-yeonmujang-gil",
+  "place_type": "shopping",
+  "status": "published",
+  "review_status": "approved",
+  "reviewed_at": null,
+  "review_note": null,
+  "area_slug": "seongsu",
+  "source_name": "Locorea Editorial",
+  "last_verified_at": "2026-09-25T00:00:00+00:00",
+  "foreigner_friendly": true,
+  "phone": null,
+  "website_url": null,
+  "naver_map_url": null,
+  "kakao_map_url": null,
+  "translation": {
+    "language_code": "en",
+    "name": "Seongsu Yeonmujang-gil",
+    "summary": "A lively Seongsu street where former factory spaces, boutiques, cafes and pop-up stores mix with the neighborhood's industrial character.",
+    "description": "Yeonmujang-gil is one of Seongsu's main walking streets. Old industrial buildings and shoe-factory traces sit alongside fashion stores, cafes, galleries and frequently changing brand pop-ups. It works well as a central axis for exploring Seongsu on foot.",
+    "address_text": "1 Yeonmujang-gil, Seongdong-gu, Seoul",
+    "local_tip": "Start near Seongsu Station and explore the side streets as well as the main road. Pop-up schedules change often, so check current listings before visiting."
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "slug": "daelim-warehouse-gallery",
+  "place_type": "cafe",
+  "status": "published",
+  "review_status": "approved",
+  "reviewed_at": null,
+  "review_note": null,
+  "area_slug": "seongsu",
+  "source_name": "Locorea Editorial",
+  "last_verified_at": "2026-09-25T00:00:00+00:00",
+  "foreigner_friendly": true,
+  "phone": "+82-507-1390-9669",
+  "website_url": null,
+  "naver_map_url": null,
+  "kakao_map_url": null,
+  "translation": {
+    "language_code": "en",
+    "name": "Daelim Warehouse Gallery",
+    "summary": "A landmark warehouse-style cultural space in Seongsu combining a cafe, dining, gallery and industrial architecture.",
+    "description": "Daelim Warehouse preserves much of the structure and character of an older industrial building, including red brick and exposed structural elements. The large interior combines cafe, dining and gallery functions and is one of the best-known examples of Seongsu's warehouse regeneration style.",
+    "address_text": "78 Seongsui-ro, Seongdong-gu, Seoul",
+    "local_tip": "Pair it with a walk along Yeonmujang-gil. The space is especially useful as a break between shopping stops."
+  }
+}

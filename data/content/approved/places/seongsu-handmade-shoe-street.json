@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "slug": "seongsu-handmade-shoe-street",
+  "place_type": "shopping",
+  "status": "published",
+  "review_status": "approved",
+  "reviewed_at": null,
+  "review_note": null,
+  "area_slug": "seongsu",
+  "source_name": "Locorea Editorial",
+  "last_verified_at": null,
+  "foreigner_friendly": true,
+  "phone": null,
+  "website_url": null,
+  "naver_map_url": null,
+  "kakao_map_url": null,
+  "translation": {
+    "language_code": "en",
+    "name": "Seongsu Handmade Shoe Street",
+    "summary": "A local shopping area connected to Seongsu's manufacturing history.",
+    "description": "The area offers a different side of Seongsu beyond cafes and pop-up stores.",
+    "address_text": "Seongsu-dong, Seongdong-gu, Seoul",
+    "local_tip": "Explore side streets rather than staying only on the main commercial roads."
+  }
+}

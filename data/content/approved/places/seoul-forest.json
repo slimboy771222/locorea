@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "slug": "seoul-forest",
+  "place_type": "nature",
+  "status": "published",
+  "review_status": "approved",
+  "reviewed_at": null,
+  "review_note": null,
+  "area_slug": "seongsu",
+  "source_name": "Seoul Metropolitan Government",
+  "last_verified_at": null,
+  "foreigner_friendly": true,
+  "phone": null,
+  "website_url": null,
+  "naver_map_url": null,
+  "kakao_map_url": null,
+  "translation": {
+    "language_code": "en",
+    "name": "Seoul Forest",
+    "summary": "A large urban park in the Seongsu area.",
+    "description": "Seoul Forest is a popular place to start exploring Seongsu. It combines green space with easy access to nearby cafes, shops and local streets.",
+    "address_text": "Seongsu-dong, Seongdong-gu, Seoul",
+    "local_tip": "Combine Seoul Forest with nearby cafes and shopping for an easy half-day route."
+  }
+}

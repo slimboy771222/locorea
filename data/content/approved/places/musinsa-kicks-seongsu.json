@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "slug": "musinsa-kicks-seongsu",
+  "place_type": "shopping",
+  "status": "published",
+  "review_status": "approved",
+  "reviewed_at": null,
+  "review_note": null,
+  "area_slug": "seongsu",
+  "source_name": "Locorea Editorial",
+  "last_verified_at": "2026-09-25T00:00:00+00:00",
+  "foreigner_friendly": true,
+  "phone": "+82-50-7872-3069",
+  "website_url": null,
+  "naver_map_url": null,
+  "kakao_map_url": null,
+  "translation": {
+    "language_code": "en",
+    "name": "Musinsa Kicks Seongsu",
+    "summary": "A shoe-focused select shop near Seongsu Station combining footwear curation, fitting and smart in-store shopping features.",
+    "description": "Musinsa Kicks Seongsu connects Seongsu's long shoe-making history with contemporary footwear retail. The multi-level store carries a wide range of footwear categories and provides a practical stop for travelers interested in Korean fashion and sneaker culture.",
+    "address_text": "B1-2F, 96 Seongsui-ro, Seongdong-gu, Seoul",
+    "local_tip": "It is very close to Seongsu Station, so it works well as either the first or last stop of a Seongsu shopping route."
+  }
+}

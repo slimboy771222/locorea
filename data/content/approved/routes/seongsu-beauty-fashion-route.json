@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "slug": "seongsu-beauty-fashion-route",
+  "route_type": "half_day",
+  "status": "published",
+  "review_status": "approved",
+  "reviewed_at": null,
+  "review_note": null,
+  "area_slug": "seongsu",
+  "source_name": "Locorea Editorial",
+  "duration_minutes": 240,
+  "distance_km": 3.2,
+  "difficulty": "easy",
+  "last_verified_at": "2026-09-25T00:00:00+00:00",
+  "translation": {
+    "language_code": "en",
+    "name": "Seongsu Beauty & Fashion Route",
+    "summary": "A half-day Seongsu route focused on K-beauty, footwear, fashion retail and the neighborhood's trend-driven shopping streets.",
+    "description": "This route is for travelers interested in contemporary Korean beauty and fashion. It connects an experiential beauty space with footwear-focused stores and Seongsu's main shopping streets."
+  },
+  "stops": [
+    {
+      "place_slug": "amore-seongsu",
+      "stay_minutes": 60,
+      "travel_minutes_to_next": 10,
+      "note": "Start with a K-beauty experience in a renovated Seongsu space."
+    },
+    {
+      "place_slug": "musinsa-kicks-seongsu",
+      "stay_minutes": 45,
+      "travel_minutes_to_next": 10,
+      "note": "Browse contemporary Korean footwear near Seongsu Station."
+    },
+    {
+      "place_slug": "romantic-move-seongsu",
+      "stay_minutes": 40,
+      "travel_minutes_to_next": 10,
+      "note": "Compare modern Korean footwear design with Seongsu's traditional shoe-making identity."
+    },
+    {
+      "place_slug": "seongsu-yeonmujang-gil",
+      "stay_minutes": 60,
+      "travel_minutes_to_next": null,
+      "note": "Finish by exploring boutiques, concept stores and current pop-ups around Yeonmujang-gil."
+    }
+  ]
+}
