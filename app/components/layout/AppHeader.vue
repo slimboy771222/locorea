@@ -15,17 +15,18 @@ const mobileMenuOpen = ref(false)
     >
       <NuxtLink
         to="/"
-        class="flex items-center gap-2.5 text-slate-950"
+        class="flex items-center"
       >
-        <div
-          class="flex h-8 w-8 items-center justify-center rounded-[10px] bg-blue-600 text-sm font-bold text-white shadow-sm shadow-blue-600/20"
+        <img
+          src="/brand/locorea-symbol.png"
+          alt="Locorea"
+          class="h-7 w-7 object-contain sm:hidden"
         >
-          L
-        </div>
-
-        <span class="text-[19px] font-bold tracking-tight sm:text-xl">
-          Locorea
-        </span>
+        <img
+          src="/brand/locorea-wordmark-primary.png"
+          alt="Locorea"
+          class="hidden h-8 w-auto object-contain sm:block"
+        >
       </NuxtLink>
 
       <nav class="hidden items-center gap-5 text-sm font-medium text-slate-600 lg:flex">

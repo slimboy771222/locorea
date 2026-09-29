@@ -76,10 +76,8 @@ useSeoMeta({ title: 'Search Korea | Locorea', description: 'Search Locorea for p
 </script>
 
 <template>
-  <div class="min-h-screen bg-white">
-    <LayoutAppHeader />
-    <main>
-      <SearchHeader v-model="searchInput" @submit="submitSearch" />
+  <main>
+    <SearchHeader v-model="searchInput" @submit="submitSearch" />
       <section class="mx-auto max-w-7xl px-5 py-7 lg:px-8 lg:py-9">
         <div class="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
           <div><p class="text-sm font-semibold text-slate-900">{{ query ? `Results for “${query}”` : 'Browse Korea travel content' }}</p><p class="mt-1 text-sm text-slate-500">Published places, routes and guides in English.</p></div>
@@ -105,7 +103,5 @@ useSeoMeta({ title: 'Search Korea | Locorea', description: 'Search Locorea for p
           <SearchGuideResultCard v-for="item in activeTab === 'guides' ? results.guides : []" :key="item.id" :item="item" />
         </div>
       </section>
-    </main>
-    <LayoutAppFooter />
-  </div>
+  </main>
 </template>

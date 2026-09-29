@@ -15,6 +15,16 @@ export default defineNuxtConfig({
     ],
   },
 
+  hooks: {
+    'pages:extend'(pages) {
+      pages
+        .filter(page => page.path.startsWith('/admin'))
+        .forEach((page) => {
+          page.meta = { ...page.meta, layout: 'admin' }
+        })
+    },
+  },
+
   runtimeConfig: {
     public: {
       supabaseUrl: '',

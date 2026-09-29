@@ -1,45 +1,23 @@
 <script setup lang="ts">
+import { discovery } from '~/config/discovery'
+
 const {
-  getPopularPlaces,
-  getPopularGuides,
+  getCuratedPlaces,
+  getCuratedRoutes,
 } = useHomeData()
 
-const { data: homeData, pending, error } = await useAsyncData(
-  'home-data',
-  async () => {
-    const [places, popularGuides] = await Promise.all([
-      getPopularPlaces(),
-      getPopularGuides(),
-    ])
-
-    return {
-      places,
-      popularGuides,
-    }
-  },
+const { data: curatedPlaces, pending: placesPending, error: placesError } = await useAsyncData(
+  'home-curated-places',
+  () => getCuratedPlaces(discovery.worthExploringNow),
 )
 
-const popularItems = computed(() => [
-  ...(homeData.value?.places ?? []).map(place => ({
-    id: place.id,
-    slug: place.slug,
-    kind: 'place' as const,
-    type: place.place_type,
-    translations: place.place_translations,
-    cover: place.cover,
-  })),
+const { data: curatedRoutes, pending: routesPending, error: routesError } = await useAsyncData(
+  'home-curated-routes',
+  () => getCuratedRoutes(discovery.featuredRoutes),
+)
 
-  ...(homeData.value?.popularGuides ?? []).map(guide => ({
-    id: guide.id,
-    slug: guide.slug,
-    kind: 'guide' as const,
-    type: guide.guide_type,
-    translations: guide.guide_translations,
-    cover: guide.cover,
-  })),
-].slice(0, 5))
-
-const hasError = computed(() => Boolean(error.value))
+const hasPlacesError = computed(() => Boolean(placesError.value))
+const hasRoutesError = computed(() => Boolean(routesError.value))
 
 useSeoMeta({
   title: 'Locorea — Explore Korea with confidence',
@@ -49,29 +27,29 @@ useSeoMeta({
 </script>
 
 <template>
-  <div class="min-h-screen bg-white">
-    <LayoutAppHeader />
+  <main>
+    <HomeHeroSearch />
 
-    <main>
-      <HomeHeroSearch />
+    <HomeTravelBasics />
 
-      <HomeTravelBasics />
+    <HomeExploreTypes />
 
-      <HomeExploreTypes />
+    <HomeWorthExploringNow
+      :places="curatedPlaces ?? []"
+      :pending="placesPending"
+      :failed="hasPlacesError"
+    />
 
-      <HomePopularNow
-        :items="popularItems"
-        :pending="pending"
-        :failed="hasError"
-      />
+    <HomeExploreByRoute
+      :routes="curatedRoutes ?? []"
+      :pending="routesPending"
+      :failed="hasRoutesError"
+    />
 
-      <HomeDiscoverThemes />
+    <HomeDiscoverThemes />
 
-      <div id="need-help">
-        <HomeNeedHelp />
-      </div>
-    </main>
-
-    <LayoutAppFooter />
-  </div>
+    <div id="need-help">
+      <HomeNeedHelp />
+    </div>
+  </main>
 </template>

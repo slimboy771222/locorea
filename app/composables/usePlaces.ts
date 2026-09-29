@@ -1,6 +1,112 @@
 export const usePlaces = () => {
   const supabase = useSupabase()
 
+  const getPlaceTags = async (placeId: string) => {
+    const { data, error } = await supabase
+      .from('place_tags')
+      .select(`
+        tag_id,
+        tags (
+          slug,
+          tag_translations (
+            language_code,
+            name
+          )
+        )
+      `)
+      .eq('place_id', placeId)
+
+    if (error) {
+      throw error
+    }
+
+    return (data ?? []).flatMap(item => item.tags
+      ? [{ id: item.tag_id, ...item.tags }]
+      : [])
+  }
+
+  const getRelatedRoutes = async (placeId: string) => {
+    const { data: routeLinks, error: routeLinksError } = await supabase
+      .from('route_places')
+      .select('route_id')
+      .eq('place_id', placeId)
+
+    if (routeLinksError) {
+      throw routeLinksError
+    }
+
+    const routeIds = [...new Set((routeLinks ?? []).map(item => item.route_id))]
+
+    if (!routeIds.length) {
+      return []
+    }
+
+    const { data, error } = await supabase
+      .from('routes')
+      .select(`
+        id,
+        slug,
+        duration_minutes,
+        distance_km,
+        difficulty,
+        route_translations (
+          language_code,
+          name,
+          summary
+        )
+      `)
+      .eq('status', 'published')
+      .in('id', routeIds)
+
+    if (error) {
+      throw error
+    }
+
+    return data ?? []
+  }
+
+  const getRelatedGuides = async (tagIds: string[]) => {
+    if (!tagIds.length) {
+      return []
+    }
+
+    const { data: guideLinks, error: guideLinksError } = await supabase
+      .from('guide_tags')
+      .select('guide_id')
+      .in('tag_id', tagIds)
+
+    if (guideLinksError) {
+      throw guideLinksError
+    }
+
+    const guideIds = [...new Set((guideLinks ?? []).map(item => item.guide_id))]
+
+    if (!guideIds.length) {
+      return []
+    }
+
+    const { data, error } = await supabase
+      .from('guides')
+      .select(`
+        id,
+        slug,
+        guide_type,
+        guide_translations (
+          language_code,
+          title,
+          summary
+        )
+      `)
+      .eq('status', 'published')
+      .in('id', guideIds)
+
+    if (error) {
+      throw error
+    }
+
+    return data ?? []
+  }
+
   const getPlaceBySlug = async (slug: string) => {
     const { data: place, error } = await supabase
       .from('places')
@@ -13,8 +119,10 @@ export const usePlaces = () => {
         naver_map_url,
         kakao_map_url,
         opening_hours,
+        price_level,
         foreigner_friendly,
         last_verified_at,
+        source_url,
 
         place_translations (
           language_code,
@@ -44,6 +152,7 @@ export const usePlaces = () => {
       .maybeSingle()
 
     if (error) {
+      console.error('[getPlaceBySlug] place query failed:', error)
       throw error
     }
 
@@ -68,10 +177,33 @@ export const usePlaces = () => {
       .maybeSingle()
 
     if (entityMediaError) {
+      console.error('[getPlaceBySlug] media query failed:', entityMediaError)
       throw entityMediaError
     }
 
     const mediaAsset = entityMedia?.media_assets
+
+ //   const [tags, relatedRoutes] = await Promise.all([
+ //     getPlaceTags(place.id),
+ //     getRelatedRoutes(place.id),
+ //   ])
+ //   const relatedGuides = await getRelatedGuides(tags.map(tag => tag.id))
+ let tags
+let relatedRoutes
+let relatedGuides
+
+try {
+  ;[tags, relatedRoutes] = await Promise.all([
+    getPlaceTags(place.id),
+    getRelatedRoutes(place.id),
+  ])
+
+  relatedGuides = await getRelatedGuides(tags.map(tag => tag.id))
+}
+catch (error) {
+  console.error('[getPlaceBySlug] related content query failed:', error)
+  throw error
+}
 
     return {
       ...place,
@@ -82,6 +214,9 @@ export const usePlaces = () => {
             credit_text: mediaAsset.credit_text,
           }
         : null,
+      tags,
+      relatedRoutes,
+      relatedGuides,
     }
   }
 
