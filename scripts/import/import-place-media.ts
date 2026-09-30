@@ -31,6 +31,16 @@ const nullable = (value?: string) => value?.trim() || null
 const report = (state: 'VALID' | 'INVALID' | 'SKIPPED' | 'IMPORTED', filename: string, slug: string, reason: string) => console.log(`${state}: ${filename} · ${slug || '(missing slug)'} · ${reason}`)
 const logError = (label: string, error: unknown) => console.error(`${label}:`, error)
 
+const getPngDimensions = (file: Buffer) => {
+  const pngSignature = '89504e470d0a1a0a'
+  if (file.length < 24 || file.subarray(0, 8).toString('hex') !== pngSignature) return null
+
+  return {
+    width: file.readUInt32BE(16),
+    height: file.readUInt32BE(20),
+  }
+}
+
 const readMetadata = async () => {
   const rows = parseCsv(await readFile(metadataPath, 'utf8'))
   const headers = rows.shift()?.map(header => header.trim()) ?? []
@@ -91,7 +101,17 @@ const main = async () => {
       const file = await readFile(resolve(mediaDirectory, filename))
       const { error: uploadError } = await supabase.storage.from('media').upload(storagePath, file, { contentType: mimeType, upsert: true })
       if (uploadError) throw uploadError
-      const assetPayload = { bucket: 'media', storage_path: storagePath, media_type: 'image', mime_type: mimeType, alt_text: rowMetadata?.altText ?? translation?.name ?? slug, credit_text: rowMetadata?.creditText ?? null }
+      const dimensions = mimeType === 'image/png' ? getPngDimensions(file) : null
+      const assetPayload = {
+        bucket: 'media',
+        storage_path: storagePath,
+        media_type: 'image',
+        mime_type: mimeType,
+        width: dimensions?.width ?? null,
+        height: dimensions?.height ?? null,
+        alt_text: rowMetadata?.altText ?? translation?.name ?? slug,
+        credit_text: rowMetadata?.creditText ?? null,
+      }
       let mediaId: string
       if (existing?.storagePath === storagePath) {
         const { error } = await supabase.from('media_assets').update(assetPayload).eq('id', existing.mediaId)

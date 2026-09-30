@@ -7,31 +7,6 @@ export type Json =
   | Json[]
 
 export type Database = {
-  graphql_public: {
-    Tables: {
-      [_ in never]: never
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      graphql: {
-        Args: {
-          extensions?: Json
-          operationName?: string
-          query?: string
-          variables?: Json
-        }
-        Returns: Json
-      }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
-  }
   public: {
     Tables: {
       admin_users: {
@@ -360,14 +335,20 @@ export type Database = {
       media_assets: {
         Row: {
           alt_text: string | null
+          attribution_required: boolean
+          attribution_text: string | null
           bucket: string
           created_at: string
           credit_text: string | null
           height: number | null
           id: string
+          license_checked_at: string | null
+          license_code: string | null
           license_text: string | null
+          license_url: string | null
           media_type: string
           mime_type: string | null
+          source_provider: string | null
           source_url: string | null
           storage_path: string
           updated_at: string
@@ -375,14 +356,20 @@ export type Database = {
         }
         Insert: {
           alt_text?: string | null
+          attribution_required?: boolean
+          attribution_text?: string | null
           bucket?: string
           created_at?: string
           credit_text?: string | null
           height?: number | null
           id?: string
+          license_checked_at?: string | null
+          license_code?: string | null
           license_text?: string | null
+          license_url?: string | null
           media_type?: string
           mime_type?: string | null
+          source_provider?: string | null
           source_url?: string | null
           storage_path: string
           updated_at?: string
@@ -390,14 +377,20 @@ export type Database = {
         }
         Update: {
           alt_text?: string | null
+          attribution_required?: boolean
+          attribution_text?: string | null
           bucket?: string
           created_at?: string
           credit_text?: string | null
           height?: number | null
           id?: string
+          license_checked_at?: string | null
+          license_code?: string | null
           license_text?: string | null
+          license_url?: string | null
           media_type?: string
           mime_type?: string | null
+          source_provider?: string | null
           source_url?: string | null
           storage_path?: string
           updated_at?: string
@@ -438,32 +431,41 @@ export type Database = {
       place_translations: {
         Row: {
           address_text: string | null
+          admission_info: string | null
           description: string | null
+          getting_there: string | null
           id: string
           language_code: string
           local_tip: string | null
           name: string
           place_id: string
+          signature_menu: Json | null
           summary: string | null
         }
         Insert: {
           address_text?: string | null
+          admission_info?: string | null
           description?: string | null
+          getting_there?: string | null
           id?: string
           language_code: string
           local_tip?: string | null
           name: string
           place_id: string
+          signature_menu?: Json | null
           summary?: string | null
         }
         Update: {
           address_text?: string | null
+          admission_info?: string | null
           description?: string | null
+          getting_there?: string | null
           id?: string
           language_code?: string
           local_tip?: string | null
           name?: string
           place_id?: string
+          signature_menu?: Json | null
           summary?: string | null
         }
         Relationships: [
@@ -491,6 +493,7 @@ export type Database = {
           place_type: string
           price_level: number | null
           published_at: string | null
+          regular_closed_days: string | null
           review_note: string | null
           review_status: string
           reviewed_at: string | null
@@ -516,6 +519,7 @@ export type Database = {
           place_type: string
           price_level?: number | null
           published_at?: string | null
+          regular_closed_days?: string | null
           review_note?: string | null
           review_status?: string
           reviewed_at?: string | null
@@ -541,6 +545,7 @@ export type Database = {
           place_type?: string
           price_level?: number | null
           published_at?: string | null
+          regular_closed_days?: string | null
           review_note?: string | null
           review_status?: string
           reviewed_at?: string | null
@@ -627,6 +632,54 @@ export type Database = {
           is_active?: boolean
           slug?: string
           sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      restrooms: {
+        Row: {
+          address: string | null
+          created_at: string
+          facility_type: string | null
+          id: string
+          latitude: number
+          longitude: number
+          name: string
+          opening_hours: string | null
+          source_key: string
+          source_name: string | null
+          source_updated_at: string | null
+          source_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string
+          facility_type?: string | null
+          id?: string
+          latitude: number
+          longitude: number
+          name: string
+          opening_hours?: string | null
+          source_key: string
+          source_name?: string | null
+          source_updated_at?: string | null
+          source_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          address?: string | null
+          created_at?: string
+          facility_type?: string | null
+          id?: string
+          latitude?: number
+          longitude?: number
+          name?: string
+          opening_hours?: string | null
+          source_key?: string
+          source_name?: string | null
+          source_updated_at?: string | null
+          source_url?: string | null
           updated_at?: string
         }
         Relationships: []
@@ -911,6 +964,27 @@ export type Database = {
     }
     Functions: {
       is_admin: { Args: never; Returns: boolean }
+      nearby_restrooms: {
+        Args: {
+          radius_meters?: number
+          result_limit?: number
+          user_latitude: number
+          user_longitude: number
+        }
+        Returns: {
+          address: string
+          distance_meters: number
+          facility_type: string
+          id: string
+          latitude: number
+          longitude: number
+          name: string
+          opening_hours: string
+          source_name: string
+          source_updated_at: string
+          source_url: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
@@ -1039,10 +1113,8 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
-  graphql_public: {
-    Enums: {},
-  },
   public: {
     Enums: {},
   },
 } as const
+

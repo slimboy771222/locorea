@@ -1,6 +1,6 @@
 <template>
   <footer class="border-t border-slate-200 bg-slate-50">
-    <div class="mx-auto max-w-7xl px-5 py-6 lg:px-8 lg:py-7">
+    <div class="mx-auto max-w-7xl px-5 pb-6 pt-8 sm:pt-9 lg:px-8 lg:pb-7 lg:pt-10">
       <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-[1.35fr_repeat(3,minmax(0,1fr))]">
         <div>
           <NuxtLink to="/" class="inline-flex">

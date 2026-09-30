@@ -118,7 +118,9 @@ export const usePlaces = () => {
         website_url,
         naver_map_url,
         kakao_map_url,
+        location,
         opening_hours,
+        regular_closed_days,
         price_level,
         foreigner_friendly,
         last_verified_at,
@@ -130,7 +132,10 @@ export const usePlaces = () => {
           summary,
           description,
           address_text,
-          local_tip
+          local_tip,
+          admission_info,
+          getting_there,
+          signature_menu
         ),
 
         areas (
@@ -163,25 +168,50 @@ export const usePlaces = () => {
     const { data: entityMedia, error: entityMediaError } = await supabase
       .from('entity_media')
       .select(`
+        role,
+        sort_order,
+        created_at,
         media_assets (
           id,
           bucket,
           storage_path,
           alt_text,
-          credit_text
+          source_provider,
+          source_url,
+          license_code,
+          attribution_text,
+          attribution_required
         )
       `)
       .eq('entity_type', 'place')
-      .eq('role', 'cover')
       .eq('entity_id', place.id)
-      .maybeSingle()
+      .in('role', ['cover', 'gallery'])
+      .order('sort_order', { ascending: true })
+      .order('created_at', { ascending: true })
 
     if (entityMediaError) {
       console.error('[getPlaceBySlug] media query failed:', entityMediaError)
       throw entityMediaError
     }
 
-    const mediaAsset = entityMedia?.media_assets
+    const media = (entityMedia ?? [])
+      .flatMap((relation) => relation.media_assets
+        ? [{
+            ...relation.media_assets,
+            role: relation.role,
+            sort_order: relation.sort_order,
+            created_at: relation.created_at,
+          }]
+        : [])
+      .sort((first, second) => {
+        const firstRoleOrder = first.role === 'cover' ? 0 : 1
+        const secondRoleOrder = second.role === 'cover' ? 0 : 1
+
+        return firstRoleOrder - secondRoleOrder
+          || first.sort_order - second.sort_order
+          || first.created_at.localeCompare(second.created_at)
+      })
+      .slice(0, 4)
 
  //   const [tags, relatedRoutes] = await Promise.all([
  //     getPlaceTags(place.id),
@@ -207,13 +237,7 @@ catch (error) {
 
     return {
       ...place,
-      cover: mediaAsset
-        ? {
-            storage_path: mediaAsset.storage_path,
-            alt_text: mediaAsset.alt_text,
-            credit_text: mediaAsset.credit_text,
-          }
-        : null,
+      media,
       tags,
       relatedRoutes,
       relatedGuides,

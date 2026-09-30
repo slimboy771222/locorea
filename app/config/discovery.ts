@@ -14,6 +14,7 @@ import {
   Search,
   ShoppingBag,
   Stethoscope,
+  Toilet,
   TrainFront,
   Utensils,
   Wifi,
@@ -109,6 +110,7 @@ export const discovery = {
     },
   ],
   help: [
+    { label: 'Find a restroom', description: 'Find public restrooms near your current location.', to: '/help/restrooms', icon: Toilet },
     { label: 'Emergency', description: 'What to do when you need urgent help.', guideType: 'emergency', to: search({ type: 'guides', guide_type: 'emergency' }), icon: Phone },
     { label: 'Medical & Pharmacy', description: 'Find care, medicine, and pharmacy information.', guideType: 'emergency', to: search({ type: 'guides', guide_type: 'emergency' }), icon: Stethoscope },
     { label: 'Lost Something', description: 'What to do if you lose a phone, wallet, or belongings.', guideType: 'troubleshooting', to: search({ type: 'guides', guide_type: 'troubleshooting' }), icon: Search },

@@ -395,8 +395,8 @@ select
 
     extensions.ST_SetSRID(
         extensions.ST_MakePoint(
-            127.0568,
-            37.5446
+            127.05811897155,
+            37.544786024828
         ),
         4326
     )::extensions.geography,
@@ -432,7 +432,7 @@ select
 
     'A popular-style cafe experience that fits naturally into a Seongsu walking route.',
 
-    'Seongsu-dong, Seongdong-gu, Seoul',
+    '8, Achasan-ro 9-gil, Seongdong-gu, Seoul',
 
     'Weekends in Seongsu can be busy, so allow extra time when planning cafe stops.'
 

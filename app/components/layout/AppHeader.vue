@@ -11,7 +11,7 @@ const mobileMenuOpen = ref(false)
 <template>
   <header class="sticky top-0 z-50 border-b border-slate-200/60 bg-white/92 backdrop-blur-md">
     <div
-      class="mx-auto flex h-[60px] max-w-7xl items-center justify-between px-5 sm:h-16 lg:px-8"
+      class="mx-auto flex h-[60px] max-w-7xl items-center justify-between px-5 sm:h-16 lg:h-[70px] lg:px-8"
     >
       <NuxtLink
         to="/"
@@ -29,7 +29,7 @@ const mobileMenuOpen = ref(false)
         >
       </NuxtLink>
 
-      <nav class="hidden items-center gap-5 text-sm font-medium text-slate-600 lg:flex">
+      <nav class="hidden items-center gap-5 text-[15px] font-medium text-slate-600 lg:flex">
         <NuxtLink to="/places" class="transition hover:text-slate-950">
           Explore
         </NuxtLink>

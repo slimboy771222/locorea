@@ -51,7 +51,10 @@ useSeoMeta({
     </nav>
 
     <header class="mt-5 max-w-3xl">
-      <p class="text-sm font-semibold uppercase tracking-[0.08em] text-blue-700">{{ guideTypeLabel }}</p>
+      <div class="flex items-start justify-between gap-4">
+        <p class="text-sm font-semibold uppercase tracking-[0.08em] text-blue-700">{{ guideTypeLabel }}</p>
+        <ContentActions content-type="guide" :title="content?.title ?? 'Guide'" :text="content?.summary" />
+      </div>
       <h1 class="mt-2 text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl lg:text-5xl">{{ content?.title }}</h1>
       <p v-if="content?.summary" class="mt-4 max-w-2xl text-[17px] leading-7 text-slate-600 sm:text-lg">{{ content.summary }}</p>
       <p v-if="guide.last_verified_at || guide.sources" class="mt-5 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-slate-500">
@@ -73,9 +76,8 @@ useSeoMeta({
         </article>
 
         <section v-if="guide.relatedGuides.length" class="mt-10" aria-labelledby="related-guides-heading">
-          <p class="text-sm font-semibold text-blue-700">Keep planning</p>
-          <h2 id="related-guides-heading" class="mt-1 text-2xl font-bold tracking-tight text-slate-950">Related practical guides</h2>
-          <div class="mt-5 grid gap-3 sm:grid-cols-2">
+          <PublicSectionHeading eyebrow="Keep planning" title="Related practical guides" heading-id="related-guides-heading" />
+          <div class="mt-6 grid gap-3 sm:grid-cols-2">
             <NuxtLink v-for="item in guide.relatedGuides" :key="item.id" :to="`/guides/${item.slug}`" class="group rounded-xl border border-slate-200 bg-white p-4 transition hover:border-slate-300 hover:shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
               <p class="text-xs font-semibold uppercase tracking-[0.07em] text-slate-400">{{ item.guide_type.replaceAll('_', ' ') }}</p>
               <h3 class="mt-1.5 text-[17px] font-semibold text-slate-950 transition group-hover:text-blue-700">{{ getGuideTranslation(item)?.title }}</h3>

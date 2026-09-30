@@ -93,9 +93,12 @@ useSeoMeta({
       </nav>
 
       <header class="mt-5 max-w-3xl">
-        <p class="text-sm font-semibold uppercase tracking-[0.08em] text-blue-700">
-          {{ routeTypeLabel }}<span v-if="areaName" class="normal-case tracking-normal text-slate-400"> · {{ areaName }}</span>
-        </p>
+        <div class="flex items-start justify-between gap-4">
+          <p class="text-sm font-semibold uppercase tracking-[0.08em] text-blue-700">
+            {{ routeTypeLabel }}<span v-if="areaName" class="normal-case tracking-normal text-slate-400"> · {{ areaName }}</span>
+          </p>
+          <ContentActions content-type="route" :title="content?.name ?? 'Route'" :text="content?.summary" />
+        </div>
         <h1 class="mt-2 text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl lg:text-5xl">{{ content?.name }}</h1>
         <p v-if="content?.summary" class="mt-4 max-w-2xl text-[17px] leading-7 text-slate-600 sm:text-lg">{{ content.summary }}</p>
       </header>
@@ -125,14 +128,12 @@ useSeoMeta({
       <div class="mt-8 grid gap-8 lg:mt-10 lg:grid-cols-[minmax(0,1fr)_280px] lg:gap-14">
         <div class="min-w-0 space-y-8 sm:space-y-9">
           <article v-if="content?.description" class="max-w-3xl" aria-labelledby="overview-heading">
-            <p class="text-sm font-semibold text-blue-700">Before you start</p>
-            <h2 id="overview-heading" class="mt-1 text-2xl font-bold tracking-tight text-slate-950">Route overview</h2>
-            <p class="mt-4 whitespace-pre-line text-[16px] leading-7 text-slate-700">{{ content.description }}</p>
+            <PublicSectionHeading eyebrow="Before you start" title="Route overview" heading-id="overview-heading" />
+            <p class="mt-6 whitespace-pre-line text-[16px] leading-7 text-slate-700">{{ content.description }}</p>
           </article>
 
           <section v-if="routeData.route_places.length" aria-labelledby="stops-heading">
-            <p class="text-sm font-semibold text-blue-700">Follow the route</p>
-            <h2 id="stops-heading" class="mt-1 text-2xl font-bold tracking-tight text-slate-950">Stops in order</h2>
+            <PublicSectionHeading eyebrow="Follow the route" title="Stops in order" heading-id="stops-heading" />
             <ol class="mt-6 max-w-4xl">
               <li v-for="(stop, index) in routeData.route_places" :key="stop.stop_order" class="relative flex gap-3.5 pb-5 last:pb-0 sm:gap-4 sm:pb-6">
                 <div class="flex w-8 shrink-0 flex-col items-center">
@@ -168,9 +169,8 @@ useSeoMeta({
           </section>
 
           <section v-if="routeData.tags.length" aria-labelledby="themes-heading">
-            <p class="text-sm font-semibold text-blue-700">Explore more</p>
-            <h2 id="themes-heading" class="mt-1 text-2xl font-bold tracking-tight text-slate-950">Themes</h2>
-            <div class="mt-4 flex flex-wrap gap-2">
+            <PublicSectionHeading eyebrow="Explore more" title="Themes" heading-id="themes-heading" />
+            <div class="mt-6 flex flex-wrap gap-2">
               <NuxtLink v-for="tag in routeData.tags" :key="tag.id" :to="`/search?tag=${encodeURIComponent(tag.slug)}`" class="rounded-full bg-slate-100 px-3 py-1.5 text-sm font-medium text-slate-700 transition hover:bg-blue-50 hover:text-blue-700">{{ getTagName(tag) }}</NuxtLink>
             </div>
           </section>

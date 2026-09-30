@@ -10,6 +10,7 @@
     "postinstall": "nuxt prepare",
     "data:import:places": "tsx scripts/import/import-places.ts",
     "data:import:places:dry": "tsx scripts/import/import-places.ts --dry-run",
+    "data:sync:seoul-restrooms": "tsx scripts/import/sync-seoul-restrooms.ts",
     "data:import:place-media": "tsx scripts/import/import-place-media.ts",
     "data:import:place-media:dry": "tsx scripts/import/import-place-media.ts --dry-run",
     "data:import:routes": "tsx scripts/import/import-routes.ts",
@@ -21,8 +22,10 @@
     "data:export:approved": "tsx scripts/content/export-approved.ts",
     "data:export:approved:dry": "tsx scripts/content/export-approved.ts --dry-run",
     "data:import:approved": "tsx scripts/content/import-approved.ts",
-    "data:import:approved:dry": "tsx scripts/content/import-approved.ts --dry-run"
-    ,"data:intake:validate": "tsx scripts/content/validate-intake.ts"
+    "data:import:approved:dry": "tsx scripts/content/import-approved.ts --dry-run",
+    "data:intake:validate": "tsx scripts/content/validate-intake.ts",
+    "data:seed:cafe-gallery": "tsx scripts/seed/seed-cafe-onion-gallery.ts",
+    "data:seed:cafe-gallery:dry": "tsx scripts/seed/seed-cafe-onion-gallery.ts --dry-run"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.117.1",
