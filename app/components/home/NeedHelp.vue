@@ -12,7 +12,7 @@ import { discovery } from '~/config/discovery'
         <p class="mt-2 text-[15px] leading-6 text-slate-600">Practical help for when your trip doesn't go as planned.</p>
       </div>
 
-      <div class="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+      <div class="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
         <NuxtLink
           v-for="item in discovery.help"
           :key="item.label"

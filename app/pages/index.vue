@@ -48,7 +48,7 @@ useSeoMeta({
 
     <HomeDiscoverThemes />
 
-    <div id="need-help">
+    <div id="need-help" class="scroll-mt-20">
       <HomeNeedHelp />
     </div>
   </main>

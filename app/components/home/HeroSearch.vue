@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Search } from 'lucide-vue-next'
+import { ArrowRight, LifeBuoy, Search } from 'lucide-vue-next'
 
 const query = ref('')
 const heroImagePath = '/images/hero/locorea-seoul-hero.png'
@@ -32,7 +32,7 @@ const submitSearch = () => {
 
 <template>
   <section
-    class="relative isolate min-h-[540px] overflow-hidden border-b border-slate-900 bg-[linear-gradient(90deg,#716765_0%,#665B54_45%,#584C42_100%)] sm:min-h-[550px] lg:min-h-[580px]"
+    class="relative isolate min-h-[450px] overflow-hidden border-b border-slate-900 bg-[linear-gradient(90deg,#716765_0%,#665B54_45%,#584C42_100%)] sm:min-h-[550px] lg:min-h-[580px]"
   >
     <div class="absolute inset-0 -z-10 overflow-hidden">
       <img
@@ -58,63 +58,75 @@ const submitSearch = () => {
     </div>
 
     <div
-      class="mx-auto flex min-h-[540px] max-w-7xl items-center px-5 py-8 sm:min-h-[550px] sm:py-10 lg:min-h-[580px] lg:px-8 lg:py-14"
+      class="mx-auto flex min-h-[450px] max-w-7xl items-center px-5 py-6 sm:min-h-[550px] sm:py-10 lg:min-h-[580px] lg:px-8 lg:py-14"
     >
       <div class="w-full max-w-xl sm:max-w-2xl lg:max-w-[60%]">
         <p class="text-sm font-semibold tracking-[0.01em] text-blue-100">
           Explore Korea your way
         </p>
         <h1
-          class="mt-2.5 max-w-3xl text-[clamp(2.5rem,10vw,2.75rem)] font-bold leading-[1.07] tracking-[-0.04em] text-white sm:mt-3 sm:text-5xl sm:leading-[1.04] md:text-6xl"
+          class="mt-2.5 max-w-3xl text-[clamp(1.875rem,8.5vw,2.125rem)] font-bold leading-[1.08] tracking-[-0.04em] text-white sm:mt-3 sm:text-5xl sm:leading-[1.04] md:text-6xl"
         >
           <span class="block">Discover Korea</span>
           <span class="block sm:whitespace-nowrap">beyond the obvious</span>
         </h1>
 
         <p
-          class="mt-3 max-w-2xl text-[15px] leading-6 text-slate-100 sm:mt-4 sm:text-base sm:leading-7 md:text-lg"
+          class="mt-3 max-w-2xl text-base leading-6 text-slate-100 sm:mt-4 sm:leading-7 md:text-lg"
         >
-          Find places, routes, local food, and practical guides for exploring Korea with confidence.
+          <span class="sm:hidden">Find places, routes, food, and practical travel help.</span>
+          <span class="hidden sm:inline">Find places, routes, local food, and practical guides for exploring Korea with confidence.</span>
         </p>
 
         <form
-          class="mt-5 flex max-w-3xl rounded-2xl bg-white p-1.5 shadow-lg shadow-slate-950/20 ring-1 ring-white/70 focus-within:ring-2 focus-within:ring-blue-200 sm:mt-6"
+          class="mt-5 flex max-w-3xl rounded-2xl bg-white p-1 shadow-lg shadow-slate-950/20 ring-1 ring-white/70 focus-within:ring-2 focus-within:ring-blue-200 sm:mt-6 sm:p-1.5"
           @submit.prevent="submitSearch"
         >
-          <div class="flex flex-1 items-center px-2.5 sm:px-3">
+          <div class="flex min-w-0 flex-1 items-center px-2.5 sm:px-3">
             <Search
               :size="20"
-              class="shrink-0 text-slate-400"
+              class="hidden shrink-0 text-slate-400 sm:block"
             />
 
             <input
               v-model="query"
               type="search"
-              placeholder="Search places, routes, food, or travel questions"
-              class="w-full border-0 bg-transparent px-2 py-3 text-[15px] outline-none placeholder:text-slate-400 sm:px-3 sm:py-3.5 sm:text-base"
+              placeholder="Search Korea"
+              class="w-full border-0 bg-transparent px-2 py-2 text-base outline-none placeholder:text-slate-400 sm:px-3 sm:py-3.5"
             >
           </div>
 
           <button
             type="submit"
-            class="rounded-xl bg-blue-600 px-3.5 py-3 text-sm font-semibold text-white shadow-sm shadow-blue-600/20 transition hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 sm:px-5 sm:py-3.5 sm:text-base"
+            aria-label="Search"
+            class="inline-flex size-10 items-center justify-center rounded-xl bg-blue-600 text-sm font-semibold text-white shadow-sm shadow-blue-600/20 transition hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 sm:size-auto sm:px-5 sm:py-3.5 sm:text-base"
           >
-            Search
+            <Search :size="19" class="sm:hidden" aria-hidden="true" />
+            <span class="hidden sm:inline">Search</span>
           </button>
         </form>
 
-        <div class="mt-3 flex flex-wrap gap-1.5 sm:mt-4 sm:gap-2">
+        <div class="mt-3 flex max-w-full snap-x snap-mandatory gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mt-4 sm:flex-wrap sm:gap-2 sm:overflow-visible sm:pb-0">
           <NuxtLink
             v-for="item in suggestions"
             :key="item.label"
             :to="item.to"
-            class="rounded-full bg-white/95 px-2.5 py-1 text-[12px] font-medium text-slate-700 ring-1 ring-white/70 transition hover:bg-white hover:text-blue-700 sm:px-3.5 sm:py-1.5 sm:text-sm"
+            class="inline-flex h-8 shrink-0 snap-start items-center rounded-full bg-white/95 px-3 text-[13px] font-medium text-slate-700 ring-1 ring-white/70 transition hover:bg-white hover:text-blue-700 sm:h-auto sm:px-3.5 sm:py-1.5 sm:text-sm"
           >
             {{ item.label }}
           </NuxtLink>
         </div>
 
-        <p class="mt-3 max-w-2xl text-[13px] leading-5 text-slate-100 sm:mt-4 sm:text-sm">
+        <NuxtLink to="/#need-help" class="mt-3 flex min-h-12 w-full max-w-[430px] items-center gap-2.5 rounded-xl bg-white/95 px-3.5 text-slate-800 ring-1 ring-white/70 transition hover:bg-white hover:text-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-100 sm:mt-4 sm:inline-flex sm:min-h-11 sm:w-auto">
+          <LifeBuoy :size="18" class="shrink-0 text-blue-700" aria-hidden="true" />
+          <span class="min-w-0 flex-1">
+            <span class="block whitespace-nowrap text-[15px] font-semibold sm:inline">Need help<span class="sm:hidden">?</span><span class="hidden sm:inline"> in Korea?</span></span>
+            <span class="hidden text-xs font-medium text-slate-500 min-[390px]:block sm:ml-2 sm:inline">Emergency · Medical · Lost</span>
+          </span>
+          <ArrowRight :size="18" class="shrink-0 text-slate-400" aria-hidden="true" />
+        </NuxtLink>
+
+        <p class="mt-3 hidden max-w-2xl text-[13px] leading-5 text-slate-100 sm:mt-4 sm:block sm:text-sm">
           Curated places, practical travel knowledge, and local routes for exploring Korea with confidence.
         </p>
       </div>

@@ -269,7 +269,7 @@ useSeoMeta({
       </header>
     </section>
 
-    <div class="mt-10 space-y-10 sm:mt-11 sm:space-y-12 lg:mt-12 lg:space-y-14">
+    <div class="mt-9 space-y-9 sm:mt-11 sm:space-y-12 lg:mt-12 lg:space-y-14">
       <section v-if="content?.local_tip" class="rounded-2xl border border-blue-100 bg-blue-50/70 p-5" aria-label="Locorea tip">
         <p class="text-[17px] font-semibold leading-6 text-blue-700">Locorea tip</p>
         <p class="mt-2 text-[17px] leading-7 text-slate-700 sm:text-lg">{{ content.local_tip }}</p>

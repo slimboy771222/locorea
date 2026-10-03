@@ -5,7 +5,7 @@ import { discovery } from '~/config/discovery'
 
 <template>
   <section id="discover-themes" class="bg-slate-50/90">
-    <div class="mx-auto max-w-7xl px-5 py-11 lg:px-8 lg:py-14">
+    <div class="mx-auto max-w-7xl px-5 py-9 sm:py-10 lg:px-8 lg:py-14">
       <div class="mb-6 max-w-xl md:mb-7">
         <p class="text-sm font-semibold text-blue-700">Explore by mood</p>
         <h2 class="mt-1.5 text-[24px] font-bold tracking-tight text-slate-950 md:text-[28px]">

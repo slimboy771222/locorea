@@ -95,7 +95,7 @@ const getCoverAlt = (route: Route) => {
 
 <template>
   <section v-if="props.pending || (!props.failed && props.routes.length)" class="bg-slate-50/70">
-    <div class="mx-auto max-w-7xl px-5 py-11 lg:px-8 lg:py-14">
+    <div class="mx-auto max-w-7xl px-5 py-9 sm:py-10 lg:px-8 lg:py-14">
       <div class="mb-5 flex items-end justify-between gap-4">
         <div>
           <p class="text-sm font-medium text-blue-700">Plan less, explore more</p>

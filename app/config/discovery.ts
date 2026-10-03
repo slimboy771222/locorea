@@ -33,12 +33,12 @@ export const discovery = {
     { label: 'Guides', description: 'Practical trip know-how', to: search({ type: 'guides' }), icon: BookOpen },
   ],
   travelBasics: [
-    { title: 'Which map app should I use?', description: 'Naver Map, Kakao Map, Google Maps — what works in Korea?', guideType: 'maps', to: search({ type: 'guides', guide_type: 'maps' }), icon: Map },
-    { title: 'T-money or Climate Card?', description: 'Choose the right transit card for your trip.', guideType: 'transport', to: search({ type: 'guides', guide_type: 'transport' }), icon: TrainFront },
-    { title: 'Will my credit card work?', description: 'Cards, cash, ATMs and everyday payments in Korea.', guideType: 'payment', to: search({ type: 'guides', guide_type: 'payment' }), icon: CreditCard },
-    { title: 'SIM, eSIM or Wi-Fi?', description: 'Stay connected from the moment you arrive.', guideType: 'sim', to: search({ type: 'guides', guide_type: 'sim' }), icon: Wifi },
-    { title: 'How do I get from the airport?', description: 'Train, airport bus, taxi and late-night options.', guideType: 'arrival', to: search({ type: 'guides', guide_type: 'arrival' }), icon: PlaneLanding },
-    { title: 'What should I know before I arrive?', description: 'Language, etiquette and practical first-day basics.', guideType: 'etiquette', to: search({ type: 'guides', guide_type: 'etiquette' }), icon: HandHeart },
+    { title: 'Transportation', description: 'Subway, buses, cards', guideType: 'transport', to: search({ type: 'guides', guide_type: 'transport' }), icon: TrainFront, imagePosition: '46% center' },
+    { title: 'SIM & Internet', description: 'eSIM, SIM card, Wi-Fi', guideType: 'sim', to: search({ type: 'guides', guide_type: 'sim' }), icon: Wifi, imagePosition: '58% center' },
+    { title: 'Money', description: 'Cards, cash, exchange', guideType: 'payment', to: search({ type: 'guides', guide_type: 'payment' }), icon: CreditCard, imagePosition: '66% center' },
+    { title: 'Maps & Navigation', description: 'Naver, Kakao, Google Maps', guideType: 'maps', to: search({ type: 'guides', guide_type: 'maps' }), icon: Map, imagePosition: '54% center' },
+    { title: 'Airport arrival', description: 'Train, bus, taxi', guideType: 'arrival', to: search({ type: 'guides', guide_type: 'arrival' }), icon: PlaneLanding, imagePosition: '38% center' },
+    { title: 'Before you arrive', description: 'Language, etiquette, basics', guideType: 'etiquette', to: search({ type: 'guides', guide_type: 'etiquette' }), icon: HandHeart, imagePosition: '72% center' },
   ],
   worthExploringNow: [
     'seoul-forest',
