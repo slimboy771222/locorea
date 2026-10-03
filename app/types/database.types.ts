@@ -965,6 +965,7 @@ export type Database = {
           created_at: string
           guide_id: string
           id: string
+          interaction_data: Json | null
           section_type: string
           sort_order: number
           title: string | null
@@ -975,6 +976,7 @@ export type Database = {
           created_at?: string
           guide_id: string
           id?: string
+          interaction_data?: Json | null
           section_type: string
           sort_order?: number
           title?: string | null
@@ -985,6 +987,7 @@ export type Database = {
           created_at?: string
           guide_id?: string
           id?: string
+          interaction_data?: Json | null
           section_type?: string
           sort_order?: number
           title?: string | null

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ExternalLink, Youtube } from 'lucide-vue-next'
-import type { ProblemGuide, ProblemGuideResource, ProblemGuideSection } from '~/types/problem-guide'
+import { isProblemGuideChoiceData, type ProblemGuide, type ProblemGuideResource, type ProblemGuideSection } from '~/types/problem-guide'
 
 const props = defineProps<{ guide: ProblemGuide }>()
 
@@ -57,6 +57,11 @@ const formatReviewedDate = (value: string | null) => value
 
     <div class="mt-8 space-y-8 sm:mt-10 sm:space-y-10">
       <section v-for="section in guide.sections" :key="section.id" :class="sectionClass(section.sectionType)">
+        <ProblemGuideChoiceSection
+          v-if="section.sectionType === 'choice' && isProblemGuideChoiceData(section.interactionData)"
+          :interaction-data="section.interactionData"
+          :actions="actionsForSection(section)"
+        />
         <div v-if="section.sectionType === 'step'" class="flex gap-4 sm:gap-5">
           <span class="grid size-8 shrink-0 place-items-center rounded-full border border-blue-200 bg-blue-50 text-sm font-bold text-blue-800">{{ stepNumber(section) }}</span>
           <div class="min-w-0 flex-1">
@@ -66,7 +71,7 @@ const formatReviewedDate = (value: string | null) => value
             <ProblemGuideActions v-if="actionsForSection(section).length" :actions="actionsForSection(section)" />
           </div>
         </div>
-        <template v-else>
+        <template v-else-if="section.sectionType !== 'choice'">
           <p class="text-xs font-semibold uppercase tracking-[0.12em] text-blue-700">{{ sectionEyebrow(section.sectionType) }}</p>
           <h3 v-if="section.title" class="mt-1.5 text-xl font-bold tracking-tight text-slate-950 sm:text-2xl">{{ section.title }}</h3>
           <GuideBody :content="section.bodyMarkdown" />

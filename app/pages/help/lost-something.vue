@@ -16,10 +16,15 @@ const { data: phoneGuide, pending: isLoadingPhoneGuide, error: phoneGuideError, 
   () => getProblemGuideBySlug('lost-phone'),
   { immediate: false },
 )
+const { data: walletGuide, pending: isLoadingWalletGuide, error: walletGuideError, execute: loadWalletGuide } = useAsyncData(
+  'problem-guide-lost-wallet-cards',
+  () => getProblemGuideBySlug('lost-wallet-cards'),
+  { immediate: false },
+)
 
-const selectedGuide = computed(() => selectedItem.value === 'passport' ? passportGuide.value : selectedItem.value === 'phone' ? phoneGuide.value : null)
-const isLoadingSelectedGuide = computed(() => selectedItem.value === 'passport' ? isLoadingGuide.value : selectedItem.value === 'phone' ? isLoadingPhoneGuide.value : false)
-const selectedGuideError = computed(() => selectedItem.value === 'passport' ? guideError.value : selectedItem.value === 'phone' ? phoneGuideError.value : null)
+const selectedGuide = computed(() => selectedItem.value === 'passport' ? passportGuide.value : selectedItem.value === 'phone' ? phoneGuide.value : selectedItem.value === 'wallet' ? walletGuide.value : null)
+const isLoadingSelectedGuide = computed(() => selectedItem.value === 'passport' ? isLoadingGuide.value : selectedItem.value === 'phone' ? isLoadingPhoneGuide.value : selectedItem.value === 'wallet' ? isLoadingWalletGuide.value : false)
+const selectedGuideError = computed(() => selectedItem.value === 'passport' ? guideError.value : selectedItem.value === 'phone' ? phoneGuideError.value : selectedItem.value === 'wallet' ? walletGuideError.value : null)
 
 const items = [
   { id: 'passport', label: 'Passport', icon: BookOpen },
@@ -39,7 +44,10 @@ const chooseItem = async (item: LostItem) => {
   else if (item === 'phone' && !phoneGuide.value && !isLoadingPhoneGuide.value) {
     await loadPhoneGuide()
   }
-  else if (item !== 'passport' && item !== 'phone') {
+  else if (item === 'wallet' && !walletGuide.value && !isLoadingWalletGuide.value) {
+    await loadWalletGuide()
+  }
+  else if (item !== 'passport' && item !== 'phone' && item !== 'wallet') {
     unimplementedMessage.value = 'This guide is being prepared.'
   }
 }
@@ -49,7 +57,7 @@ const resetItem = () => {
   unimplementedMessage.value = ''
 }
 
-const retrySelectedGuide = () => selectedItem.value === 'passport' ? loadPassportGuide() : loadPhoneGuide()
+const retrySelectedGuide = () => selectedItem.value === 'passport' ? loadPassportGuide() : selectedItem.value === 'phone' ? loadPhoneGuide() : loadWalletGuide()
 
 useSeoMeta({ title: 'Lost something — Locorea', description: 'Simple next steps when you lose something during your trip in Korea.' })
 </script>
@@ -90,7 +98,7 @@ useSeoMeta({ title: 'Lost something — Locorea', description: 'Simple next step
         <ArrowRight :size="20" class="shrink-0 text-blue-700" aria-hidden="true" />
       </NuxtLink>
 
-      <section v-if="selectedItem === 'passport' || selectedItem === 'phone'" class="mt-8" aria-live="polite">
+      <section v-if="selectedItem === 'passport' || selectedItem === 'phone' || selectedItem === 'wallet'" class="mt-8" aria-live="polite">
         <div v-if="isLoadingSelectedGuide" class="flex min-h-48 items-center justify-center rounded-2xl border border-slate-200 bg-white p-6 text-center">
           <div><LoaderCircle :size="28" class="mx-auto animate-spin text-blue-700" aria-hidden="true" /><p class="mt-4 text-sm font-medium text-slate-700">Loading the guide…</p></div>
         </div>

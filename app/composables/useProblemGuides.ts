@@ -1,4 +1,4 @@
-import type { ProblemGuide, ProblemGuideAction, ProblemGuidePhrase, ProblemGuideResource, ProblemGuideSection } from '~/types/problem-guide'
+import { normalizeProblemGuideChoiceData, type ProblemGuide, type ProblemGuideAction, type ProblemGuidePhrase, type ProblemGuideResource, type ProblemGuideSection } from '~/types/problem-guide'
 
 const bySortOrder = <T extends { sort_order: number }>(left: T, right: T) => left.sort_order - right.sort_order
 
@@ -17,7 +17,7 @@ export const useProblemGuides = () => {
     if (!guide) return null
 
     const [sectionsResult, actionsResult, phrasesResult, resourcesResult] = await Promise.all([
-      supabase.from('problem_guide_sections').select('id, section_type, title, body_markdown, sort_order').eq('guide_id', guide.id).order('sort_order'),
+      supabase.from('problem_guide_sections').select('id, section_type, title, body_markdown, interaction_data, sort_order').eq('guide_id', guide.id).order('sort_order'),
       supabase.from('problem_guide_actions').select('id, section_id, action_key, action_type, label, description, href, variant, sort_order').eq('guide_id', guide.id).order('sort_order'),
       supabase.from('problem_guide_phrases').select('id, context, text_en, text_ko, romanization, sort_order').eq('guide_id', guide.id).order('sort_order'),
       supabase.from('problem_guide_resources').select('id, resource_type, platform, title, description, organization, creator_name, url, language, sort_order').eq('guide_id', guide.id).order('sort_order'),
@@ -31,6 +31,7 @@ export const useProblemGuides = () => {
       sectionType: section.section_type,
       title: section.title,
       bodyMarkdown: section.body_markdown,
+      interactionData: normalizeProblemGuideChoiceData(section.interaction_data),
       sortOrder: section.sort_order,
     }))
     const actions: ProblemGuideAction[] = (actionsResult.data ?? []).sort(bySortOrder).map(action => ({
