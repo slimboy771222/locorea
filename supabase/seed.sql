@@ -2289,3 +2289,4 @@ select seed.id, g.id, seed.resource_type, seed.platform, seed.title, seed.descri
 
 -- Keep local seed data identical to the idempotent staging migration.
 \ir migrations/20261003160000_seed_lost_bag_belongings.sql
+\ir migrations/20261003170000_seed_lost_something_else.sql
