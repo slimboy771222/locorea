@@ -1,31 +1,8 @@
 <script setup lang="ts">
 import type { NearbyRestroom } from '~/types/restrooms'
+import type { NaverMapInstance } from '~/composables/useNaverMaps'
 
 type Coordinates = { latitude: number, longitude: number }
-
-type NaverMapInstance = {
-  setCenter: (position: unknown) => void
-  setSize: (size: unknown) => void
-}
-
-type NaverMaps = {
-  maps: {
-    Map: new (element: HTMLElement, options: Record<string, unknown>) => NaverMapInstance
-    LatLng: new (latitude: number, longitude: number) => unknown
-    Size: new (width: number, height: number) => unknown
-    Marker: new (options: Record<string, unknown>) => { setMap: (map: unknown) => void }
-    Event: { addListener: (target: unknown, event: string, listener: () => void) => void }
-  }
-}
-
-declare global {
-  interface Window {
-    naver?: NaverMaps
-    navermap_authFailure?: () => void
-  }
-}
-
-let naverMapsPromise: Promise<NaverMaps> | null = null
 
 const debug = (message: string, details?: Record<string, unknown>) => {
   if (import.meta.dev) console.debug(`[RestroomMap] ${message}`, details ?? '')
@@ -45,68 +22,7 @@ const mapMessage = ref<string | null>(null)
 const isInitializing = ref(false)
 let markers: Array<{ setMap: (map: unknown) => void }> = []
 let resizeObserver: ResizeObserver | null = null
-
-const loadNaverMaps = (clientId: string) => {
-  if (window.naver?.maps) {
-    debug('SDK already available')
-    return Promise.resolve(window.naver)
-  }
-
-  if (naverMapsPromise) return naverMapsPromise
-
-  naverMapsPromise = new Promise<NaverMaps>((resolve, reject) => {
-    if (!document.head) {
-      reject(new Error('Document head is unavailable for NAVER Maps'))
-      return
-    }
-
-    window.navermap_authFailure = () => {
-      const error = new Error('NAVER Maps authentication failed. Check Client ID and allowed Web Service URLs.')
-      debug('authentication failed')
-      reject(error)
-    }
-
-    const settleLoaded = () => {
-      if (window.naver?.maps) {
-        debug('SDK loaded')
-        resolve(window.naver)
-      }
-      else {
-        reject(new Error('NAVER Maps loaded without its maps SDK'))
-      }
-    }
-
-    const existing = document.querySelector<HTMLScriptElement>('script[data-locorea-naver-maps], script[src*="oapi.map.naver.com/openapi/v3/maps.js"]')
-    if (existing) {
-      debug('reusing existing SDK script', { complete: existing.dataset.locoreaNaverMapsLoaded === 'true' })
-      if (existing.dataset.locoreaNaverMapsLoaded === 'true') {
-        settleLoaded()
-        return
-      }
-      existing.addEventListener('load', settleLoaded, { once: true })
-      existing.addEventListener('error', () => reject(new Error('NAVER Maps failed to load')), { once: true })
-      return
-    }
-
-    debug('injecting SDK script', { hasDocumentHead: Boolean(document.head) })
-    const script = document.createElement('script')
-    script.async = true
-    script.dataset.locoreaNaverMaps = 'true'
-    script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${encodeURIComponent(clientId)}&language=en`
-    script.onload = () => {
-      script.dataset.locoreaNaverMapsLoaded = 'true'
-      settleLoaded()
-    }
-    script.onerror = () => reject(new Error('NAVER Maps failed to load'))
-    document.head.appendChild(script)
-    debug('SDK script appended', { present: Boolean(document.querySelector('script[data-locorea-naver-maps]')) })
-  }).catch((error: unknown) => {
-    naverMapsPromise = null
-    throw error
-  })
-
-  return naverMapsPromise
-}
+const { loadNaverMaps } = useNaverMaps()
 
 const renderMarkers = () => {
   if (!map.value || !window.naver?.maps) return

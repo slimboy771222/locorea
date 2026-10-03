@@ -398,6 +398,225 @@ export type Database = {
         }
         Relationships: []
       }
+      medical_facilities: {
+        Row: {
+          address_ko: string | null
+          created_at: string
+          description_ko: string | null
+          directions_ko: string | null
+          emergency_code: string | null
+          emergency_name_ko: string | null
+          er_operation_code: string | null
+          er_phone: string | null
+          facility_code: string | null
+          facility_name_ko: string | null
+          fri_close: string | null
+          fri_open: string | null
+          holiday_close: string | null
+          holiday_open: string | null
+          id: string
+          latitude: number
+          longitude: number
+          mon_close: string | null
+          mon_open: string | null
+          name_ko: string
+          note_ko: string | null
+          phone: string | null
+          sat_close: string | null
+          sat_open: string | null
+          source_id: string
+          source_name: string
+          source_url: string | null
+          sun_close: string | null
+          sun_open: string | null
+          synced_at: string
+          thu_close: string | null
+          thu_open: string | null
+          tue_close: string | null
+          tue_open: string | null
+          updated_at: string
+          wed_close: string | null
+          wed_open: string | null
+        }
+        Insert: {
+          address_ko?: string | null
+          created_at?: string
+          description_ko?: string | null
+          directions_ko?: string | null
+          emergency_code?: string | null
+          emergency_name_ko?: string | null
+          er_operation_code?: string | null
+          er_phone?: string | null
+          facility_code?: string | null
+          facility_name_ko?: string | null
+          fri_close?: string | null
+          fri_open?: string | null
+          holiday_close?: string | null
+          holiday_open?: string | null
+          id?: string
+          latitude: number
+          longitude: number
+          mon_close?: string | null
+          mon_open?: string | null
+          name_ko: string
+          note_ko?: string | null
+          phone?: string | null
+          sat_close?: string | null
+          sat_open?: string | null
+          source_id: string
+          source_name?: string
+          source_url?: string | null
+          sun_close?: string | null
+          sun_open?: string | null
+          synced_at?: string
+          thu_close?: string | null
+          thu_open?: string | null
+          tue_close?: string | null
+          tue_open?: string | null
+          updated_at?: string
+          wed_close?: string | null
+          wed_open?: string | null
+        }
+        Update: {
+          address_ko?: string | null
+          created_at?: string
+          description_ko?: string | null
+          directions_ko?: string | null
+          emergency_code?: string | null
+          emergency_name_ko?: string | null
+          er_operation_code?: string | null
+          er_phone?: string | null
+          facility_code?: string | null
+          facility_name_ko?: string | null
+          fri_close?: string | null
+          fri_open?: string | null
+          holiday_close?: string | null
+          holiday_open?: string | null
+          id?: string
+          latitude?: number
+          longitude?: number
+          mon_close?: string | null
+          mon_open?: string | null
+          name_ko?: string
+          note_ko?: string | null
+          phone?: string | null
+          sat_close?: string | null
+          sat_open?: string | null
+          source_id?: string
+          source_name?: string
+          source_url?: string | null
+          sun_close?: string | null
+          sun_open?: string | null
+          synced_at?: string
+          thu_close?: string | null
+          thu_open?: string | null
+          tue_close?: string | null
+          tue_open?: string | null
+          updated_at?: string
+          wed_close?: string | null
+          wed_open?: string | null
+        }
+        Relationships: []
+      }
+      pharmacies: {
+        Row: {
+          address_ko: string | null
+          created_at: string
+          directions_ko: string | null
+          fri_close: string | null
+          fri_open: string | null
+          holiday_close: string | null
+          holiday_open: string | null
+          id: string
+          latitude: number
+          longitude: number
+          mon_close: string | null
+          mon_open: string | null
+          name_ko: string
+          note_ko: string | null
+          phone: string | null
+          sat_close: string | null
+          sat_open: string | null
+          source_id: string
+          source_name: string
+          source_url: string | null
+          sun_close: string | null
+          sun_open: string | null
+          synced_at: string
+          thu_close: string | null
+          thu_open: string | null
+          tue_close: string | null
+          tue_open: string | null
+          updated_at: string
+          wed_close: string | null
+          wed_open: string | null
+        }
+        Insert: {
+          address_ko?: string | null
+          created_at?: string
+          directions_ko?: string | null
+          fri_close?: string | null
+          fri_open?: string | null
+          holiday_close?: string | null
+          holiday_open?: string | null
+          id?: string
+          latitude: number
+          longitude: number
+          mon_close?: string | null
+          mon_open?: string | null
+          name_ko: string
+          note_ko?: string | null
+          phone?: string | null
+          sat_close?: string | null
+          sat_open?: string | null
+          source_id: string
+          source_name?: string
+          source_url?: string | null
+          sun_close?: string | null
+          sun_open?: string | null
+          synced_at?: string
+          thu_close?: string | null
+          thu_open?: string | null
+          tue_close?: string | null
+          tue_open?: string | null
+          updated_at?: string
+          wed_close?: string | null
+          wed_open?: string | null
+        }
+        Update: {
+          address_ko?: string | null
+          created_at?: string
+          directions_ko?: string | null
+          fri_close?: string | null
+          fri_open?: string | null
+          holiday_close?: string | null
+          holiday_open?: string | null
+          id?: string
+          latitude?: number
+          longitude?: number
+          mon_close?: string | null
+          mon_open?: string | null
+          name_ko?: string
+          note_ko?: string | null
+          phone?: string | null
+          sat_close?: string | null
+          sat_open?: string | null
+          source_id?: string
+          source_name?: string
+          source_url?: string | null
+          sun_close?: string | null
+          sun_open?: string | null
+          synced_at?: string
+          thu_close?: string | null
+          thu_open?: string | null
+          tue_close?: string | null
+          tue_open?: string | null
+          updated_at?: string
+          wed_close?: string | null
+          wed_open?: string | null
+        }
+        Relationships: []
+      }
       place_tags: {
         Row: {
           place_id: string
@@ -1213,6 +1432,57 @@ export type Database = {
     }
     Functions: {
       is_admin: { Args: never; Returns: boolean }
+      nearby_medical_facilities: {
+        Args: {
+          radius_meters?: number
+          result_limit?: number
+          user_latitude: number
+          user_longitude: number
+        }
+        Returns: {
+          address_ko: string
+          closing_time: string
+          description_ko: string
+          distance_meters: number
+          facility_code: string
+          facility_name_ko: string
+          id: string
+          is_open_now: boolean
+          latitude: number
+          longitude: number
+          name_ko: string
+          note_ko: string
+          opening_time: string
+          phone: string
+          source_id: string
+          source_name: string
+          source_url: string
+        }[]
+      }
+      nearby_pharmacies: {
+        Args: {
+          radius_meters?: number
+          result_limit?: number
+          user_latitude: number
+          user_longitude: number
+        }
+        Returns: {
+          address_ko: string
+          closing_time: string
+          distance_meters: number
+          id: string
+          is_open_now: boolean
+          latitude: number
+          longitude: number
+          name_ko: string
+          note_ko: string
+          opening_time: string
+          phone: string
+          source_id: string
+          source_name: string
+          source_url: string
+        }[]
+      }
       nearby_restrooms: {
         Args: {
           radius_meters?: number
@@ -1366,4 +1636,3 @@ export const Constants = {
     Enums: {},
   },
 } as const
-

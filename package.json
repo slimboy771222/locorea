@@ -11,6 +11,8 @@
     "data:import:places": "tsx scripts/import/import-places.ts",
     "data:import:places:dry": "tsx scripts/import/import-places.ts --dry-run",
     "data:sync:seoul-restrooms": "tsx scripts/import/sync-seoul-restrooms.ts",
+    "data:sync:pharmacies": "tsx scripts/import/sync-pharmacies.ts",
+    "data:sync:medical-facilities": "tsx scripts/import/sync-medical-facilities.ts",
     "data:import:place-media": "tsx scripts/import/import-place-media.ts",
     "data:import:place-media:dry": "tsx scripts/import/import-place-media.ts --dry-run",
     "data:import:routes": "tsx scripts/import/import-routes.ts",
@@ -29,6 +31,7 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.117.1",
+    "fast-xml-parser": "^5.11.2",
     "lucide-vue-next": "^1.0.0",
     "nuxt": "^4.5.2",
     "vue": "^3.5.43",
