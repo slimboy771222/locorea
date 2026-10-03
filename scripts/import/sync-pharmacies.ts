@@ -6,7 +6,7 @@ import { XMLParser } from 'fast-xml-parser'
 import type { Database } from '../../app/types/database.types'
 import { loadImportEnvironment } from '../lib/load-import-env'
 
-const API_URL = 'http://apis.data.go.kr/B552657/ErmctInsttInfoInqireService/getParmacyFullDown'
+const API_URL = 'https://apis.data.go.kr/B552657/ErmctInsttInfoInqireService/getParmacyFullDown'
 const REQUESTED_PAGE_SIZE = 1000
 const MAX_PAGES = 100
 // Preserve source values such as resultCode "00" and opening time "0800" exactly.

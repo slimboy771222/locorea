@@ -6,7 +6,7 @@ import { XMLParser } from 'fast-xml-parser'
 import type { Database } from '../../app/types/database.types'
 import { loadImportEnvironment } from '../lib/load-import-env'
 
-const API_URL = 'http://apis.data.go.kr/B552657/HsptlAsembySearchService/getHsptlMdcncFullDown'
+const API_URL = 'https://apis.data.go.kr/B552657/HsptlAsembySearchService/getHsptlMdcncFullDown'
 const REQUESTED_PAGE_SIZE = 1000
 const MAX_PAGES = 100
 const parser = new XMLParser({ trimValues: true, parseTagValue: false })
