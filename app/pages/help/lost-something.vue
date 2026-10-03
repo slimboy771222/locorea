@@ -11,6 +11,15 @@ const { data: passportGuide, pending: isLoadingGuide, error: guideError, execute
   () => getProblemGuideBySlug('lost-passport'),
   { immediate: false },
 )
+const { data: phoneGuide, pending: isLoadingPhoneGuide, error: phoneGuideError, execute: loadPhoneGuide } = useAsyncData(
+  'problem-guide-lost-phone',
+  () => getProblemGuideBySlug('lost-phone'),
+  { immediate: false },
+)
+
+const selectedGuide = computed(() => selectedItem.value === 'passport' ? passportGuide.value : selectedItem.value === 'phone' ? phoneGuide.value : null)
+const isLoadingSelectedGuide = computed(() => selectedItem.value === 'passport' ? isLoadingGuide.value : selectedItem.value === 'phone' ? isLoadingPhoneGuide.value : false)
+const selectedGuideError = computed(() => selectedItem.value === 'passport' ? guideError.value : selectedItem.value === 'phone' ? phoneGuideError.value : null)
 
 const items = [
   { id: 'passport', label: 'Passport', icon: BookOpen },
@@ -27,7 +36,10 @@ const chooseItem = async (item: LostItem) => {
   if (item === 'passport' && !passportGuide.value && !isLoadingGuide.value) {
     await loadPassportGuide()
   }
-  else if (item !== 'passport') {
+  else if (item === 'phone' && !phoneGuide.value && !isLoadingPhoneGuide.value) {
+    await loadPhoneGuide()
+  }
+  else if (item !== 'passport' && item !== 'phone') {
     unimplementedMessage.value = 'This guide is being prepared.'
   }
 }
@@ -37,7 +49,7 @@ const resetItem = () => {
   unimplementedMessage.value = ''
 }
 
-const retryPassportGuide = () => loadPassportGuide()
+const retrySelectedGuide = () => selectedItem.value === 'passport' ? loadPassportGuide() : loadPhoneGuide()
 
 useSeoMeta({ title: 'Lost something — Locorea', description: 'Simple next steps when you lose something during your trip in Korea.' })
 </script>
@@ -78,18 +90,18 @@ useSeoMeta({ title: 'Lost something — Locorea', description: 'Simple next step
         <ArrowRight :size="20" class="shrink-0 text-blue-700" aria-hidden="true" />
       </NuxtLink>
 
-      <section v-if="selectedItem === 'passport'" class="mt-8" aria-live="polite">
-        <div v-if="isLoadingGuide" class="flex min-h-48 items-center justify-center rounded-2xl border border-slate-200 bg-white p-6 text-center">
-          <div><LoaderCircle :size="28" class="mx-auto animate-spin text-blue-700" aria-hidden="true" /><p class="mt-4 text-sm font-medium text-slate-700">Loading the passport guide…</p></div>
+      <section v-if="selectedItem === 'passport' || selectedItem === 'phone'" class="mt-8" aria-live="polite">
+        <div v-if="isLoadingSelectedGuide" class="flex min-h-48 items-center justify-center rounded-2xl border border-slate-200 bg-white p-6 text-center">
+          <div><LoaderCircle :size="28" class="mx-auto animate-spin text-blue-700" aria-hidden="true" /><p class="mt-4 text-sm font-medium text-slate-700">Loading the guide…</p></div>
         </div>
-        <div v-else-if="guideError" class="rounded-2xl border border-slate-200 bg-white p-6 text-center">
+        <div v-else-if="selectedGuideError" class="rounded-2xl border border-slate-200 bg-white p-6 text-center">
           <p class="text-sm font-medium text-slate-800">We couldn’t load this guide right now.</p>
-          <button type="button" class="mt-4 min-h-10 text-sm font-semibold text-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700" @click="retryPassportGuide">Try again</button>
+          <button type="button" class="mt-4 min-h-10 text-sm font-semibold text-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700" @click="retrySelectedGuide">Try again</button>
         </div>
-        <div v-else-if="!passportGuide" class="rounded-2xl border border-slate-200 bg-white p-6 text-center">
+        <div v-else-if="!selectedGuide" class="rounded-2xl border border-slate-200 bg-white p-6 text-center">
           <p class="text-sm font-medium text-slate-800">This guide is not available right now.</p>
         </div>
-        <ProblemGuideView v-else :guide="passportGuide" />
+        <ProblemGuideView v-else :guide="selectedGuide" />
       </section>
     </div>
   </main>
