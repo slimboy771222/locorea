@@ -574,6 +574,255 @@ export type Database = {
           },
         ]
       }
+      problem_guide_actions: {
+        Row: {
+          action_key: string | null
+          action_type: string
+          created_at: string
+          description: string | null
+          guide_id: string
+          href: string | null
+          id: string
+          label: string
+          section_id: string | null
+          sort_order: number
+          variant: string
+        }
+        Insert: {
+          action_key?: string | null
+          action_type: string
+          created_at?: string
+          description?: string | null
+          guide_id: string
+          href?: string | null
+          id?: string
+          label: string
+          section_id?: string | null
+          sort_order?: number
+          variant?: string
+        }
+        Update: {
+          action_key?: string | null
+          action_type?: string
+          created_at?: string
+          description?: string | null
+          guide_id?: string
+          href?: string | null
+          id?: string
+          label?: string
+          section_id?: string | null
+          sort_order?: number
+          variant?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "problem_guide_actions_guide_id_fkey"
+            columns: ["guide_id"]
+            isOneToOne: false
+            referencedRelation: "problem_guides"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "problem_guide_actions_section_id_fkey"
+            columns: ["section_id"]
+            isOneToOne: false
+            referencedRelation: "problem_guide_sections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      problem_guide_phrases: {
+        Row: {
+          context: string | null
+          created_at: string
+          guide_id: string
+          id: string
+          romanization: string | null
+          sort_order: number
+          text_en: string
+          text_ko: string
+        }
+        Insert: {
+          context?: string | null
+          created_at?: string
+          guide_id: string
+          id?: string
+          romanization?: string | null
+          sort_order?: number
+          text_en: string
+          text_ko: string
+        }
+        Update: {
+          context?: string | null
+          created_at?: string
+          guide_id?: string
+          id?: string
+          romanization?: string | null
+          sort_order?: number
+          text_en?: string
+          text_ko?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "problem_guide_phrases_guide_id_fkey"
+            columns: ["guide_id"]
+            isOneToOne: false
+            referencedRelation: "problem_guides"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      problem_guide_resources: {
+        Row: {
+          created_at: string
+          creator_name: string | null
+          description: string | null
+          featured: boolean
+          guide_id: string
+          id: string
+          is_active: boolean
+          language: string | null
+          last_checked_at: string | null
+          organization: string | null
+          platform: string | null
+          published_at: string | null
+          resource_type: string
+          sort_order: number
+          title: string
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          creator_name?: string | null
+          description?: string | null
+          featured?: boolean
+          guide_id: string
+          id?: string
+          is_active?: boolean
+          language?: string | null
+          last_checked_at?: string | null
+          organization?: string | null
+          platform?: string | null
+          published_at?: string | null
+          resource_type: string
+          sort_order?: number
+          title: string
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          created_at?: string
+          creator_name?: string | null
+          description?: string | null
+          featured?: boolean
+          guide_id?: string
+          id?: string
+          is_active?: boolean
+          language?: string | null
+          last_checked_at?: string | null
+          organization?: string | null
+          platform?: string | null
+          published_at?: string | null
+          resource_type?: string
+          sort_order?: number
+          title?: string
+          updated_at?: string
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "problem_guide_resources_guide_id_fkey"
+            columns: ["guide_id"]
+            isOneToOne: false
+            referencedRelation: "problem_guides"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      problem_guide_sections: {
+        Row: {
+          body_markdown: string
+          created_at: string
+          guide_id: string
+          id: string
+          section_type: string
+          sort_order: number
+          title: string | null
+          updated_at: string
+        }
+        Insert: {
+          body_markdown: string
+          created_at?: string
+          guide_id: string
+          id?: string
+          section_type: string
+          sort_order?: number
+          title?: string | null
+          updated_at?: string
+        }
+        Update: {
+          body_markdown?: string
+          created_at?: string
+          guide_id?: string
+          id?: string
+          section_type?: string
+          sort_order?: number
+          title?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "problem_guide_sections_guide_id_fkey"
+            columns: ["guide_id"]
+            isOneToOne: false
+            referencedRelation: "problem_guides"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      problem_guides: {
+        Row: {
+          category: string
+          created_at: string
+          guide_type: string
+          id: string
+          last_reviewed_at: string | null
+          published_at: string | null
+          slug: string
+          status: string
+          summary: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          guide_type?: string
+          id?: string
+          last_reviewed_at?: string | null
+          published_at?: string | null
+          slug: string
+          status?: string
+          summary?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          guide_type?: string
+          id?: string
+          last_reviewed_at?: string | null
+          published_at?: string | null
+          slug?: string
+          status?: string
+          summary?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       region_translations: {
         Row: {
           description: string | null
