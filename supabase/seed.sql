@@ -2286,3 +2286,6 @@ select seed.id, g.id, seed.resource_type, seed.platform, seed.title, seed.descri
   ('d0b3f7f1-6c08-4b55-8e10-000000000401'::uuid, 'official', 'website', 'Police Civil Service 24 — Lost & Found', 'Search Korea''s official police lost-and-found service.', 'Korean National Police Agency', 'https://minwon24.police.go.kr/cvlcpt/cvlcptGdInfo.do?cvlcptId=MW-201', 'ko', 10),
   ('d0b3f7f1-6c08-4b55-8e10-000000000402'::uuid, 'official', 'website', '1330 Travel Helpline', 'Multilingual travel information and interpretation assistance for international travelers.', 'Korea Tourism Organization', 'https://english.visitkorea.or.kr/svc/contents/infoBscView.do?vcontsId=140632', 'en', 20)
 ) as seed(id, resource_type, platform, title, description, organization, url, language, sort_order) where g.slug = 'lost-wallet-cards';
+
+-- Keep local seed data identical to the idempotent staging migration.
+\ir migrations/20261003160000_seed_lost_bag_belongings.sql

@@ -16,7 +16,7 @@ const isSafeInternalUrl = (href: string | null) => Boolean(href && /^\/(?!\/)/.t
 const isExternalAction = (action: ProblemGuideAction) => action.actionType === 'external' && isSafeExternalUrl(action.href)
 const isPhoneAction = (action: ProblemGuideAction) => action.actionType === 'phone' && isSafePhoneUrl(action.href)
 const internalActionIsAvailable = (action: ProblemGuideAction) => action.actionType === 'internal' && isSafeInternalUrl(action.href)
-const isRelatedGuide = (action: ProblemGuideAction) => action.actionKey === 'related_guide'
+const isRelatedGuide = (action: ProblemGuideAction) => action.actionType === 'internal' && action.actionKey?.startsWith('related_')
 </script>
 
 <template>
