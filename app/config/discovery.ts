@@ -8,12 +8,13 @@ import {
   Landmark,
   Map,
   MapPin,
+  Mountain,
   Phone,
   Pill,
   PlaneLanding,
-  Route,
   Search,
   ShoppingBag,
+  Sparkles,
   Stethoscope,
   Toilet,
   TrainFront,
@@ -25,12 +26,12 @@ const search = (parameters: Record<string, string>) => `/search?${new URLSearchP
 
 export const discovery = {
   exploreTypes: [
-    { label: 'Places', description: 'Everyday places to explore', to: search({ type: 'places' }), icon: MapPin },
-    { label: 'Food', description: 'Restaurants and local meals', to: search({ type: 'places', place_type: 'restaurant' }), icon: Utensils },
-    { label: 'Cafes', description: 'Coffee and creative spaces', to: search({ type: 'places', place_type: 'cafe' }), icon: Coffee },
-    { label: 'Shopping', description: 'Stores, markets and pop-ups', to: search({ type: 'places', place_type: 'shopping' }), icon: ShoppingBag },
-    { label: 'Routes', description: 'Ready-made ways to explore', to: search({ type: 'routes' }), icon: Route },
-    { label: 'Guides', description: 'Practical trip know-how', to: search({ type: 'guides' }), icon: BookOpen },
+    { key: 'food', label: 'Food', to: search({ type: 'places', place_type: 'restaurant' }), icon: Utensils, iconClass: 'text-orange-700', iconBackgroundClass: 'bg-orange-50' },
+    { key: 'cafes', label: 'Cafes', to: search({ type: 'places', place_type: 'cafe' }), icon: Coffee, iconClass: 'text-amber-800', iconBackgroundClass: 'bg-amber-50' },
+    { key: 'shopping', label: 'Shopping', to: search({ type: 'places', place_type: 'shopping' }), icon: ShoppingBag, iconClass: 'text-emerald-700', iconBackgroundClass: 'bg-emerald-50' },
+    { key: 'nature', label: 'Nature', to: search({ tag: 'nature' }), icon: Mountain, iconClass: 'text-teal-700', iconBackgroundClass: 'bg-teal-50' },
+    { key: 'culture', label: 'Culture', to: search({ tag: 'culture' }), icon: Landmark, iconClass: 'text-indigo-700', iconBackgroundClass: 'bg-indigo-50' },
+    { key: 'activities', label: 'Activities', to: search({ type: 'routes' }), icon: Sparkles, iconClass: 'text-rose-700', iconBackgroundClass: 'bg-rose-50' },
   ],
   travelBasics: [
     { title: 'Transportation', description: 'Subway, buses, cards', guideType: 'transport', to: search({ type: 'guides', guide_type: 'transport' }), icon: TrainFront, imagePosition: '46% center' },

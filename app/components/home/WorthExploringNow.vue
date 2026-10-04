@@ -1,111 +1,126 @@
 <script setup lang="ts">
-import { ArrowUpRight, Coffee, Landmark, ShoppingBag, Utensils } from 'lucide-vue-next'
+type CuratedContentType = 'place' | 'route' | 'theme' | 'guide' | 'story'
+type CuratedRole = 'featured' | 'supporting'
 
-type Translation = {
-  language_code: string
-  name: string
-  summary: string | null
-}
-
-type Area = {
-  slug: string
-  area_translations: Array<{
-    language_code: string
-    name: string
-  }>
-} | null
-
-type Place = {
+type CuratedItem = {
   id: string
-  slug: string
-  place_type: string
-  place_translations: Translation[]
-  areas: Area
-  cover: {
-    storage_path: string
-    alt_text: string | null
-    credit_text: string | null
-  } | null
+  contentType: CuratedContentType
+  contentId: string | null
+  role: CuratedRole
+  badge: 'NOW' | 'THIS WEEK' | 'LOCAL PICK' | 'TRENDING'
+  title: string
+  meta: string
+  imageUrl: string
+  imageAlt: string
+  destination: string
+  sortOrder: number
+  activeFrom?: string
+  activeUntil?: string
 }
 
-const props = defineProps<{
-  places: Place[]
-  pending: boolean
-  failed: boolean
-}>()
+const curatedItems = [
+  {
+    id: 'namsan-autumn-night',
+    contentType: 'theme',
+    contentId: null,
+    role: 'featured',
+    badge: 'NOW',
+    title: "Enjoy Seoul's best autumn night walk",
+    meta: 'Namsan · Seasonal',
+    imageUrl: '/images/home/worth-exploring/namsan-autumn-night.webp',
+    imageAlt: 'Namsan at night in autumn',
+    destination: '/search?q=Namsan',
+    sortOrder: 1,
+  },
+  {
+    id: 'seongsu-popups',
+    contentType: 'theme',
+    contentId: null,
+    role: 'supporting',
+    badge: 'THIS WEEK',
+    title: 'Seongsu pop-ups worth checking',
+    meta: 'Seongsu · Cafes',
+    imageUrl: '/images/home/worth-exploring/seongsu-popups.webp',
+    imageAlt: 'A Seongsu pop-up storefront',
+    destination: '/search?q=Seongsu',
+    sortOrder: 2,
+  },
+  {
+    id: 'han-river-sunset-bike',
+    contentType: 'route',
+    contentId: null,
+    role: 'supporting',
+    badge: 'LOCAL PICK',
+    title: 'Ride the Han River at sunset',
+    meta: 'Seoul · Outdoor',
+    imageUrl: '/images/home/worth-exploring/han-river-sunset-bike.webp',
+    imageAlt: 'Cycling beside the Han River at sunset',
+    destination: '/search?q=Han+River',
+    sortOrder: 3,
+  },
+  {
+    id: 'seoul-night-market',
+    contentType: 'theme',
+    contentId: null,
+    role: 'supporting',
+    badge: 'TRENDING',
+    title: 'Night markets locals love',
+    meta: 'Seoul · Food',
+    imageUrl: '/images/home/worth-exploring/seoul-night-market.webp',
+    imageAlt: 'A Seoul night market',
+    destination: '/search?type=places&place_type=restaurant',
+    sortOrder: 4,
+  },
+] satisfies CuratedItem[]
 
-const { getPublicMediaUrl } = useMedia()
-
-const getTranslation = (translations: Translation[]) => {
-  return translations.find(item => item.language_code === 'en') ?? translations[0]
-}
-
-const getAreaName = (place: Place) => {
-  const translations = place.areas?.area_translations ?? []
-  const translation = translations.find(item => item.language_code === 'en') ?? translations[0]
-
-  return translation?.name ?? place.areas?.slug ?? 'Korea'
-}
-
-const getCoverAlt = (place: Place) => {
-  return place.cover?.alt_text ?? getTranslation(place.place_translations)?.name ?? 'Explore Korea'
-}
-
-const getPlaceIcon = (placeType: string) => {
-  const icons = {
-    cafe: Coffee,
-    restaurant: Utensils,
-    shopping: ShoppingBag,
-  }
-
-  return icons[placeType as keyof typeof icons] ?? Landmark
-}
+const featuredItem = curatedItems.find(item => item.role === 'featured')!
+const supportingItems = curatedItems.filter(item => item.role === 'supporting')
 </script>
 
 <template>
-  <section v-if="props.pending || (!props.failed && props.places.length)" class="mx-auto max-w-7xl px-5 py-9 sm:py-10 lg:px-8 lg:py-14">
-    <div class="mb-5 flex items-end justify-between gap-4">
-      <div>
-        <p class="text-sm font-medium text-blue-700">Curated for your trip</p>
-        <h2 class="mt-1 text-[22px] font-bold tracking-tight text-slate-950 md:text-[26px]">Worth Exploring Now</h2>
-        <p class="mt-1 text-[15px] leading-6 text-slate-600">A few places worth adding to your Korea itinerary.</p>
+  <section class="mx-auto max-w-7xl px-5 py-9 sm:py-10 lg:px-8 lg:py-14">
+    <div class="mb-4">
+      <p class="text-[12px] font-semibold uppercase tracking-[0.12em] text-blue-700">Curated for you</p>
+      <div class="mt-1.5 flex items-end justify-between gap-4">
+        <h2 class="text-[26px] font-bold tracking-tight text-slate-950 md:text-[28px]">Worth Exploring Now</h2>
+        <span class="mb-1 shrink-0 text-sm font-semibold text-blue-700" aria-label="Curated archive coming soon">See all <span aria-hidden="true">→</span></span>
       </div>
-      <NuxtLink to="/search?type=places" class="shrink-0 text-sm font-medium text-blue-700 transition hover:text-blue-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
-        Explore all places <span aria-hidden="true">→</span>
-      </NuxtLink>
+      <p class="mt-1.5 text-[15px] leading-6 text-slate-600">Fresh picks for a more interesting Korea trip.</p>
     </div>
 
-    <div v-if="props.pending" class="flex gap-4 overflow-hidden" aria-label="Loading curated places">
-      <div v-for="index in 3" :key="index" class="h-80 min-w-[82vw] animate-pulse rounded-2xl bg-slate-100 sm:min-w-0 sm:flex-1" />
-    </div>
+    <NuxtLink
+      :to="featuredItem.destination"
+      :aria-label="`${featuredItem.title}. ${featuredItem.meta}`"
+      class="group relative isolate block aspect-video overflow-hidden rounded-2xl bg-slate-900 outline-none transition focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 lg:max-w-4xl"
+    >
+      <img
+        :src="featuredItem.imageUrl"
+        :alt="featuredItem.imageAlt"
+        class="absolute inset-0 -z-20 h-full w-full object-cover transition duration-500 group-hover:scale-[1.02]"
+      >
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(to_top,rgba(8,18,36,0.78)_0%,rgba(8,18,36,0.28)_46%,rgba(8,18,36,0.04)_100%)]" />
+      <span class="absolute left-3 top-3 rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-bold tracking-[0.08em] text-slate-800">{{ featuredItem.badge }}</span>
+      <div class="absolute inset-x-0 bottom-0 p-4 sm:p-5">
+        <h3 class="max-w-lg text-[22px] font-bold leading-7 tracking-tight text-white sm:text-[26px]">{{ featuredItem.title }}</h3>
+        <p class="mt-1 text-sm font-medium text-white/85">{{ featuredItem.meta }}</p>
+      </div>
+    </NuxtLink>
 
-    <div v-else class="-mx-5 flex snap-x gap-4 overflow-x-auto px-5 pb-2 sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 lg:grid-cols-3">
+    <div class="mt-4 flex max-w-full snap-x snap-proximity gap-3 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mt-5 sm:grid sm:grid-cols-3 sm:overflow-visible sm:pb-0">
       <NuxtLink
-        v-for="place in props.places"
-        :key="place.id"
-        :to="`/places/${place.slug}`"
-        class="group min-w-[84vw] snap-start overflow-hidden rounded-2xl border border-slate-200 bg-white transition hover:border-slate-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 sm:min-w-0"
+        v-for="item in supportingItems"
+        :key="item.id"
+        :to="item.destination"
+        :aria-label="`${item.title}. ${item.meta}`"
+        class="group w-[152px] shrink-0 snap-start overflow-hidden rounded-xl border border-slate-200 bg-white outline-none transition hover:border-slate-300 hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 sm:w-auto"
       >
         <div class="relative aspect-[4/3] overflow-hidden bg-slate-100">
-          <img
-            v-if="place.cover"
-            :src="getPublicMediaUrl(place.cover.storage_path) ?? undefined"
-            :alt="getCoverAlt(place)"
-            class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
-          >
-          <div v-else class="flex h-full items-center justify-center bg-slate-100/80 text-slate-400">
-            <component :is="getPlaceIcon(place.place_type)" :size="23" :stroke-width="1.5" aria-hidden="true" />
-          </div>
+          <img :src="item.imageUrl" :alt="item.imageAlt" class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]">
+          <span class="absolute left-2 top-2 rounded-full bg-white/95 px-2 py-1 text-[10px] font-bold tracking-[0.07em] text-slate-700">{{ item.badge }}</span>
         </div>
-
-        <div class="p-4">
-          <p class="text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">{{ place.place_type }}</p>
-          <h3 class="mt-1 text-[17px] font-semibold leading-6 text-slate-950">{{ getTranslation(place.place_translations)?.name ?? 'Explore Korea' }}</h3>
-          <p class="mt-2 line-clamp-2 text-[15px] leading-5 text-slate-600">{{ getTranslation(place.place_translations)?.summary ?? 'A thoughtful stop for your Korea itinerary.' }}</p>
-          <p class="mt-4 flex items-center justify-between text-sm font-medium text-slate-500">
-            <span>{{ getAreaName(place) }}</span>
-            <ArrowUpRight :size="18" class="text-slate-400 transition group-hover:text-blue-700" aria-hidden="true" />
-          </p>
+        <div class="p-3">
+          <h3 class="line-clamp-2 text-[16px] font-semibold leading-5 text-slate-900">{{ item.title }}</h3>
+          <p class="mt-1 truncate text-[13px] leading-4 text-slate-500">{{ item.meta }}</p>
         </div>
       </NuxtLink>
     </div>

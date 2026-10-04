@@ -6,28 +6,28 @@ import { discovery } from '~/config/discovery'
   <section class="mx-auto max-w-7xl px-5 py-8 md:py-10 lg:px-8">
     <div class="mb-4 flex items-center justify-between">
       <div>
-        <p class="text-sm font-medium text-blue-600">Browse the essentials</p>
-        <h2 class="mt-1 text-[22px] font-bold tracking-tight text-slate-950 md:text-[26px]">
-          Explore by Type
+        <p class="text-sm font-semibold text-blue-700">Browse the essentials</p>
+        <h2 class="mt-1.5 text-[24px] font-bold tracking-tight text-slate-950 md:text-[28px]">
+          Explore by Interest
         </h2>
       </div>
 
-      <NuxtLink to="/search" class="text-sm font-medium text-slate-600 transition hover:text-blue-600">
+      <NuxtLink to="/search" class="shrink-0 text-sm font-semibold text-blue-700 transition hover:text-blue-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
         View all <span aria-hidden="true">→</span>
       </NuxtLink>
     </div>
 
-    <div class="grid grid-cols-2 gap-2.5 sm:grid-cols-4 lg:grid-cols-7">
+    <div class="grid max-w-[720px] grid-cols-3 gap-2.5 sm:gap-3 lg:max-w-6xl lg:grid-cols-6">
       <NuxtLink
         v-for="item in discovery.exploreTypes"
-        :key="item.label"
+        :key="item.key"
         :to="item.to"
-        class="group flex min-h-24 flex-col justify-between rounded-xl border border-slate-200/80 bg-white p-3.5 transition hover:border-blue-200 hover:shadow-sm"
+        class="group flex min-h-[84px] flex-col items-center justify-center rounded-xl border border-slate-200/80 bg-white px-3 py-3 text-center transition hover:border-blue-200 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
       >
-        <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-50 text-slate-500 transition group-hover:bg-blue-50 group-hover:text-blue-600">
-          <component :is="item.icon" :size="19" />
+        <span class="flex size-11 items-center justify-center rounded-xl transition" :class="[item.iconBackgroundClass, item.iconClass]">
+          <component :is="item.icon" :size="24" aria-hidden="true" />
         </span>
-        <span class="mt-4 text-sm font-semibold text-slate-800">{{ item.label }}</span>
+        <span class="mt-2 text-[15px] font-semibold leading-5 text-slate-800">{{ item.label }}</span>
       </NuxtLink>
     </div>
   </section>
