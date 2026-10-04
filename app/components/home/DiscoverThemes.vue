@@ -4,7 +4,7 @@ import { discovery } from '~/config/discovery'
 </script>
 
 <template>
-  <section id="discover-themes" class="bg-slate-50/90">
+  <section id="discover-themes" class="bg-white">
     <div class="mx-auto max-w-7xl px-5 py-9 sm:py-10 lg:px-8 lg:py-14">
       <div class="mb-6 max-w-xl md:mb-7">
         <p class="text-sm font-semibold text-[var(--lc-coral)]">Explore by mood</p>

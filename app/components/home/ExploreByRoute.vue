@@ -91,7 +91,7 @@ const getStopPreview = (route: Route) => {
 </script>
 
 <template>
-  <section v-if="props.pending || (!props.failed && props.routes.length)" class="bg-slate-50/70">
+  <section v-if="props.pending || (!props.failed && props.routes.length)" class="bg-[var(--lc-surface-route)]">
     <div class="mx-auto max-w-7xl px-5 py-9 sm:py-10 lg:px-8 lg:py-14">
       <div class="mb-5 flex items-end justify-between gap-4">
         <div>

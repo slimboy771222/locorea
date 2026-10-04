@@ -1,4 +1,5 @@
 import {
+  Ambulance,
   Bike,
   Coffee,
   CreditCard,
@@ -8,7 +9,6 @@ import {
   Map,
   MapPin,
   Mountain,
-  Phone,
   Pill,
   PlaneLanding,
   Search,
@@ -119,10 +119,10 @@ export const discovery = {
     },
   ],
   help: [
-    { key: 'emergency', label: 'Emergency', to: '/help/emergency', icon: Phone },
-    { key: 'medical-care', label: 'Medical care', to: '/help/medical-care', icon: Stethoscope },
+    { key: 'emergency', label: 'Medical Emergency', to: '/help/emergency', icon: Ambulance },
+    { key: 'medical-care', label: 'Medical Care', to: '/help/medical-care', icon: Stethoscope },
     { key: 'pharmacy', label: 'Pharmacy', to: '/help/pharmacies', icon: Pill },
     { key: 'restroom', label: 'Restroom', to: '/help/restrooms', icon: Toilet },
-    { key: 'lost-something', label: 'Lost something', to: '/help/lost-something', icon: Search },
+    { key: 'lost-something', label: 'Lost Something', to: '/help/lost-something', icon: Search },
   ],
 } as const

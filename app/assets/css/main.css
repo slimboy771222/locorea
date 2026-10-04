@@ -11,6 +11,8 @@
   --lc-accent: #ff647c;
   --lc-coral: #ff6b4a;
   --lc-coral-subtle: color-mix(in srgb, var(--lc-coral) 10%, white);
+  --lc-surface-practical: #f6f8fc;
+  --lc-surface-route: #fff9f7;
 }
 
 html {

@@ -117,11 +117,13 @@ const submitSearch = () => {
           </NuxtLink>
         </div>
 
-        <NuxtLink to="/#need-help" class="mt-3 flex min-h-12 w-full max-w-[430px] items-center gap-2.5 rounded-xl bg-white/95 px-3.5 text-slate-800 ring-1 ring-white/70 transition hover:bg-white hover:text-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-100 sm:mt-4 sm:inline-flex sm:min-h-11 sm:w-auto">
-          <LifeBuoy :size="18" class="shrink-0 text-blue-700" aria-hidden="true" />
+        <NuxtLink to="/#need-help" class="mt-3 flex min-h-12 w-full max-w-[430px] items-center gap-2 rounded-xl bg-white/95 px-3 text-slate-800 ring-1 ring-[var(--lc-coral-subtle)] transition hover:bg-white hover:text-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-100 sm:mt-4 sm:inline-flex sm:min-h-11 sm:w-auto sm:px-3.5">
+          <span class="grid size-8 shrink-0 place-items-center rounded-lg bg-[var(--lc-coral-subtle)] text-[var(--lc-coral)]">
+            <LifeBuoy :size="17" aria-hidden="true" />
+          </span>
           <span class="min-w-0 flex-1">
             <span class="block whitespace-nowrap text-[15px] font-semibold sm:inline">Need help<span class="sm:hidden">?</span><span class="hidden sm:inline"> in Korea?</span></span>
-            <span class="hidden text-xs font-medium text-slate-500 min-[390px]:block sm:ml-2 sm:inline">Emergency · Medical · Lost</span>
+            <span class="block whitespace-nowrap text-[11px] font-medium leading-4 text-slate-500 min-[360px]:text-xs sm:ml-2 sm:inline">Emergency · Medical · Lost</span>
           </span>
           <ArrowRight :size="18" class="shrink-0 text-slate-400" aria-hidden="true" />
         </NuxtLink>

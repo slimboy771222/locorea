@@ -92,10 +92,10 @@ onBeforeUnmount(() => {
       </nav>
 
       <div class="flex items-center gap-1 sm:gap-2">
-        <NuxtLink to="/search" aria-label="Search" class="inline-flex size-11 items-center justify-center rounded-xl text-slate-700 transition hover:bg-slate-100 hover:text-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 lg:size-10">
+        <NuxtLink to="/search" aria-label="Search" class="hidden size-10 items-center justify-center rounded-xl text-slate-700 transition hover:bg-slate-100 hover:text-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 lg:inline-flex">
           <Search :size="20" />
         </NuxtLink>
-        <button type="button" class="inline-flex size-11 items-center justify-center rounded-xl text-slate-700 transition hover:bg-slate-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 lg:hidden" :aria-expanded="mobileMenuOpen" aria-controls="mobile-navigation" aria-label="Open navigation" @click="toggleMobileMenu">
+        <button type="button" class="inline-flex size-11 items-center justify-end rounded-xl text-slate-700 transition hover:bg-slate-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 lg:hidden" :aria-expanded="mobileMenuOpen" aria-controls="mobile-navigation" aria-label="Open navigation" @click="toggleMobileMenu">
           <Menu :size="22" />
         </button>
       </div>

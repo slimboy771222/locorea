@@ -6,7 +6,7 @@ const cardImage = '/images/hero/locorea-seoul-hero.png'
 </script>
 
 <template>
-  <section id="travel-basics" class="border-b border-slate-100 bg-slate-50/70">
+  <section id="travel-basics" class="border-b border-slate-100 bg-[var(--lc-surface-practical)]">
     <div class="mx-auto max-w-7xl px-5 py-9 sm:py-10 lg:px-8 lg:py-12">
       <div class="flex items-end justify-between gap-4">
         <div>

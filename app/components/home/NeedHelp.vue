@@ -23,14 +23,14 @@ const lostSomethingItem = discovery.help[4]
               v-for="item in utilityItems"
               :key="item.key"
               :to="item.to"
-              class="group flex min-h-[76px] items-center gap-2.5 rounded-2xl border border-slate-200 bg-white p-3 outline-none transition duration-200 hover:border-blue-200 hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
+              class="group flex min-h-[76px] min-w-0 items-center gap-2 rounded-2xl border border-slate-200 bg-white p-2 outline-none transition duration-200 hover:border-blue-200 hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 min-[360px]:gap-2.5 min-[360px]:p-3"
             >
-              <span class="grid size-9 shrink-0 place-items-center rounded-xl bg-blue-50 text-blue-700">
+              <span class="grid size-8 shrink-0 place-items-center rounded-xl bg-blue-50 text-blue-700 min-[360px]:size-9">
                 <component :is="item.icon" :size="18" aria-hidden="true" />
               </span>
               <span class="min-w-0 text-[14px] font-semibold leading-5 text-slate-900">
                 {{ item.label }}
-                <span v-if="item.key === 'emergency'" class="block text-xs font-medium text-slate-500">119</span>
+                <span v-if="item.key === 'emergency'" class="block text-xs font-medium text-slate-500">119 · ER</span>
               </span>
             </NuxtLink>
           </div>
