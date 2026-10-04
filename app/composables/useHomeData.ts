@@ -88,8 +88,10 @@ export const useHomeData = () => {
     }))
   }
 
-  const getCuratedRoutes = async (slugs: readonly string[]) => {
-    if (!slugs.length) {
+  const getCuratedRoutes = async (slugs: readonly string[], limit = 3) => {
+    const curatedSlugs = slugs.slice(0, limit)
+
+    if (!curatedSlugs.length) {
       return []
     }
 
@@ -98,6 +100,7 @@ export const useHomeData = () => {
       .select(`
         id,
         slug,
+        route_type,
         duration_minutes,
         distance_km,
         difficulty,
@@ -118,14 +121,14 @@ export const useHomeData = () => {
         )
       `)
       .eq('status', 'published')
-      .in('slug', [...slugs])
+      .in('slug', [...curatedSlugs])
 
     if (error) {
       throw error
     }
 
     const routesBySlug = new Map((routes ?? []).map(route => [route.slug, route]))
-    const curatedRoutes = slugs.flatMap(slug => {
+    const curatedRoutes = curatedSlugs.flatMap(slug => {
       const route = routesBySlug.get(slug)
 
       return route ? [route] : []

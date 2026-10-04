@@ -99,7 +99,7 @@ const supportingItems = curatedItems.filter(item => item.role === 'supporting')
         class="absolute inset-0 -z-20 h-full w-full object-cover transition duration-500 group-hover:scale-[1.02]"
       >
       <div class="absolute inset-0 -z-10 bg-[linear-gradient(to_top,rgba(8,18,36,0.78)_0%,rgba(8,18,36,0.28)_46%,rgba(8,18,36,0.04)_100%)]" />
-      <span class="absolute left-3 top-3 rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-bold tracking-[0.08em] text-slate-800">{{ featuredItem.badge }}</span>
+      <span class="absolute left-3 top-3 rounded-full bg-[var(--lc-coral)] px-2.5 py-1 text-[11px] font-bold tracking-[0.08em] text-white">{{ featuredItem.badge }}</span>
       <div class="absolute inset-x-0 bottom-0 p-4 sm:p-5">
         <h3 class="max-w-lg text-[22px] font-bold leading-7 tracking-tight text-white sm:text-[26px]">{{ featuredItem.title }}</h3>
         <p class="mt-1 text-sm font-medium text-white/85">{{ featuredItem.meta }}</p>

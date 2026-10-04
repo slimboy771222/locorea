@@ -205,6 +205,32 @@ where a.slug = 'seongsu'
 on conflict (area_id, language_code) do nothing;
 
 
+-- Route-support areas for upcoming Bukchon and Han River content.
+insert into public.areas (city_id, slug, sort_order, is_active)
+select c.id, seed.slug, seed.sort_order, true
+from public.cities c
+cross join (values
+    ('jongno', 2),
+    ('yeouido', 3),
+    ('yongsan', 4),
+    ('seocho', 5)
+) as seed(slug, sort_order)
+where c.slug = 'seoul'
+on conflict (slug) do nothing;
+
+
+insert into public.area_translations (area_id, language_code, name, description)
+select a.id, 'en', seed.name, seed.description
+from public.areas a
+join (values
+    ('jongno', 'Jongno', 'A historic central Seoul district with royal palaces, hanok neighborhoods, and galleries.'),
+    ('yeouido', 'Yeouido', 'A riverside Seoul district known for Han River parks and city views.'),
+    ('yongsan', 'Yongsan', 'A central Seoul district connecting riverfront parks, museums, and neighborhoods.'),
+    ('seocho', 'Seocho', 'A southern Seoul district with Han River parks and access to Banpo Bridge.')
+) as seed(slug, name, description) on seed.slug = a.slug
+on conflict (area_id, language_code) do nothing;
+
+
 insert into public.area_translations (
     area_id,
     language_code,
@@ -509,6 +535,112 @@ from public.places p
 where p.slug = 'seongsu-handmade-shoe-street';
 
 
+-- ---------------------------------------------------------
+-- Route-support Places: Bukchon and Han River
+-- Coordinates and cover media are intentionally omitted until verified source data is available.
+-- ---------------------------------------------------------
+
+insert into public.places (
+    area_id,
+    source_id,
+    slug,
+    place_type,
+    status,
+    last_verified_at,
+    published_at
+)
+select
+    a.id,
+    s.id,
+    seed.slug,
+    seed.place_type,
+    'published',
+    now(),
+    now()
+from (values
+    ('gyeongbokgung-palace', 'jongno', 'culture'),
+    ('bukchon-hanok-village', 'jongno', 'culture'),
+    ('samcheong-dong', 'jongno', 'culture'),
+    ('yeouido-hangang-park', 'yeouido', 'nature'),
+    ('ichon-hangang-park', 'yongsan', 'nature'),
+    ('banpo-hangang-park', 'seocho', 'nature')
+) as seed(slug, area_slug, place_type)
+join public.areas a on a.slug = seed.area_slug
+join public.sources s on s.name = 'Locorea Editorial'
+on conflict (slug) do nothing;
+
+
+insert into public.place_translations (
+    place_id,
+    language_code,
+    name,
+    summary,
+    description,
+    address_text,
+    local_tip
+)
+select
+    p.id,
+    'en',
+    seed.name,
+    seed.summary,
+    seed.description,
+    seed.address_text,
+    seed.local_tip
+from public.places p
+join (values
+    (
+        'gyeongbokgung-palace',
+        'Gyeongbokgung Palace',
+        'Seoul''s landmark royal palace and a strong starting point for exploring the historic center.',
+        'A major royal palace in central Seoul and a natural first stop for a walking route toward Bukchon and Samcheong-dong.',
+        '161 Sajik-ro, Jongno-gu, Seoul',
+        null
+    ),
+    (
+        'bukchon-hanok-village',
+        'Bukchon Hanok Village',
+        'A residential hanok neighborhood where traditional streets and everyday Seoul meet.',
+        'A walkable residential neighborhood of traditional Korean homes between the palace district and Samcheong-dong.',
+        null,
+        'Please keep noise low and respect residents while walking through Bukchon.'
+    ),
+    (
+        'samcheong-dong',
+        'Samcheong-dong',
+        'A walkable neighborhood mixing galleries, cafés, shops, and traditional streets.',
+        'A neighborhood just beyond Bukchon where galleries, cafés, independent shops, and traditional streets make an easy walking stop.',
+        null,
+        null
+    ),
+    (
+        'yeouido-hangang-park',
+        'Yeouido Hangang Park',
+        'A large Han River park and an easy starting point for a riverside cycling route.',
+        'A broad riverside park in Yeouido with open paths that make a practical starting point for a Han River ride.',
+        '330 Yeouidong-ro, Yeongdeungpo-gu, Seoul',
+        null
+    ),
+    (
+        'ichon-hangang-park',
+        'Ichon Hangang Park',
+        'A long riverside park that makes a natural middle section of a Han River ride.',
+        'A riverside park in Ichon that works as a natural middle stop on a Han River cycling route.',
+        '62 Ichon-ro 72-gil, Yongsan-gu, Seoul',
+        null
+    ),
+    (
+        'banpo-hangang-park',
+        'Banpo Hangang Park',
+        'A riverside park around Banpo Bridge and a strong sunset finish for a Han River ride.',
+        'A riverside park around Banpo Bridge that makes a memorable sunset finish for a Han River ride.',
+        '40 Sinbanpo-ro 11-gil, Seocho-gu, Seoul',
+        null
+    )
+) as seed(slug, name, summary, description, address_text, local_tip) on seed.slug = p.slug
+on conflict (place_id, language_code) do nothing;
+
+
 -- =========================================================
 -- 7. PLACE TAGS
 -- =========================================================
@@ -535,6 +667,29 @@ from public.places p
 cross join public.tags t
 where p.slug = 'seongsu-handmade-shoe-street'
 and t.slug in ('seoul', 'seongsu', 'shopping', 'local');
+
+
+insert into public.place_tags (place_id, tag_id)
+select p.id, t.id
+from public.places p
+join (values
+    ('gyeongbokgung-palace', 'seoul'),
+    ('gyeongbokgung-palace', 'culture'),
+    ('bukchon-hanok-village', 'seoul'),
+    ('bukchon-hanok-village', 'culture'),
+    ('bukchon-hanok-village', 'local'),
+    ('samcheong-dong', 'seoul'),
+    ('samcheong-dong', 'culture'),
+    ('samcheong-dong', 'local'),
+    ('yeouido-hangang-park', 'seoul'),
+    ('yeouido-hangang-park', 'nature'),
+    ('ichon-hangang-park', 'seoul'),
+    ('ichon-hangang-park', 'nature'),
+    ('banpo-hangang-park', 'seoul'),
+    ('banpo-hangang-park', 'nature')
+) as seed(place_slug, tag_slug) on seed.place_slug = p.slug
+join public.tags t on t.slug = seed.tag_slug
+on conflict do nothing;
 
 
 -- =========================================================
@@ -688,6 +843,126 @@ and t.slug in (
     'shopping',
     'local'
 );
+
+
+-- Additional published routes. These mirror the route data migration so a
+-- direct seed run remains consistent with the local reset workflow.
+
+insert into public.routes (
+    area_id,
+    source_id,
+    slug,
+    route_type,
+    duration_minutes,
+    distance_km,
+    difficulty,
+    status,
+    last_verified_at,
+    published_at
+)
+select
+    a.id,
+    s.id,
+    seed.slug,
+    seed.route_type,
+    seed.duration_minutes,
+    null,
+    'easy',
+    'published',
+    now(),
+    now()
+from (values
+    ('half-day-in-bukchon', 'jongno', 'half_day', 240),
+    ('han-river-sunset-ride', 'yeouido', 'half_day', 180)
+) as seed(slug, area_slug, route_type, duration_minutes)
+join public.areas a on a.slug = seed.area_slug
+cross join public.sources s
+where s.name = 'Locorea Editorial'
+on conflict (slug) do update
+set area_id = excluded.area_id,
+    source_id = excluded.source_id,
+    route_type = excluded.route_type,
+    duration_minutes = excluded.duration_minutes,
+    distance_km = excluded.distance_km,
+    difficulty = excluded.difficulty,
+    status = excluded.status,
+    last_verified_at = excluded.last_verified_at,
+    published_at = excluded.published_at;
+
+insert into public.route_translations (
+    route_id,
+    language_code,
+    name,
+    summary,
+    description
+)
+select
+    r.id,
+    'en',
+    seed.name,
+    seed.summary,
+    seed.description
+from public.routes r
+join (values
+    (
+        'half-day-in-bukchon',
+        'Half Day in Bukchon',
+        'Walk through royal Seoul, traditional hanok streets, and one of the city''s most atmospheric neighborhoods.',
+        'Start at Gyeongbokgung Palace, continue through Bukchon Hanok Village, then slow down in Samcheong-dong. Bukchon is a residential neighborhood, so keep voices low and respect local residents as you walk.'
+    ),
+    (
+        'han-river-sunset-ride',
+        'Han River Sunset Ride',
+        'Follow the Han River by bike and finish the ride around sunset at Banpo.',
+        'Ride from Yeouido Hangang Park through Ichon Hangang Park to Banpo Hangang Park at a relaxed pace. This outdoor route is best enjoyed as the light softens toward sunset.'
+    )
+) as seed(slug, name, summary, description) on seed.slug = r.slug
+on conflict (route_id, language_code) do update
+set name = excluded.name,
+    summary = excluded.summary,
+    description = excluded.description;
+
+delete from public.route_places rp
+using public.routes r
+where rp.route_id = r.id
+and r.slug in ('half-day-in-bukchon', 'han-river-sunset-ride');
+
+insert into public.route_places (
+    route_id,
+    place_id,
+    stop_order,
+    stay_minutes,
+    travel_minutes_to_next
+)
+select
+    r.id,
+    p.id,
+    seed.stop_order,
+    seed.stay_minutes,
+    seed.travel_minutes_to_next
+from (values
+    ('half-day-in-bukchon', 'gyeongbokgung-palace', 1, 90, 15),
+    ('half-day-in-bukchon', 'bukchon-hanok-village', 2, 75, 10),
+    ('half-day-in-bukchon', 'samcheong-dong', 3, 50, null),
+    ('han-river-sunset-ride', 'yeouido-hangang-park', 1, 45, 35),
+    ('han-river-sunset-ride', 'ichon-hangang-park', 2, 35, 35),
+    ('han-river-sunset-ride', 'banpo-hangang-park', 3, 30, null)
+) as seed(route_slug, place_slug, stop_order, stay_minutes, travel_minutes_to_next)
+join public.routes r on r.slug = seed.route_slug
+join public.places p on p.slug = seed.place_slug;
+
+insert into public.route_tags (route_id, tag_id)
+select r.id, t.id
+from public.routes r
+join (values
+    ('half-day-in-bukchon', 'seoul'),
+    ('half-day-in-bukchon', 'culture'),
+    ('half-day-in-bukchon', 'local'),
+    ('han-river-sunset-ride', 'seoul'),
+    ('han-river-sunset-ride', 'nature')
+) as seed(route_slug, tag_slug) on seed.route_slug = r.slug
+join public.tags t on t.slug = seed.tag_slug
+on conflict do nothing;
 
 
 -- =========================================================

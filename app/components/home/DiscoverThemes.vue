@@ -7,7 +7,7 @@ import { discovery } from '~/config/discovery'
   <section id="discover-themes" class="bg-slate-50/90">
     <div class="mx-auto max-w-7xl px-5 py-9 sm:py-10 lg:px-8 lg:py-14">
       <div class="mb-6 max-w-xl md:mb-7">
-        <p class="text-sm font-semibold text-blue-700">Explore by mood</p>
+        <p class="text-sm font-semibold text-[var(--lc-coral)]">Explore by mood</p>
         <h2 class="mt-1.5 text-[24px] font-bold tracking-tight text-slate-950 md:text-[28px]">
           Discover Korea by Theme
         </h2>
@@ -19,7 +19,7 @@ import { discovery } from '~/config/discovery'
       <div class="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
         <NuxtLink
           v-for="theme in discovery.themes"
-          :key="theme.tag"
+          :key="theme.key"
           :to="theme.to"
           class="group relative isolate flex aspect-[5/4] overflow-hidden rounded-2xl p-4 text-left outline-none transition duration-200 hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 md:aspect-auto md:min-h-48 md:p-5"
           :class="[theme.image ? 'text-white' : 'text-slate-900', theme.featured ? 'md:col-span-2 md:min-h-56' : '', !theme.image ? theme.tone : '']"
@@ -41,7 +41,7 @@ import { discovery } from '~/config/discovery'
 
           <div class="mt-auto flex w-full items-end justify-between gap-2">
             <div>
-              <h3 class="text-[17px] font-semibold tracking-tight md:text-[20px]">{{ theme.label }}</h3>
+              <h3 class="text-[17px] font-semibold tracking-tight md:text-[20px]">{{ theme.title }}</h3>
               <p class="mt-1 line-clamp-2 max-w-sm text-[12px] leading-[1.35] md:text-[13px]" :class="theme.image ? 'text-white/85' : 'text-slate-600'">
                 {{ theme.description }}
               </p>
